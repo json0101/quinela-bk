@@ -9,6 +9,9 @@ namespace Quinela.Domain.Entities
         public string Confederacion { get; set; } = null!;
         public bool Anfitrion { get; set; }
 
+        // Nombre del archivo de la bandera (ej. "mx.svg"). La imagen vive en el FT: public/img/flags.
+        public string? UrlBandera { get; set; }
+
         // Relación con su grupo a través de la tabla intermedia (posición + estadísticas).
         public ICollection<GrupoEquipo> GrupoEquipos { get; set; } = new List<GrupoEquipo>();
     }

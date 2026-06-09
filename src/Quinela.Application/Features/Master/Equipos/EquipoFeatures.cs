@@ -26,7 +26,7 @@ namespace Quinela.Application.Features.Master.Equipos
             var rows = await _repo.GetDbSet().AsNoTracking().OrderBy(x => x.Nombre)
                 .Select(x => new EquipoDto
                 {
-                    Id = x.Id, Nombre = x.Nombre, Confederacion = x.Confederacion, Anfitrion = x.Anfitrion, Active = x.Active,
+                    Id = x.Id, Nombre = x.Nombre, Confederacion = x.Confederacion, Anfitrion = x.Anfitrion, UrlBandera = x.UrlBandera, Active = x.Active,
                     CreatedAt = x.CreatedAt, CreatedBy = x.CreatedBy, UpdatedAt = x.UpdatedAt, UpdatedBy = x.UpdatedBy
                 }).ToListAsync(ct);
             return Result.Success(rows);
@@ -47,14 +47,14 @@ namespace Quinela.Application.Features.Master.Equipos
             if (x is null) return Result.Failure<EquipoDto>(EquipoErrors.NotFound);
             return Result.Success(new EquipoDto
             {
-                Id = x.Id, Nombre = x.Nombre, Confederacion = x.Confederacion, Anfitrion = x.Anfitrion, Active = x.Active,
+                Id = x.Id, Nombre = x.Nombre, Confederacion = x.Confederacion, Anfitrion = x.Anfitrion, UrlBandera = x.UrlBandera, Active = x.Active,
                 CreatedAt = x.CreatedAt, CreatedBy = x.CreatedBy, UpdatedAt = x.UpdatedAt, UpdatedBy = x.UpdatedBy
             });
         }
     }
 
     // ----- Create -----
-    public sealed record CreateEquipoCommand(string Nombre, string Confederacion, bool Anfitrion, bool Active) : IRequest<Result<EquipoDto>>;
+    public sealed record CreateEquipoCommand(string Nombre, string Confederacion, bool Anfitrion, string? UrlBandera, bool Active) : IRequest<Result<EquipoDto>>;
 
     public sealed class CreateEquipoValidator : AbstractValidator<CreateEquipoCommand>
     {
@@ -82,7 +82,8 @@ namespace Quinela.Application.Features.Master.Equipos
 
             var entity = new Equipo
             {
-                Nombre = nombre, Confederacion = cmd.Confederacion.Trim(), Anfitrion = cmd.Anfitrion, Active = cmd.Active,
+                Nombre = nombre, Confederacion = cmd.Confederacion.Trim(), Anfitrion = cmd.Anfitrion,
+                UrlBandera = cmd.UrlBandera, Active = cmd.Active,
                 CreatedAt = DateTime.UtcNow, CreatedBy = _currentUser.UserName
             };
             _repo.Insert(entity);
@@ -91,14 +92,14 @@ namespace Quinela.Application.Features.Master.Equipos
             return Result.Success(new EquipoDto
             {
                 Id = entity.Id, Nombre = entity.Nombre, Confederacion = entity.Confederacion,
-                Anfitrion = entity.Anfitrion, Active = entity.Active,
+                Anfitrion = entity.Anfitrion, UrlBandera = entity.UrlBandera, Active = entity.Active,
                 CreatedAt = entity.CreatedAt, CreatedBy = entity.CreatedBy
             });
         }
     }
 
     // ----- Update -----
-    public sealed record UpdateEquipoCommand(int Id, string Nombre, string Confederacion, bool Anfitrion, bool Active) : IRequest<Result<EquipoDto>>;
+    public sealed record UpdateEquipoCommand(int Id, string Nombre, string Confederacion, bool Anfitrion, string? UrlBandera, bool Active) : IRequest<Result<EquipoDto>>;
 
     public sealed class UpdateEquipoValidator : AbstractValidator<UpdateEquipoCommand>
     {
@@ -130,6 +131,7 @@ namespace Quinela.Application.Features.Master.Equipos
             entity.Nombre = nombre;
             entity.Confederacion = cmd.Confederacion.Trim();
             entity.Anfitrion = cmd.Anfitrion;
+            entity.UrlBandera = cmd.UrlBandera;
             entity.Active = cmd.Active;
             entity.UpdatedAt = DateTime.UtcNow;
             entity.UpdatedBy = _currentUser.UserName;
@@ -138,7 +140,7 @@ namespace Quinela.Application.Features.Master.Equipos
             return Result.Success(new EquipoDto
             {
                 Id = entity.Id, Nombre = entity.Nombre, Confederacion = entity.Confederacion,
-                Anfitrion = entity.Anfitrion, Active = entity.Active,
+                Anfitrion = entity.Anfitrion, UrlBandera = entity.UrlBandera, Active = entity.Active,
                 CreatedAt = entity.CreatedAt, CreatedBy = entity.CreatedBy,
                 UpdatedAt = entity.UpdatedAt, UpdatedBy = entity.UpdatedBy
             });

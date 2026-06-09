@@ -6,6 +6,7 @@ namespace Quinela.Application.Features.Master.Equipos
         public string Nombre { get; set; } = string.Empty;
         public string Confederacion { get; set; } = string.Empty;
         public bool Anfitrion { get; set; }
+        public string? UrlBandera { get; set; }
         public bool Active { get; set; }
         public DateTime CreatedAt { get; set; }
         public string CreatedBy { get; set; } = string.Empty;
@@ -18,6 +19,7 @@ namespace Quinela.Application.Features.Master.Equipos
         public string Nombre { get; set; } = string.Empty;
         public string Confederacion { get; set; } = string.Empty;
         public bool Anfitrion { get; set; }
+        public string? UrlBandera { get; set; }
         public bool Active { get; set; } = true;
     }
 
@@ -26,6 +28,7 @@ namespace Quinela.Application.Features.Master.Equipos
         public string Nombre { get; set; } = string.Empty;
         public string Confederacion { get; set; } = string.Empty;
         public bool Anfitrion { get; set; }
+        public string? UrlBandera { get; set; }
         public bool Active { get; set; }
     }
 }
