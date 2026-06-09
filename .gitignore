@@ -1,0 +1,145 @@
+## .gitignore para el backend .NET de Quinela.
+## Basado en el estándar de Visual Studio (github/gitignore VisualStudio.gitignore),
+## adaptado a este proyecto (Docker, Postgres, macOS).
+
+# ─────────────────────────────────────────────
+# Secretos y entorno (NUNCA subir)
+# ─────────────────────────────────────────────
+# El .env tiene las contraseñas de Postgres, el JWT secret y la licencia de AutoMapper.
+.env
+# Config de producción (cadenas de conexión / secretos): vive solo en el servidor.
+appsettings.Production.json
+
+# ─────────────────────────────────────────────
+# Dumps de base de datos (pueden contener datos reales)
+# ─────────────────────────────────────────────
+postgres-init/*.dump
+*.dump
+
+# ─────────────────────────────────────────────
+# Resultados de build .NET
+# ─────────────────────────────────────────────
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+[Ww][Ii][Nn]32/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+bld/
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+
+# .NET Core
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# ─────────────────────────────────────────────
+# Archivos de usuario / IDE (Visual Studio, Rider, VS Code)
+# ─────────────────────────────────────────────
+*.rsuser
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.userprefs
+.vs/
+.vshistory/
+.localhistory/
+
+# JetBrains Rider / ReSharper
+_ReSharper*/
+*.[Rr]e[Ss]harper
+*.DotSettings.user
+*.sln.iml
+.idea/
+
+# VS Code
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.code-workspace
+
+# ─────────────────────────────────────────────
+# Archivos generados por la compilación
+# ─────────────────────────────────────────────
+*.ilk
+*.meta
+*.obj
+*.iobj
+*.pch
+*.pdb
+*.ipdb
+*.pgc
+*.pgd
+*.rsp
+*.sbr
+*.tlb
+*.tli
+*.tlh
+*.tmp
+*.tmp_proj
+*_wpftmp.csproj
+*.log
+*.tlog
+*.vspscc
+*.vssscc
+
+# ─────────────────────────────────────────────
+# Tests / cobertura
+# ─────────────────────────────────────────────
+[Tt]est[Rr]esult*/
+[Bb]uild[Ll]og.*
+*.VisualState.xml
+TestResult.xml
+nunit-*.xml
+coverage*.json
+coverage*.xml
+coverage*.info
+*.coverage
+*.coveragexml
+
+# ─────────────────────────────────────────────
+# NuGet
+# ─────────────────────────────────────────────
+*.nupkg
+*.snupkg
+**/[Pp]ackages/*
+!**/[Pp]ackages/build/
+*.nuget.props
+*.nuget.targets
+
+# ─────────────────────────────────────────────
+# Publicación
+# ─────────────────────────────────────────────
+publish/
+PublishScripts/
+*.[Pp]ublish.xml
+*.azurePubxml
+*.pubxml
+*.publishproj
+
+# ─────────────────────────────────────────────
+# SQL Server / claves / varios
+# ─────────────────────────────────────────────
+*.mdf
+*.ldf
+*.ndf
+*.pfx
+*.publishsettings
+*.[Cc]ache
+!?*.[Cc]ache/
+~$*
+*~
+
+# ─────────────────────────────────────────────
+# macOS
+# ─────────────────────────────────────────────
+.DS_Store

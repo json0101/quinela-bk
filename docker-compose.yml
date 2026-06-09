@@ -1,0 +1,77 @@
+name: quinela
+
+# Las variables ${...} se leen del archivo .env (mismo directorio).
+
+services:
+  # ---------------------------------------------------------------
+  # Base de datos: una instancia de Postgres con dos bases adentro
+  # (quinela y userapp). 01-init.sh crea las bases y usuarios; el
+  # esquema + datos los crean las migraciones EF de Quinela al arrancar.
+  # ---------------------------------------------------------------
+  postgres:
+    build: ./postgres-init
+    restart: unless-stopped
+    environment:
+      # Superusuario: SOLO para bootstrap/administracion. Las APIs NO lo usan.
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      # Contraseñas de los 2 usuarios dedicados (las lee 01-init.sh).
+      QUINELA_DB_PASSWORD: ${QUINELA_DB_PASSWORD}
+      USERAPP_DB_PASSWORD: ${USERAPP_DB_PASSWORD}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      # 127.0.0.1 = solo accesible desde TU maquina. 5435 para no chocar con otros Postgres.
+      # EN EL SERVIDOR: borra estas 2 lineas para NO exponer la BD.
+      - "127.0.0.1:5435:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  # ---------------------------------------------------------------
+  # API Quinela (.NET 8) - administra las bases quinela y userapp
+  # ---------------------------------------------------------------
+  quinela-api:
+    build: .
+    restart: unless-stopped
+    environment:
+      # Local: Development (Swagger ON). Server: pon ASPNET_ENV=Production en el .env.
+      ASPNETCORE_ENVIRONMENT: ${ASPNET_ENV:-Development}
+      ASPNETCORE_URLS: http://+:8080
+      # Quinela escribe en su base 'quinela' con su usuario dueño.
+      ConnectionStrings__Quinela: "Host=postgres;Port=5432;Database=quinela;Username=user_quinela;Password=${QUINELA_DB_PASSWORD}"
+      # ...y administra 'userapp' (usuarios/roles/screens) como dueño (migra + seed + login).
+      ConnectionStrings__UserApp: "Host=postgres;Port=5432;Database=userapp;Username=user_userapp;Password=${USERAPP_DB_PASSWORD}"
+      AppSetting__JwtSecret: ${QUINELA_JWT_SECRET}
+      AppSetting__JwtIssuer: "QuinelaApi"
+      AppSetting__JwtAudience: "QuinelaApi"
+      # Licencia comercial de AutoMapper que usa UserApp.Service.
+      AppSetting__AutoMapperLicence: ${USERAPP_AUTOMAPPER_LICENSE}
+      # Migraciones INTENCIONALES: por defecto NO migra (restart seguro).
+      # Arranca con APPLY_MIGRATIONS=true la 1a vez (crea esquema sec + quinela + seed).
+      ApplyMigrations: ${APPLY_MIGRATIONS:-false}
+    ports:
+      # 5060 en local para esquivar el AirPlay Receiver de macOS (ocupa el 5000).
+      - "127.0.0.1:5060:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  # ---------------------------------------------------------------
+  # Frontend Quinela (Next.js)
+  # ---------------------------------------------------------------
+  quinela-ft:
+    build: ../quinela-ft
+    restart: unless-stopped
+    environment:
+      # La FT llama a la API server-to-server por la red interna de Docker.
+      URLBACKEND: "http://quinela-api:8080"
+    ports:
+      - "127.0.0.1:3000:3000"
+    depends_on:
+      - quinela-api
+
+volumes:
+  pgdata:
