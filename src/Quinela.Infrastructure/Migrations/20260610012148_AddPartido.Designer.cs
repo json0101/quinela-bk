@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Quinela.Infrastructure.Persistence;
@@ -11,9 +12,11 @@ using Quinela.Infrastructure.Persistence;
 namespace Quinela.Infrastructure.Migrations
 {
     [DbContext(typeof(QuinelaContext))]
-    partial class QuinelaContextModelSnapshot : ModelSnapshot
+    [Migration("20260610012148_AddPartido")]
+    partial class AddPartido
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -2524,120 +2527,6 @@ namespace Quinela.Infrastructure.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Quinela.Domain.Entities.Prediccion", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnName("id");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<bool>("Active")
-                        .HasColumnType("boolean")
-                        .HasColumnName("active");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("created_at");
-
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasMaxLength(250)
-                        .HasColumnType("character varying(250)")
-                        .HasColumnName("created_by");
-
-                    b.Property<int>("PartidoId")
-                        .HasColumnType("integer")
-                        .HasColumnName("partido_id");
-
-                    b.Property<int?>("Team1Resultado")
-                        .HasColumnType("integer")
-                        .HasColumnName("team_1_resultado");
-
-                    b.Property<int?>("Team2Resultado")
-                        .HasColumnType("integer")
-                        .HasColumnName("team_2_resultado");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("updated_at");
-
-                    b.Property<string>("UpdatedBy")
-                        .HasMaxLength(250)
-                        .HasColumnType("character varying(250)")
-                        .HasColumnName("updated_by");
-
-                    b.Property<string>("Username")
-                        .IsRequired()
-                        .HasMaxLength(250)
-                        .HasColumnType("character varying(250)")
-                        .HasColumnName("username");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PartidoId", "Username")
-                        .IsUnique()
-                        .HasFilter("active = true");
-
-                    b.ToTable("predicciones", (string)null);
-                });
-
-            modelBuilder.Entity("Quinela.Domain.Entities.Ranking", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnName("id");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<bool>("Active")
-                        .HasColumnType("boolean")
-                        .HasColumnName("active");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("created_at");
-
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasMaxLength(250)
-                        .HasColumnType("character varying(250)")
-                        .HasColumnName("created_by");
-
-                    b.Property<int>("Pts")
-                        .HasColumnType("integer")
-                        .HasColumnName("pts");
-
-                    b.Property<int>("ResultadoAtinado")
-                        .HasColumnType("integer")
-                        .HasColumnName("resultado_atinado");
-
-                    b.Property<int>("ResultadoExacto")
-                        .HasColumnType("integer")
-                        .HasColumnName("resultado_exacto");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("updated_at");
-
-                    b.Property<string>("UpdatedBy")
-                        .HasMaxLength(250)
-                        .HasColumnType("character varying(250)")
-                        .HasColumnName("updated_by");
-
-                    b.Property<string>("Usuario")
-                        .IsRequired()
-                        .HasMaxLength(250)
-                        .HasColumnType("character varying(250)")
-                        .HasColumnName("usuario");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("ranking", (string)null);
-                });
-
             modelBuilder.Entity("Quinela.Domain.Entities.TipoPartido", b =>
                 {
                     b.Property<int>("Id")
@@ -2766,17 +2655,6 @@ namespace Quinela.Infrastructure.Migrations
                     b.Navigation("Grupo");
 
                     b.Navigation("TipoPartido");
-                });
-
-            modelBuilder.Entity("Quinela.Domain.Entities.Prediccion", b =>
-                {
-                    b.HasOne("Quinela.Domain.Entities.Partido", "Partido")
-                        .WithMany()
-                        .HasForeignKey("PartidoId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Partido");
                 });
 
             modelBuilder.Entity("Quinela.Domain.Entities.Equipo", b =>

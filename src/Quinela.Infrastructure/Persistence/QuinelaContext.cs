@@ -17,6 +17,9 @@ public class QuinelaContext : DbContext
     public DbSet<Grupo> Grupos => Set<Grupo>();
     public DbSet<GrupoEquipo> GruposEquipos => Set<GrupoEquipo>();
     public DbSet<TipoPartido> TiposPartido => Set<TipoPartido>();
+    public DbSet<Partido> Partidos => Set<Partido>();
+    public DbSet<Prediccion> Predicciones => Set<Prediccion>();
+    public DbSet<Ranking> Rankings => Set<Ranking>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

@@ -17,6 +17,10 @@ namespace Quinela.Infrastructure.Persistence.Configurations
             builder.Property(x => x.PtsQuinelaResultadoExacto).HasColumnName("pts_quinela_resultado_exacto").IsRequired();
             builder.Property(x => x.PtsQuinelaResultadoAcertado).HasColumnName("pts_quinela_resultado_acertado").IsRequired();
             builder.HasIndex(x => x.Descripcion).IsUnique();
+
+            builder.HasData(
+                new TipoPartido { Id = 1, Descripcion = "Fase de grupos", PtsPartidoVictoria = 0, PtsPartidoEmpate = 0, PtsQuinelaResultadoExacto = 0, PtsQuinelaResultadoAcertado = 0, CreatedAt = Seed, CreatedBy = "seed", Active = true }
+            );
         }
     }
 }

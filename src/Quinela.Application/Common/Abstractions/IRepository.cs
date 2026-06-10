@@ -14,5 +14,6 @@ namespace Quinela.Application.Common.Abstractions
         void Update(T entity);
         void Delete(T entity);
         void Remove(T entity);
+        void Detach(T entity);
     }
 }

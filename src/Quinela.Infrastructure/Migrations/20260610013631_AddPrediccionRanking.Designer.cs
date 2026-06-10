@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Quinela.Infrastructure.Persistence;
@@ -11,9 +12,11 @@ using Quinela.Infrastructure.Persistence;
 namespace Quinela.Infrastructure.Migrations
 {
     [DbContext(typeof(QuinelaContext))]
-    partial class QuinelaContextModelSnapshot : ModelSnapshot
+    [Migration("20260610013631_AddPrediccionRanking")]
+    partial class AddPrediccionRanking
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -2551,11 +2554,11 @@ namespace Quinela.Infrastructure.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("partido_id");
 
-                    b.Property<int?>("Team1Resultado")
+                    b.Property<int>("Team1Resultado")
                         .HasColumnType("integer")
                         .HasColumnName("team_1_resultado");
 
-                    b.Property<int?>("Team2Resultado")
+                    b.Property<int>("Team2Resultado")
                         .HasColumnType("integer")
                         .HasColumnName("team_2_resultado");
 
@@ -2576,9 +2579,7 @@ namespace Quinela.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("PartidoId", "Username")
-                        .IsUnique()
-                        .HasFilter("active = true");
+                    b.HasIndex("PartidoId");
 
                     b.ToTable("predicciones", (string)null);
                 });

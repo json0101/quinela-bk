@@ -49,5 +49,11 @@ namespace Quinela.Infrastructure.Repositories
             ArgumentNullException.ThrowIfNull(entity);
             _entities.Remove(entity);
         }
+
+        public void Detach(T entity)
+        {
+            ArgumentNullException.ThrowIfNull(entity);
+            _context.Entry(entity).State = EntityState.Detached;
+        }
     }
 }
