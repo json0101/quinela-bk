@@ -1,10 +1,4 @@
-#!/bin/sh
-# Se ejecuta SOLO la primera vez (volumen de datos vacio).
-# Crea los 2 usuarios dedicados (menor privilegio) y las 2 bases.
-# El esquema y los datos los crea Quinela por migraciones EF al arrancar (APPLY_MIGRATIONS=true).
-#
-#   user_quinela  -> dueño de la base 'quinela'  (RW + DDL para migraciones)
-#   user_userapp  -> dueño de la base 'userapp'  (RW + DDL: Quinela administra sec.*)
+
 set -e
 
 psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" --dbname postgres \
