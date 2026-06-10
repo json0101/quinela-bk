@@ -28,6 +28,9 @@ builder.Services.AddDbContext<UserAppContext>(options =>
     options.UseNpgsql(userAppConnectionString, b => b.MigrationsAssembly("Quinela.Infrastructure")));
 
 // --- Integracion con UserApp (registro/consulta de usuarios) ---
+// El 3er arg (applicationId) fija ApplicationGlobal.ApplicationGlobalID, que GetMenu usa
+// para filtrar las screens. Debe ser 2: la app "Quinela" del seed (application_id = 2).
+// UserApp es la app 1 (la administra su propio frontend/API con global = 1).
 var autoMapperLicenseKey = builder.Configuration["AppSetting:AutoMapperLicence"];
 UserApp.Service.Main.ConfigureService(builder.Services, null, 2, autoMapperLicenseKey ?? "");
 

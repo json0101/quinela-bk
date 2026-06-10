@@ -73,5 +73,46 @@ services:
     depends_on:
       - quinela-api
 
+  # ---------------------------------------------------------------
+  # UserApp API (.NET) - imagen publicada en GHCR. Da el backend de la
+  # interfaz de administracion de usuarios. Comparte la base 'userapp'
+  # y el MISMO JWT que Quinela (tokens interoperables).
+  # NO migra: el esquema sec.* lo administra quinela-api.
+  # ---------------------------------------------------------------
+  userapp-api:
+    image: ghcr.io/json0101/userapp-api:${USERAPP_IMAGE_TAG:-latest}
+    pull_policy: always
+    restart: unless-stopped
+    environment:
+      ASPNETCORE_ENVIRONMENT: ${ASPNET_ENV:-Development}
+      ASPNETCORE_URLS: http://+:8080
+      ConnectionStrings__UserApp: "Host=postgres;Port=5432;Database=userapp;Username=user_userapp;Password=${USERAPP_DB_PASSWORD}"
+      Database__Provider: "Postgres"
+      AppSetting__ApplicationId: ${USERAPP_APPLICATION_ID:-1}
+      AppSetting__JwtSecret: ${QUINELA_JWT_SECRET}
+      AppSetting__JwtIssuer: "QuinelaApi"
+      AppSetting__JwtAudience: "QuinelaApi"
+      AppSetting__AutoMapperLicence: ${USERAPP_AUTOMAPPER_LICENSE}
+    ports:
+      - "127.0.0.1:5061:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  # ---------------------------------------------------------------
+  # UserApp Frontend (Next.js) - interfaz de gestion de usuarios.
+  # Llama a userapp-api por la red interna de Docker.
+  # ---------------------------------------------------------------
+  userapp-ft:
+    image: ghcr.io/json0101/userapp-ft:${USERAPP_IMAGE_TAG:-latest}
+    pull_policy: always
+    restart: unless-stopped
+    environment:
+      USERAPP_URLBACKEND: "http://userapp-api:8080"
+    ports:
+      - "127.0.0.1:3001:3000"
+    depends_on:
+      - userapp-api
+
 volumes:
   pgdata:
