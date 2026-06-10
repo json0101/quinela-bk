@@ -74,6 +74,9 @@ builder.Services.AddScoped<ICurrentUser, CurrentUserService>();
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
+// Servicio de recálculo de grupos + ranking (se dispara al cambiar el estado de un partido).
+builder.Services.AddScoped<IRankingService, Quinela.Application.Features.Ranking.RankingService>();
+
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

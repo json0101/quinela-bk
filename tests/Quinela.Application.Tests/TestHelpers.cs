@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 using Moq;
 using Quinela.Application.Common.Abstractions;
 using Quinela.Infrastructure.Persistence;
@@ -10,12 +11,14 @@ namespace Quinela.Application.Tests;
 /// <summary>Utilidades compartidas para construir un contexto en memoria y dobles de prueba.</summary>
 internal static class TestHelpers
 {
-    // Cada test usa una base en memoria aislada (nombre único) para no contaminarse entre sí.
+    // Root compartido (un solo service provider interno) + nombre único por test:
+    // evita el warning de "muchos service providers" y aísla los datos entre tests.
+    private static readonly InMemoryDatabaseRoot Root = new();
+
     public static QuinelaContext NewContext(string dbName)
     {
         var options = new DbContextOptionsBuilder<QuinelaContext>()
-            .UseInMemoryDatabase(dbName)
-            .EnableSensitiveDataLogging()
+            .UseInMemoryDatabase($"{dbName}_{Guid.NewGuid():N}", Root)
             .Options;
 
         var ctx = new QuinelaContext(options);

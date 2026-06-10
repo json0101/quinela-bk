@@ -20,5 +20,19 @@ namespace Quinela.Api.Controllers
         public async Task<IActionResult> GetCalendario(
             [FromQuery] DateTime? desde, [FromQuery] DateTime? hasta, CancellationToken ct)
             => (await _sender.Send(new GetPartidosCalendarioQuery(desde, hasta), ct)).ToActionResult();
+
+        // Cambia el estado del partido (P->E->T) y dispara el recálculo de grupos y ranking.
+        [HttpPut("{id:int}/estado")]
+        public async Task<IActionResult> CambiarEstado(int id, [FromBody] CambiarEstadoPartidoDto dto, CancellationToken ct)
+            => (await _sender.Send(
+                new CambiarEstadoPartidoCommand(id, dto.Estado, dto.ResultadoLocal, dto.ResultadoVisitante), ct))
+                .ToActionResult();
+    }
+
+    public class CambiarEstadoPartidoDto
+    {
+        public char Estado { get; set; }
+        public int? ResultadoLocal { get; set; }
+        public int? ResultadoVisitante { get; set; }
     }
 }
