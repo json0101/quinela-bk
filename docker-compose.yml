@@ -114,5 +114,29 @@ services:
     depends_on:
       - userapp-api
 
+  # ---------------------------------------------------------------
+  # Reverse proxy + HTTPS automatico (Caddy) - SOLO en el servidor.
+  # No arranca en local. En el server:  docker compose --profile server up -d
+  # Saca y renueva el certificado Let's Encrypt solo para QUINIELA_DOMAIN
+  # (necesita el dominio apuntando a la IP publica y los puertos 80/443 abiertos).
+  # ---------------------------------------------------------------
+  caddy:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    profiles: ["server"]
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      QUINIELA_DOMAIN: ${QUINIELA_DOMAIN}
+    volumes:
+      - ./caddy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy-data:/data       # certificados: NO borrar (evita rate-limit de Let's Encrypt)
+      - caddy-config:/config
+    depends_on:
+      - quinela-ft
+
 volumes:
   pgdata:
+  caddy-data:
+  caddy-config:
