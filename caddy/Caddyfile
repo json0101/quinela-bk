@@ -23,3 +23,8 @@
 	import secure_headers
 	reverse_proxy quinela-ft:3000
 }
+
+{$USERAPP_DOMAIN} {
+	import secure_headers
+	reverse_proxy userapp-ft:3000
+}
