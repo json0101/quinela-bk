@@ -1,0 +1,25 @@
+# Reverse proxy con HTTPS automatico (Let's Encrypt).
+# El dominio viene del .env (QUINIELA_DOMAIN). Caddy escucha 80 (redirige a 443)
+# y 443, saca y renueva el certificado solo, y reenvia por HTTP interno al
+# frontend de Quinela (red de Docker, por nombre de servicio).
+
+# Snippet con headers de seguridad.
+(secure_headers) {
+	header {
+		# Fuerza HTTPS en futuros accesos (1 año + subdominios + preload-ready).
+		Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+		# Bloquea sniffing de MIME.
+		X-Content-Type-Options "nosniff"
+		# Evita que la app se cargue dentro de un iframe (clickjacking).
+		X-Frame-Options "DENY"
+		# Limita la informacion del Referer al ir a otros dominios.
+		Referrer-Policy "strict-origin-when-cross-origin"
+		# No exponer la version de Caddy.
+		-Server
+	}
+}
+
+{$QUINIELA_DOMAIN} {
+	import secure_headers
+	reverse_proxy quinela-ft:3000
+}
