@@ -6,8 +6,8 @@ using Quinela.Domain.Entities;
 
 namespace Quinela.Application.Features.Partidos
 {
-    // Filtro opcional por rango de fecha del partido (inclusivo en ambos extremos por día).
-    public sealed record GetPartidosCalendarioQuery(DateTime? Desde, DateTime? Hasta)
+    // Calendario de una quiniela (partidos de su torneo) + filtro opcional por rango de fecha.
+    public sealed record GetPartidosCalendarioQuery(int QuinielaId, DateTime? Desde, DateTime? Hasta)
         : IRequest<Result<List<PartidoCalendarioDto>>>;
 
     internal sealed class GetPartidosCalendarioHandler
@@ -15,14 +15,21 @@ namespace Quinela.Application.Features.Partidos
     {
         private readonly IRepository<Partido> _partidos;
         private readonly IRepository<Prediccion> _predicciones;
+        private readonly IRepository<Quiniela> _quinielas;
         private readonly ICurrentUser _currentUser;
 
         public GetPartidosCalendarioHandler(
-            IRepository<Partido> partidos, IRepository<Prediccion> predicciones, ICurrentUser currentUser)
-        { _partidos = partidos; _predicciones = predicciones; _currentUser = currentUser; }
+            IRepository<Partido> partidos, IRepository<Prediccion> predicciones,
+            IRepository<Quiniela> quinielas, ICurrentUser currentUser)
+        { _partidos = partidos; _predicciones = predicciones; _quinielas = quinielas; _currentUser = currentUser; }
 
         public async Task<Result<List<PartidoCalendarioDto>>> Handle(GetPartidosCalendarioQuery request, CancellationToken ct)
         {
+            // La quiniela determina el torneo cuyos partidos se muestran.
+            var torneoId = await _quinielas.GetDbSet().AsNoTracking()
+                .Where(q => q.Id == request.QuinielaId).Select(q => (int?)q.TorneoId).FirstOrDefaultAsync(ct);
+            if (torneoId is null) return Result.Success(new List<PartidoCalendarioDto>());
+
             // Normaliza el rango a límites UTC por día (la columna es timestamptz).
             DateTime? desde = request.Desde.HasValue
                 ? DateTime.SpecifyKind(request.Desde.Value.Date, DateTimeKind.Utc) : null;
@@ -30,7 +37,7 @@ namespace Quinela.Application.Features.Partidos
                 ? DateTime.SpecifyKind(request.Hasta.Value.Date.AddDays(1), DateTimeKind.Utc) : null;
 
             var rows = await _partidos.GetDbSet().AsNoTracking()
-                .Where(p => p.Active)
+                .Where(p => p.Active && p.TorneoId == torneoId.Value)
                 .Where(p => !desde.HasValue || p.FechaPartido >= desde.Value)
                 .Where(p => !hasta.HasValue || p.FechaPartido < hasta.Value)
                 .OrderBy(p => p.FechaPartido).ThenBy(p => p.Id)
@@ -52,10 +59,10 @@ namespace Quinela.Application.Features.Partidos
                     PtsAcertado = p.TipoPartido.PtsQuinelaResultadoAcertado
                 }).ToListAsync(ct);
 
-            // Predicciones activas del usuario autenticado, indexadas por partido.
+            // Predicciones activas del usuario autenticado en esta quiniela, indexadas por partido.
             var username = _currentUser.UserName;
             var preds = await _predicciones.GetDbSet().AsNoTracking()
-                .Where(x => x.Active && x.Username == username)
+                .Where(x => x.Active && x.Username == username && x.QuinielaId == request.QuinielaId)
                 .ToListAsync(ct);
             var predByPartido = preds
                 .GroupBy(x => x.PartidoId)

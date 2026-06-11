@@ -7,6 +7,9 @@ namespace Quinela.Domain.Entities
     {
         public string Nombre { get; set; } = null!;
 
+        public int TorneoId { get; set; }
+        public Torneo Torneo { get; set; } = null!;
+
         // Equipos del grupo (con su posición y estadísticas) vía tabla intermedia.
         public ICollection<GrupoEquipo> GrupoEquipos { get; set; } = new List<GrupoEquipo>();
     }

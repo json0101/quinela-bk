@@ -24,11 +24,11 @@ namespace Quinela.Api.Controllers.Master
 
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] EquipoCreateDto dto, CancellationToken ct)
-            => (await _sender.Send(new CreateEquipoCommand(dto.Nombre, dto.Confederacion, dto.Anfitrion, dto.UrlBandera, dto.Active), ct)).ToActionResult();
+            => (await _sender.Send(new CreateEquipoCommand(dto.Nombre, dto.Confederacion, dto.Anfitrion, dto.UrlBandera, dto.TorneoId, dto.Active), ct)).ToActionResult();
 
         [HttpPut("{id:int}")]
         public async Task<IActionResult> Update(int id, [FromBody] EquipoUpdateDto dto, CancellationToken ct)
-            => (await _sender.Send(new UpdateEquipoCommand(id, dto.Nombre, dto.Confederacion, dto.Anfitrion, dto.UrlBandera, dto.Active), ct)).ToActionResult();
+            => (await _sender.Send(new UpdateEquipoCommand(id, dto.Nombre, dto.Confederacion, dto.Anfitrion, dto.UrlBandera, dto.TorneoId, dto.Active), ct)).ToActionResult();
 
         [HttpDelete("{id:int}")]
         public async Task<IActionResult> Delete(int id, CancellationToken ct)

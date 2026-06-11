@@ -11,6 +11,9 @@ namespace Quinela.Domain.Entities
     {
         public DateTime FechaPartido { get; set; }
 
+        public int TorneoId { get; set; }
+        public Torneo Torneo { get; set; } = null!;
+
         public int GrupoId { get; set; }
         public Grupo Grupo { get; set; } = null!;
 

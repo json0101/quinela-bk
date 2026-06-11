@@ -6,8 +6,11 @@ namespace Quinela.Application.Tests;
 
 public class RankingHandlersTests
 {
+    private const int Qid = 1;
+
     private static RankingEntity Seed(string usuario, int pts, int exacto, int atinado, bool active) => new()
     {
+        QuinielaId = Qid,
         Usuario = usuario,
         Pts = pts,
         ResultadoExacto = exacto,
@@ -29,7 +32,7 @@ public class RankingHandlersTests
         ctx.SaveChanges();
 
         var handler = new GetAllRankingHandler(new Repository<RankingEntity>(ctx));
-        var result = await handler.Handle(new GetAllRankingQuery(), CancellationToken.None);
+        var result = await handler.Handle(new GetAllRankingQuery(Qid), CancellationToken.None);
 
         Assert.True(result.IsSuccess);
         // El inactivo (dario) se excluye; orden: mayor pts, desempate por exacto.

@@ -13,7 +13,13 @@ public class CambiarEstadoPartidoTests
     private sealed class FakeRankingService : IRankingService
     {
         public int Veces { get; private set; }
-        public Task RecalcularAsync(CancellationToken ct = default) { Veces++; return Task.CompletedTask; }
+        public int UltimoTorneoId { get; private set; }
+        public Task RecalcularAsync(int torneoId, CancellationToken ct = default)
+        {
+            Veces++;
+            UltimoTorneoId = torneoId;
+            return Task.CompletedTask;
+        }
     }
 
     private static (CambiarEstadoPartidoHandler handler, FakeRankingService ranking) NewHandler(QuinelaContext ctx)

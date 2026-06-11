@@ -18,8 +18,8 @@ namespace Quinela.Api.Controllers
 
         [HttpGet]
         public async Task<IActionResult> GetCalendario(
-            [FromQuery] DateTime? desde, [FromQuery] DateTime? hasta, CancellationToken ct)
-            => (await _sender.Send(new GetPartidosCalendarioQuery(desde, hasta), ct)).ToActionResult();
+            [FromQuery] int quinielaId, [FromQuery] DateTime? desde, [FromQuery] DateTime? hasta, CancellationToken ct)
+            => (await _sender.Send(new GetPartidosCalendarioQuery(quinielaId, desde, hasta), ct)).ToActionResult();
 
         // Cambia el estado del partido (P->E->T) y dispara el recálculo de grupos y ranking.
         [HttpPut("{id:int}/estado")]

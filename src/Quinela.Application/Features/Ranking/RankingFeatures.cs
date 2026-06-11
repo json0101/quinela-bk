@@ -8,8 +8,8 @@ namespace Quinela.Application.Features.Ranking
 {
     // El ranking se calcula por lógica; aquí solo se consulta (no se edita por endpoint).
 
-    // ----- GetAll -----
-    public sealed record GetAllRankingQuery() : IRequest<Result<List<RankingDto>>>;
+    // ----- GetAll por quiniela -----
+    public sealed record GetAllRankingQuery(int QuinielaId) : IRequest<Result<List<RankingDto>>>;
 
     internal sealed class GetAllRankingHandler : IRequestHandler<GetAllRankingQuery, Result<List<RankingDto>>>
     {
@@ -19,7 +19,7 @@ namespace Quinela.Application.Features.Ranking
         public async Task<Result<List<RankingDto>>> Handle(GetAllRankingQuery request, CancellationToken ct)
         {
             var rows = await _repo.GetDbSet().AsNoTracking()
-                .Where(x => x.Active)
+                .Where(x => x.Active && x.QuinielaId == request.QuinielaId)
                 .OrderByDescending(x => x.Pts)
                 .ThenByDescending(x => x.ResultadoExacto)
                 .ThenByDescending(x => x.ResultadoAtinado)

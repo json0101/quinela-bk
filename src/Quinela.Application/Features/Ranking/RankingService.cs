@@ -6,8 +6,9 @@ using RankingEntity = Quinela.Domain.Entities.Ranking;
 namespace Quinela.Application.Features.Ranking
 {
     /// <summary>
-    /// Recalcula posiciones de grupos y ranking de la quiniela según la parametrización
-    /// de cada tipo de partido. Se recalcula completo (idempotente).
+    /// Recalcula, para un torneo: la tabla de posiciones de sus grupos y el ranking de cada
+    /// una de sus quinielas, según la parametrización de cada tipo de partido.
+    /// Es idempotente (parte de cero y vuelve a sumar).
     /// </summary>
     public sealed class RankingService : IRankingService
     {
@@ -15,6 +16,7 @@ namespace Quinela.Application.Features.Ranking
         private readonly IRepository<Prediccion> _predicciones;
         private readonly IRepository<GrupoEquipo> _gruposEquipos;
         private readonly IRepository<RankingEntity> _ranking;
+        private readonly IRepository<Quiniela> _quinielas;
         private readonly IUnitOfWork _uow;
 
         public RankingService(
@@ -22,22 +24,24 @@ namespace Quinela.Application.Features.Ranking
             IRepository<Prediccion> predicciones,
             IRepository<GrupoEquipo> gruposEquipos,
             IRepository<RankingEntity> ranking,
+            IRepository<Quiniela> quinielas,
             IUnitOfWork uow)
         {
             _partidos = partidos;
             _predicciones = predicciones;
             _gruposEquipos = gruposEquipos;
             _ranking = ranking;
+            _quinielas = quinielas;
             _uow = uow;
         }
 
-        public async Task RecalcularAsync(CancellationToken ct = default)
+        public async Task RecalcularAsync(int torneoId, CancellationToken ct = default)
         {
             var ahora = DateTime.UtcNow;
 
-            // Partidos jugados (en curso o terminados) con marcador, con la parametrización del tipo.
+            // Partidos jugados (en curso o terminados) con marcador, del torneo.
             var jugados = await _partidos.GetDbSet().AsNoTracking()
-                .Where(p => p.Active
+                .Where(p => p.Active && p.TorneoId == torneoId
                     && (p.Estado == 'E' || p.Estado == 'T')
                     && p.ResultadoLocalId != null && p.ResultadoVisitanteId != null)
                 .Select(p => new PartidoJugado
@@ -55,16 +59,15 @@ namespace Quinela.Application.Features.Ranking
                 })
                 .ToListAsync(ct);
 
-            await RecalcularGruposAsync(jugados, ahora, ct);
-            await RecalcularQuinielaAsync(jugados, ahora, ct);
+            await RecalcularGruposAsync(torneoId, jugados, ahora, ct);
+            await RecalcularRankingsAsync(torneoId, jugados, ahora, ct);
 
             await _uow.SaveChangesAsync(ct);
         }
 
-        // --- Tabla de posiciones de los grupos (puntos del partido: victoria/empate) ---
-        private async Task RecalcularGruposAsync(List<PartidoJugado> jugados, DateTime ahora, CancellationToken ct)
+        // --- Tabla de posiciones de los grupos del torneo ---
+        private async Task RecalcularGruposAsync(int torneoId, List<PartidoJugado> jugados, DateTime ahora, CancellationToken ct)
         {
-            // Acumulado por (grupo, equipo): goles a favor, en contra y puntos.
             var acc = new Dictionary<(int grupo, int equipo), (int gf, int gc, int pts)>();
             void Sumar(int grupo, int equipo, int gf, int gc, int pts)
             {
@@ -81,7 +84,7 @@ namespace Quinela.Application.Features.Ranking
                 Sumar(j.GrupoId, j.EquipoVisitanteId, j.ResultadoVisitante, j.ResultadoLocal, ptsVisitante);
             }
 
-            var filas = await _gruposEquipos.GetDbSet().ToListAsync(ct);
+            var filas = await _gruposEquipos.GetDbSet().Where(x => x.TorneoId == torneoId).ToListAsync(ct);
             foreach (var ge in filas)
             {
                 var a = acc.GetValueOrDefault((ge.GrupoId, ge.EquipoId));
@@ -93,7 +96,6 @@ namespace Quinela.Application.Features.Ranking
                 ge.UpdatedBy = "ranking";
             }
 
-            // Posición dentro de cada grupo: más puntos, luego diferencia, luego goles a favor.
             foreach (var grupo in filas.GroupBy(x => x.GrupoId))
             {
                 var ordenado = grupo
@@ -106,38 +108,45 @@ namespace Quinela.Application.Features.Ranking
             }
         }
 
-        // --- Ranking de la quiniela (puntos exacto/acertado por predicción) ---
-        private async Task RecalcularQuinielaAsync(List<PartidoJugado> jugados, DateTime ahora, CancellationToken ct)
+        // --- Ranking de cada quiniela del torneo ---
+        private async Task RecalcularRankingsAsync(int torneoId, List<PartidoJugado> jugados, DateTime ahora, CancellationToken ct)
         {
             var jugadosPorId = jugados.ToDictionary(x => x.Id);
 
+            var quinielaIds = await _quinielas.GetDbSet().AsNoTracking()
+                .Where(q => q.TorneoId == torneoId)
+                .Select(q => q.Id)
+                .ToListAsync(ct);
+            if (quinielaIds.Count == 0) return;
+
             var preds = await _predicciones.GetDbSet().AsNoTracking()
-                .Where(x => x.Active && x.Team1Resultado != null && x.Team2Resultado != null)
-                .Select(x => new { x.Username, x.PartidoId, T1 = x.Team1Resultado!.Value, T2 = x.Team2Resultado!.Value })
+                .Where(x => x.Active && quinielaIds.Contains(x.QuinielaId)
+                    && x.Team1Resultado != null && x.Team2Resultado != null)
+                .Select(x => new { x.QuinielaId, x.Username, x.PartidoId, T1 = x.Team1Resultado!.Value, T2 = x.Team2Resultado!.Value })
                 .ToListAsync(ct);
 
-            var agg = new Dictionary<string, (int pts, int exacto, int atinado)>();
+            // Acumulado por (quiniela, usuario).
+            var agg = new Dictionary<(int quiniela, string usuario), (int pts, int exacto, int atinado)>();
             foreach (var pr in preds)
             {
                 if (!jugadosPorId.TryGetValue(pr.PartidoId, out var j)) continue;
 
                 var exacto = pr.T1 == j.ResultadoLocal && pr.T2 == j.ResultadoVisitante;
                 var acertado = Math.Sign(pr.T1 - pr.T2) == Math.Sign(j.ResultadoLocal - j.ResultadoVisitante);
-
                 var pts = exacto ? j.PtsExacto : acertado ? j.PtsAcertado : 0;
-                var cur = agg.GetValueOrDefault(pr.Username);
-                agg[pr.Username] = (
-                    cur.pts + pts,
-                    cur.exacto + (exacto ? 1 : 0),
-                    cur.atinado + (!exacto && acertado ? 1 : 0));
+
+                var key = (pr.QuinielaId, pr.Username);
+                var cur = agg.GetValueOrDefault(key);
+                agg[key] = (cur.pts + pts, cur.exacto + (exacto ? 1 : 0), cur.atinado + (!exacto && acertado ? 1 : 0));
             }
 
-            var filas = await _ranking.GetDbSet().ToListAsync(ct);
-            var porUsuario = filas.ToDictionary(r => r.Usuario);
+            var filas = await _ranking.GetDbSet()
+                .Where(r => quinielaIds.Contains(r.QuinielaId)).ToListAsync(ct);
+            var porClave = filas.ToDictionary(r => (r.QuinielaId, r.Usuario));
 
             foreach (var kv in agg)
             {
-                if (porUsuario.TryGetValue(kv.Key, out var r))
+                if (porClave.TryGetValue(kv.Key, out var r))
                 {
                     r.Pts = kv.Value.pts;
                     r.ResultadoExacto = kv.Value.exacto;
@@ -149,7 +158,8 @@ namespace Quinela.Application.Features.Ranking
                 {
                     _ranking.Insert(new RankingEntity
                     {
-                        Usuario = kv.Key,
+                        QuinielaId = kv.Key.quiniela,
+                        Usuario = kv.Key.usuario,
                         Pts = kv.Value.pts,
                         ResultadoExacto = kv.Value.exacto,
                         ResultadoAtinado = kv.Value.atinado,
@@ -160,8 +170,8 @@ namespace Quinela.Application.Features.Ranking
                 }
             }
 
-            // Usuarios con fila de ranking pero sin predicciones contadas -> quedan en cero.
-            foreach (var r in filas.Where(r => !agg.ContainsKey(r.Usuario)))
+            // Filas existentes sin predicciones contadas -> quedan en cero.
+            foreach (var r in filas.Where(r => !agg.ContainsKey((r.QuinielaId, r.Usuario))))
             {
                 r.Pts = 0;
                 r.ResultadoExacto = 0;

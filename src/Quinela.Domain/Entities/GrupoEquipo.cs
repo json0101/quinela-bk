@@ -9,6 +9,10 @@ namespace Quinela.Domain.Entities
     /// </summary>
     public class GrupoEquipo : BaseEntity
     {
+        // Redundante pero explícito: el grupo y el equipo deben pertenecer a este torneo.
+        public int TorneoId { get; set; }
+        public Torneo Torneo { get; set; } = null!;
+
         public int GrupoId { get; set; }
         public Grupo Grupo { get; set; } = null!;
 

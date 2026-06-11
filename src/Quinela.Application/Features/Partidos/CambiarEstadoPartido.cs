@@ -71,8 +71,8 @@ namespace Quinela.Application.Features.Partidos
 
             await _uow.SaveChangesAsync(ct);
 
-            // Recálculo separado (grupos + ranking) según la parametrización del tipo de partido.
-            await _ranking.RecalcularAsync(ct);
+            // Recálculo separado (posiciones del torneo + ranking de sus quinielas).
+            await _ranking.RecalcularAsync(partido.TorneoId, ct);
 
             return Result.Success();
         }

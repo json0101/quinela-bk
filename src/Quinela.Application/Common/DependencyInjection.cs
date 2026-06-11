@@ -16,6 +16,12 @@ namespace Quinela.Application.Common
             services.AddValidatorsFromAssembly(assembly, includeInternalTypes: true);
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
 
+            // Validador de coherencia de relaciones del partido (clase normal, no se auto-registra).
+            services.AddScoped<Features.Master.Partidos.PartidoRelacionesValidator>();
+
+            // Lector de usuarios de UserApp (query plano sobre UserAppContext).
+            services.AddScoped<Features.Master.UsuariosQuinielas.UsuariosAppReader>();
+
             return services;
         }
     }

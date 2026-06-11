@@ -8,6 +8,10 @@ namespace Quinela.Domain.Entities
     /// </summary>
     public class Ranking : BaseEntity
     {
+        // El ranking es por quiniela.
+        public int QuinielaId { get; set; }
+        public Quiniela Quiniela { get; set; } = null!;
+
         // Username del usuario (texto, sin FK; proviene de UserApp).
         public string Usuario { get; set; } = null!;
 

@@ -8,6 +8,7 @@ namespace Quinela.Application.Common.Abstractions
     /// </summary>
     public interface IRankingService
     {
-        Task RecalcularAsync(CancellationToken ct = default);
+        // Recalcula las posiciones de los grupos del torneo y el ranking de TODAS sus quinielas.
+        Task RecalcularAsync(int torneoId, CancellationToken ct = default);
     }
 }

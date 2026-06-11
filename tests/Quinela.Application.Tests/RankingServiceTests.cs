@@ -7,9 +7,13 @@ namespace Quinela.Application.Tests;
 
 public class RankingServiceTests
 {
+    private const int Qid = 1;   // quiniela sembrada del torneo 1
+    private const int TorneoId = 1;
+
     private static Quinela.Application.Features.Ranking.RankingService NewService(QuinelaContext ctx) =>
         new(new Repository<Partido>(ctx), new Repository<Prediccion>(ctx),
-            new Repository<GrupoEquipo>(ctx), new Repository<Ranking>(ctx), new UnitOfWork(ctx));
+            new Repository<GrupoEquipo>(ctx), new Repository<Ranking>(ctx),
+            new Repository<Quiniela>(ctx), new UnitOfWork(ctx));
 
     // Deja el tipo de partido con puntajes reales y el partido 1 terminado 2-1.
     private static async Task PrepararPartido1Terminado(QuinelaContext ctx)
@@ -29,6 +33,7 @@ public class RankingServiceTests
 
     private static Prediccion Pred(string user, int t1, int t2) => new()
     {
+        QuinielaId = Qid,
         PartidoId = 1,
         Team1Resultado = t1,
         Team2Resultado = t2,
@@ -49,7 +54,7 @@ public class RankingServiceTests
             Pred("caro", 0, 1)); // falló (visitante) -> 0 pts
         await ctx.SaveChangesAsync();
 
-        await NewService(ctx).RecalcularAsync();
+        await NewService(ctx).RecalcularAsync(TorneoId);
 
         var ana = await ctx.Rankings.AsNoTracking().FirstAsync(r => r.Usuario == "ana");
         Assert.Equal(5, ana.Pts);
@@ -73,7 +78,7 @@ public class RankingServiceTests
         using var ctx = TestHelpers.NewContext(nameof(Recalcular_ActualizaTablaDeGrupos));
         await PrepararPartido1Terminado(ctx);
 
-        await NewService(ctx).RecalcularAsync();
+        await NewService(ctx).RecalcularAsync(TorneoId);
 
         var ganador = await ctx.GruposEquipos.AsNoTracking().FirstAsync(x => x.GrupoId == 1 && x.EquipoId == 1);
         Assert.Equal(3, ganador.Pts);
@@ -99,8 +104,8 @@ public class RankingServiceTests
         ctx.Predicciones.Add(Pred("ana", 2, 1));
         await ctx.SaveChangesAsync();
 
-        await NewService(ctx).RecalcularAsync();
-        await NewService(ctx).RecalcularAsync(); // segunda corrida no debe duplicar
+        await NewService(ctx).RecalcularAsync(TorneoId);
+        await NewService(ctx).RecalcularAsync(TorneoId); // segunda corrida no debe duplicar
 
         var ana = await ctx.Rankings.AsNoTracking().FirstAsync(r => r.Usuario == "ana");
         Assert.Equal(5, ana.Pts);
@@ -119,12 +124,12 @@ public class RankingServiceTests
         ctx.Predicciones.Add(Pred("ana", 2, 1)); // completa
         ctx.Predicciones.Add(new Prediccion
         {
-            PartidoId = 1, Team1Resultado = 2, Team2Resultado = null, // incompleta -> no cuenta
+            QuinielaId = Qid, PartidoId = 1, Team1Resultado = 2, Team2Resultado = null, // incompleta -> no cuenta
             Username = "beto", Active = true, CreatedAt = DateTime.UtcNow, CreatedBy = "test",
         });
         await ctx.SaveChangesAsync();
 
-        await NewService(ctx).RecalcularAsync();
+        await NewService(ctx).RecalcularAsync(TorneoId);
 
         Assert.True(await ctx.Rankings.AnyAsync(r => r.Usuario == "ana"));
         Assert.False(await ctx.Rankings.AnyAsync(r => r.Usuario == "beto"));

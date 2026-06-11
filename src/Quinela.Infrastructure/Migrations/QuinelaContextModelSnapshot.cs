@@ -61,6 +61,10 @@ namespace Quinela.Infrastructure.Migrations
                         .HasColumnType("character varying(120)")
                         .HasColumnName("nombre");
 
+                    b.Property<int>("TorneoId")
+                        .HasColumnType("integer")
+                        .HasColumnName("torneo_id");
+
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("updated_at");
@@ -77,7 +81,7 @@ namespace Quinela.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Nombre")
+                    b.HasIndex("TorneoId", "Nombre")
                         .IsUnique();
 
                     b.ToTable("equipos", (string)null);
@@ -92,6 +96,7 @@ namespace Quinela.Infrastructure.Migrations
                             CreatedAt = new DateTime(2026, 6, 8, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "seed",
                             Nombre = "México",
+                            TorneoId = 1,
                             UrlBandera = "mx.svg"
                         },
                         new
@@ -103,6 +108,7 @@ namespace Quinela.Infrastructure.Migrations
                             CreatedAt = new DateTime(2026, 6, 8, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "seed",
                             Nombre = "Sudáfrica",
+                            TorneoId = 1,
                             UrlBandera = "za.svg"
                         },
                         new
@@ -114,6 +120,7 @@ namespace Quinela.Infrastructure.Migrations
                             CreatedAt = new DateTime(2026, 6, 8, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "seed",
                             Nombre = "Corea del Sur",
+                            TorneoId = 1,
                             UrlBandera = "kr.svg"
                         },
                         new
@@ -125,6 +132,7 @@ namespace Quinela.Infrastructure.Migrations
                             CreatedAt = new DateTime(2026, 6, 8, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "seed",
                             Nombre = "República Checa",
+                            TorneoId = 1,
                             UrlBandera = "cz.svg"
                         },
                         new
@@ -136,6 +144,7 @@ namespace Quinela.Infrastructure.Migrations
                             CreatedAt = new DateTime(2026, 6, 8, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "seed",
                             Nombre = "Canadá",
+                            TorneoId = 1,
                             UrlBandera = "ca.svg"
                         },
                         new
@@ -147,6 +156,7 @@ namespace Quinela.Infrastructure.Migrations
                             CreatedAt = new DateTime(2026, 6, 8, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "seed",
                             Nombre = "Bosnia y Herzegovina",
+                            TorneoId = 1,
                             UrlBandera = "ba.svg"
                         },
                         new
@@ -158,6 +168,7 @@ namespace Quinela.Infrastructure.Migrations
                             CreatedAt = new DateTime(2026, 6, 8, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "seed",
                             Nombre = "Qatar",
+                            TorneoId = 1,
                             UrlBandera = "qa.svg"
                         },
                         new
@@ -169,6 +180,7 @@ namespace Quinela.Infrastructure.Migrations
                             CreatedAt = new DateTime(2026, 6, 8, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "seed",
                             Nombre = "Suiza",
+                            TorneoId = 1,
                             UrlBandera = "ch.svg"
                         },
                         new
@@ -180,6 +192,7 @@ namespace Quinela.Infrastructure.Migrations
                             CreatedAt = new DateTime(2026, 6, 8, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "seed",
                             Nombre = "Brasil",
+                            TorneoId = 1,
                             UrlBandera = "br.svg"
                         },
                         new
@@ -191,6 +204,7 @@ namespace Quinela.Infrastructure.Migrations
                             CreatedAt = new DateTime(2026, 6, 8, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "seed",
                             Nombre = "Marruecos",
+                            TorneoId = 1,
                             UrlBandera = "ma.svg"
                         },
                         new
@@ -202,6 +216,7 @@ namespace Quinela.Infrastructure.Migrations
                             CreatedAt = new DateTime(2026, 6, 8, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "seed",
                             Nombre = "Haití",
+                            TorneoId = 1,
                             UrlBandera = "ht.svg"
                         },
                         new
@@ -213,6 +228,7 @@ namespace Quinela.Infrastructure.Migrations
                             CreatedAt = new DateTime(2026, 6, 8, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "seed",
                             Nombre = "Escocia",
+                            TorneoId = 1,
                             UrlBandera = "gb-sct.svg"
                         },
                         new
@@ -224,6 +240,7 @@ namespace Quinela.Infrastructure.Migrations
                             CreatedAt = new DateTime(2026, 6, 8, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "seed",
                             Nombre = "Estados Unidos",
+                            TorneoId = 1,
                             UrlBandera = "us.svg"
                         },
                         new
@@ -235,6 +252,7 @@ namespace Quinela.Infrastructure.Migrations
                             CreatedAt = new DateTime(2026, 6, 8, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "seed",
                             Nombre = "Paraguay",
+                            TorneoId = 1,
                             UrlBandera = "py.svg"
                         },
                         new
@@ -246,6 +264,7 @@ namespace Quinela.Infrastructure.Migrations
                             CreatedAt = new DateTime(2026, 6, 8, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "seed",
                             Nombre = "Australia",
+                            TorneoId = 1,
                             UrlBandera = "au.svg"
                         },
                         new
@@ -257,6 +276,7 @@ namespace Quinela.Infrastructure.Migrations
                             CreatedAt = new DateTime(2026, 6, 8, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "seed",
                             Nombre = "Turquía",
+                            TorneoId = 1,
                             UrlBandera = "tr.svg"
                         },
                         new
@@ -268,6 +288,7 @@ namespace Quinela.Infrastructure.Migrations
                             CreatedAt = new DateTime(2026, 6, 8, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "seed",
                             Nombre = "Alemania",
+                            TorneoId = 1,
                             UrlBandera = "de.svg"
                         },
                         new
@@ -279,6 +300,7 @@ namespace Quinela.Infrastructure.Migrations
                             CreatedAt = new DateTime(2026, 6, 8, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "seed",
                             Nombre = "Curazao",
+                            TorneoId = 1,
                             UrlBandera = "cw.svg"
                         },
                         new
@@ -290,6 +312,7 @@ namespace Quinela.Infrastructure.Migrations
                             CreatedAt = new DateTime(2026, 6, 8, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "seed",
                             Nombre = "Costa de Marfil",
+                            TorneoId = 1,
                             UrlBandera = "ci.svg"
                         },
                         new
@@ -301,6 +324,7 @@ namespace Quinela.Infrastructure.Migrations
                             CreatedAt = new DateTime(2026, 6, 8, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "seed",
                             Nombre = "Ecuador",
+                            TorneoId = 1,
                             UrlBandera = "ec.svg"
                         },
                         new
@@ -312,6 +336,7 @@ namespace Quinela.Infrastructure.Migrations
                             CreatedAt = new DateTime(2026, 6, 8, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "seed",
                             Nombre = "Países Bajos",
+                            TorneoId = 1,
                             UrlBandera = "nl.svg"
                         },
                         new
@@ -323,6 +348,7 @@ namespace Quinela.Infrastructure.Migrations
                             CreatedAt = new DateTime(2026, 6, 8, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "seed",
                             Nombre = "Japón",
+                            TorneoId = 1,
                             UrlBandera = "jp.svg"
                         },
                         new
@@ -334,6 +360,7 @@ namespace Quinela.Infrastructure.Migrations
                             CreatedAt = new DateTime(2026, 6, 8, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "seed",
                             Nombre = "Suecia",
+                            TorneoId = 1,
                             UrlBandera = "se.svg"
                         },
                         new
@@ -345,6 +372,7 @@ namespace Quinela.Infrastructure.Migrations
                             CreatedAt = new DateTime(2026, 6, 8, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "seed",
                             Nombre = "Túnez",
+                            TorneoId = 1,
                             UrlBandera = "tn.svg"
                         },
                         new
@@ -356,6 +384,7 @@ namespace Quinela.Infrastructure.Migrations
                             CreatedAt = new DateTime(2026, 6, 8, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "seed",
                             Nombre = "Bélgica",
+                            TorneoId = 1,
                             UrlBandera = "be.svg"
                         },
                         new
@@ -367,6 +396,7 @@ namespace Quinela.Infrastructure.Migrations
                             CreatedAt = new DateTime(2026, 6, 8, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "seed",
                             Nombre = "Egipto",
+                            TorneoId = 1,
                             UrlBandera = "eg.svg"
                         },
                         new
@@ -378,6 +408,7 @@ namespace Quinela.Infrastructure.Migrations
                             CreatedAt = new DateTime(2026, 6, 8, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "seed",
                             Nombre = "Irán",
+                            TorneoId = 1,
                             UrlBandera = "ir.svg"
                         },
                         new
@@ -389,6 +420,7 @@ namespace Quinela.Infrastructure.Migrations
                             CreatedAt = new DateTime(2026, 6, 8, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "seed",
                             Nombre = "Nueva Zelanda",
+                            TorneoId = 1,
                             UrlBandera = "nz.svg"
                         },
                         new
@@ -400,6 +432,7 @@ namespace Quinela.Infrastructure.Migrations
                             CreatedAt = new DateTime(2026, 6, 8, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "seed",
                             Nombre = "España",
+                            TorneoId = 1,
                             UrlBandera = "es.svg"
                         },
                         new
@@ -411,6 +444,7 @@ namespace Quinela.Infrastructure.Migrations
                             CreatedAt = new DateTime(2026, 6, 8, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "seed",
                             Nombre = "Cabo Verde",
+                            TorneoId = 1,
                             UrlBandera = "cv.svg"
                         },
                         new
@@ -422,6 +456,7 @@ namespace Quinela.Infrastructure.Migrations
                             CreatedAt = new DateTime(2026, 6, 8, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "seed",
                             Nombre = "Arabia Saudita",
+                            TorneoId = 1,
                             UrlBandera = "sa.svg"
                         },
                         new
@@ -433,6 +468,7 @@ namespace Quinela.Infrastructure.Migrations
                             CreatedAt = new DateTime(2026, 6, 8, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "seed",
                             Nombre = "Uruguay",
+                            TorneoId = 1,
                             UrlBandera = "uy.svg"
                         },
                         new
@@ -444,6 +480,7 @@ namespace Quinela.Infrastructure.Migrations
                             CreatedAt = new DateTime(2026, 6, 8, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "seed",
                             Nombre = "Francia",
+                            TorneoId = 1,
                             UrlBandera = "fr.svg"
                         },
                         new
@@ -455,6 +492,7 @@ namespace Quinela.Infrastructure.Migrations
                             CreatedAt = new DateTime(2026, 6, 8, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "seed",
                             Nombre = "Senegal",
+                            TorneoId = 1,
                             UrlBandera = "sn.svg"
                         },
                         new
@@ -466,6 +504,7 @@ namespace Quinela.Infrastructure.Migrations
                             CreatedAt = new DateTime(2026, 6, 8, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "seed",
                             Nombre = "Irak",
+                            TorneoId = 1,
                             UrlBandera = "iq.svg"
                         },
                         new
@@ -477,6 +516,7 @@ namespace Quinela.Infrastructure.Migrations
                             CreatedAt = new DateTime(2026, 6, 8, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "seed",
                             Nombre = "Noruega",
+                            TorneoId = 1,
                             UrlBandera = "no.svg"
                         },
                         new
@@ -488,6 +528,7 @@ namespace Quinela.Infrastructure.Migrations
                             CreatedAt = new DateTime(2026, 6, 8, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "seed",
                             Nombre = "Argentina",
+                            TorneoId = 1,
                             UrlBandera = "ar.svg"
                         },
                         new
@@ -499,6 +540,7 @@ namespace Quinela.Infrastructure.Migrations
                             CreatedAt = new DateTime(2026, 6, 8, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "seed",
                             Nombre = "Argelia",
+                            TorneoId = 1,
                             UrlBandera = "dz.svg"
                         },
                         new
@@ -510,6 +552,7 @@ namespace Quinela.Infrastructure.Migrations
                             CreatedAt = new DateTime(2026, 6, 8, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "seed",
                             Nombre = "Austria",
+                            TorneoId = 1,
                             UrlBandera = "at.svg"
                         },
                         new
@@ -521,6 +564,7 @@ namespace Quinela.Infrastructure.Migrations
                             CreatedAt = new DateTime(2026, 6, 8, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "seed",
                             Nombre = "Jordania",
+                            TorneoId = 1,
                             UrlBandera = "jo.svg"
                         },
                         new
@@ -532,6 +576,7 @@ namespace Quinela.Infrastructure.Migrations
                             CreatedAt = new DateTime(2026, 6, 8, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "seed",
                             Nombre = "Portugal",
+                            TorneoId = 1,
                             UrlBandera = "pt.svg"
                         },
                         new
@@ -543,6 +588,7 @@ namespace Quinela.Infrastructure.Migrations
                             CreatedAt = new DateTime(2026, 6, 8, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "seed",
                             Nombre = "RD Congo",
+                            TorneoId = 1,
                             UrlBandera = "cd.svg"
                         },
                         new
@@ -554,6 +600,7 @@ namespace Quinela.Infrastructure.Migrations
                             CreatedAt = new DateTime(2026, 6, 8, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "seed",
                             Nombre = "Uzbekistán",
+                            TorneoId = 1,
                             UrlBandera = "uz.svg"
                         },
                         new
@@ -565,6 +612,7 @@ namespace Quinela.Infrastructure.Migrations
                             CreatedAt = new DateTime(2026, 6, 8, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "seed",
                             Nombre = "Colombia",
+                            TorneoId = 1,
                             UrlBandera = "co.svg"
                         },
                         new
@@ -576,6 +624,7 @@ namespace Quinela.Infrastructure.Migrations
                             CreatedAt = new DateTime(2026, 6, 8, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "seed",
                             Nombre = "Inglaterra",
+                            TorneoId = 1,
                             UrlBandera = "gb-eng.svg"
                         },
                         new
@@ -587,6 +636,7 @@ namespace Quinela.Infrastructure.Migrations
                             CreatedAt = new DateTime(2026, 6, 8, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "seed",
                             Nombre = "Croacia",
+                            TorneoId = 1,
                             UrlBandera = "hr.svg"
                         },
                         new
@@ -598,6 +648,7 @@ namespace Quinela.Infrastructure.Migrations
                             CreatedAt = new DateTime(2026, 6, 8, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "seed",
                             Nombre = "Ghana",
+                            TorneoId = 1,
                             UrlBandera = "gh.svg"
                         },
                         new
@@ -609,6 +660,7 @@ namespace Quinela.Infrastructure.Migrations
                             CreatedAt = new DateTime(2026, 6, 8, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "seed",
                             Nombre = "Panamá",
+                            TorneoId = 1,
                             UrlBandera = "pa.svg"
                         });
                 });
@@ -642,6 +694,10 @@ namespace Quinela.Infrastructure.Migrations
                         .HasColumnType("character varying(5)")
                         .HasColumnName("nombre");
 
+                    b.Property<int>("TorneoId")
+                        .HasColumnType("integer")
+                        .HasColumnName("torneo_id");
+
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("updated_at");
@@ -653,7 +709,7 @@ namespace Quinela.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Nombre")
+                    b.HasIndex("TorneoId", "Nombre")
                         .IsUnique();
 
                     b.ToTable("grupos", (string)null);
@@ -665,7 +721,8 @@ namespace Quinela.Infrastructure.Migrations
                             Active = true,
                             CreatedAt = new DateTime(2026, 6, 8, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "seed",
-                            Nombre = "A"
+                            Nombre = "A",
+                            TorneoId = 1
                         },
                         new
                         {
@@ -673,7 +730,8 @@ namespace Quinela.Infrastructure.Migrations
                             Active = true,
                             CreatedAt = new DateTime(2026, 6, 8, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "seed",
-                            Nombre = "B"
+                            Nombre = "B",
+                            TorneoId = 1
                         },
                         new
                         {
@@ -681,7 +739,8 @@ namespace Quinela.Infrastructure.Migrations
                             Active = true,
                             CreatedAt = new DateTime(2026, 6, 8, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "seed",
-                            Nombre = "C"
+                            Nombre = "C",
+                            TorneoId = 1
                         },
                         new
                         {
@@ -689,7 +748,8 @@ namespace Quinela.Infrastructure.Migrations
                             Active = true,
                             CreatedAt = new DateTime(2026, 6, 8, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "seed",
-                            Nombre = "D"
+                            Nombre = "D",
+                            TorneoId = 1
                         },
                         new
                         {
@@ -697,7 +757,8 @@ namespace Quinela.Infrastructure.Migrations
                             Active = true,
                             CreatedAt = new DateTime(2026, 6, 8, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "seed",
-                            Nombre = "E"
+                            Nombre = "E",
+                            TorneoId = 1
                         },
                         new
                         {
@@ -705,7 +766,8 @@ namespace Quinela.Infrastructure.Migrations
                             Active = true,
                             CreatedAt = new DateTime(2026, 6, 8, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "seed",
-                            Nombre = "F"
+                            Nombre = "F",
+                            TorneoId = 1
                         },
                         new
                         {
@@ -713,7 +775,8 @@ namespace Quinela.Infrastructure.Migrations
                             Active = true,
                             CreatedAt = new DateTime(2026, 6, 8, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "seed",
-                            Nombre = "G"
+                            Nombre = "G",
+                            TorneoId = 1
                         },
                         new
                         {
@@ -721,7 +784,8 @@ namespace Quinela.Infrastructure.Migrations
                             Active = true,
                             CreatedAt = new DateTime(2026, 6, 8, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "seed",
-                            Nombre = "H"
+                            Nombre = "H",
+                            TorneoId = 1
                         },
                         new
                         {
@@ -729,7 +793,8 @@ namespace Quinela.Infrastructure.Migrations
                             Active = true,
                             CreatedAt = new DateTime(2026, 6, 8, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "seed",
-                            Nombre = "I"
+                            Nombre = "I",
+                            TorneoId = 1
                         },
                         new
                         {
@@ -737,7 +802,8 @@ namespace Quinela.Infrastructure.Migrations
                             Active = true,
                             CreatedAt = new DateTime(2026, 6, 8, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "seed",
-                            Nombre = "J"
+                            Nombre = "J",
+                            TorneoId = 1
                         },
                         new
                         {
@@ -745,7 +811,8 @@ namespace Quinela.Infrastructure.Migrations
                             Active = true,
                             CreatedAt = new DateTime(2026, 6, 8, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "seed",
-                            Nombre = "K"
+                            Nombre = "K",
+                            TorneoId = 1
                         },
                         new
                         {
@@ -753,7 +820,8 @@ namespace Quinela.Infrastructure.Migrations
                             Active = true,
                             CreatedAt = new DateTime(2026, 6, 8, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "seed",
-                            Nombre = "L"
+                            Nombre = "L",
+                            TorneoId = 1
                         });
                 });
 
@@ -808,6 +876,10 @@ namespace Quinela.Infrastructure.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("pts");
 
+                    b.Property<int>("TorneoId")
+                        .HasColumnType("integer")
+                        .HasColumnName("torneo_id");
+
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("updated_at");
@@ -820,6 +892,8 @@ namespace Quinela.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("EquipoId");
+
+                    b.HasIndex("TorneoId");
 
                     b.HasIndex("GrupoId", "EquipoId")
                         .IsUnique();
@@ -839,7 +913,8 @@ namespace Quinela.Infrastructure.Migrations
                             GF = 0,
                             GrupoId = 1,
                             Posicion = 1,
-                            Pts = 0
+                            Pts = 0,
+                            TorneoId = 1
                         },
                         new
                         {
@@ -853,7 +928,8 @@ namespace Quinela.Infrastructure.Migrations
                             GF = 0,
                             GrupoId = 1,
                             Posicion = 2,
-                            Pts = 0
+                            Pts = 0,
+                            TorneoId = 1
                         },
                         new
                         {
@@ -867,7 +943,8 @@ namespace Quinela.Infrastructure.Migrations
                             GF = 0,
                             GrupoId = 1,
                             Posicion = 3,
-                            Pts = 0
+                            Pts = 0,
+                            TorneoId = 1
                         },
                         new
                         {
@@ -881,7 +958,8 @@ namespace Quinela.Infrastructure.Migrations
                             GF = 0,
                             GrupoId = 1,
                             Posicion = 4,
-                            Pts = 0
+                            Pts = 0,
+                            TorneoId = 1
                         },
                         new
                         {
@@ -895,7 +973,8 @@ namespace Quinela.Infrastructure.Migrations
                             GF = 0,
                             GrupoId = 2,
                             Posicion = 1,
-                            Pts = 0
+                            Pts = 0,
+                            TorneoId = 1
                         },
                         new
                         {
@@ -909,7 +988,8 @@ namespace Quinela.Infrastructure.Migrations
                             GF = 0,
                             GrupoId = 2,
                             Posicion = 2,
-                            Pts = 0
+                            Pts = 0,
+                            TorneoId = 1
                         },
                         new
                         {
@@ -923,7 +1003,8 @@ namespace Quinela.Infrastructure.Migrations
                             GF = 0,
                             GrupoId = 2,
                             Posicion = 3,
-                            Pts = 0
+                            Pts = 0,
+                            TorneoId = 1
                         },
                         new
                         {
@@ -937,7 +1018,8 @@ namespace Quinela.Infrastructure.Migrations
                             GF = 0,
                             GrupoId = 2,
                             Posicion = 4,
-                            Pts = 0
+                            Pts = 0,
+                            TorneoId = 1
                         },
                         new
                         {
@@ -951,7 +1033,8 @@ namespace Quinela.Infrastructure.Migrations
                             GF = 0,
                             GrupoId = 3,
                             Posicion = 1,
-                            Pts = 0
+                            Pts = 0,
+                            TorneoId = 1
                         },
                         new
                         {
@@ -965,7 +1048,8 @@ namespace Quinela.Infrastructure.Migrations
                             GF = 0,
                             GrupoId = 3,
                             Posicion = 2,
-                            Pts = 0
+                            Pts = 0,
+                            TorneoId = 1
                         },
                         new
                         {
@@ -979,7 +1063,8 @@ namespace Quinela.Infrastructure.Migrations
                             GF = 0,
                             GrupoId = 3,
                             Posicion = 3,
-                            Pts = 0
+                            Pts = 0,
+                            TorneoId = 1
                         },
                         new
                         {
@@ -993,7 +1078,8 @@ namespace Quinela.Infrastructure.Migrations
                             GF = 0,
                             GrupoId = 3,
                             Posicion = 4,
-                            Pts = 0
+                            Pts = 0,
+                            TorneoId = 1
                         },
                         new
                         {
@@ -1007,7 +1093,8 @@ namespace Quinela.Infrastructure.Migrations
                             GF = 0,
                             GrupoId = 4,
                             Posicion = 1,
-                            Pts = 0
+                            Pts = 0,
+                            TorneoId = 1
                         },
                         new
                         {
@@ -1021,7 +1108,8 @@ namespace Quinela.Infrastructure.Migrations
                             GF = 0,
                             GrupoId = 4,
                             Posicion = 2,
-                            Pts = 0
+                            Pts = 0,
+                            TorneoId = 1
                         },
                         new
                         {
@@ -1035,7 +1123,8 @@ namespace Quinela.Infrastructure.Migrations
                             GF = 0,
                             GrupoId = 4,
                             Posicion = 3,
-                            Pts = 0
+                            Pts = 0,
+                            TorneoId = 1
                         },
                         new
                         {
@@ -1049,7 +1138,8 @@ namespace Quinela.Infrastructure.Migrations
                             GF = 0,
                             GrupoId = 4,
                             Posicion = 4,
-                            Pts = 0
+                            Pts = 0,
+                            TorneoId = 1
                         },
                         new
                         {
@@ -1063,7 +1153,8 @@ namespace Quinela.Infrastructure.Migrations
                             GF = 0,
                             GrupoId = 5,
                             Posicion = 1,
-                            Pts = 0
+                            Pts = 0,
+                            TorneoId = 1
                         },
                         new
                         {
@@ -1077,7 +1168,8 @@ namespace Quinela.Infrastructure.Migrations
                             GF = 0,
                             GrupoId = 5,
                             Posicion = 2,
-                            Pts = 0
+                            Pts = 0,
+                            TorneoId = 1
                         },
                         new
                         {
@@ -1091,7 +1183,8 @@ namespace Quinela.Infrastructure.Migrations
                             GF = 0,
                             GrupoId = 5,
                             Posicion = 3,
-                            Pts = 0
+                            Pts = 0,
+                            TorneoId = 1
                         },
                         new
                         {
@@ -1105,7 +1198,8 @@ namespace Quinela.Infrastructure.Migrations
                             GF = 0,
                             GrupoId = 5,
                             Posicion = 4,
-                            Pts = 0
+                            Pts = 0,
+                            TorneoId = 1
                         },
                         new
                         {
@@ -1119,7 +1213,8 @@ namespace Quinela.Infrastructure.Migrations
                             GF = 0,
                             GrupoId = 6,
                             Posicion = 1,
-                            Pts = 0
+                            Pts = 0,
+                            TorneoId = 1
                         },
                         new
                         {
@@ -1133,7 +1228,8 @@ namespace Quinela.Infrastructure.Migrations
                             GF = 0,
                             GrupoId = 6,
                             Posicion = 2,
-                            Pts = 0
+                            Pts = 0,
+                            TorneoId = 1
                         },
                         new
                         {
@@ -1147,7 +1243,8 @@ namespace Quinela.Infrastructure.Migrations
                             GF = 0,
                             GrupoId = 6,
                             Posicion = 3,
-                            Pts = 0
+                            Pts = 0,
+                            TorneoId = 1
                         },
                         new
                         {
@@ -1161,7 +1258,8 @@ namespace Quinela.Infrastructure.Migrations
                             GF = 0,
                             GrupoId = 6,
                             Posicion = 4,
-                            Pts = 0
+                            Pts = 0,
+                            TorneoId = 1
                         },
                         new
                         {
@@ -1175,7 +1273,8 @@ namespace Quinela.Infrastructure.Migrations
                             GF = 0,
                             GrupoId = 7,
                             Posicion = 1,
-                            Pts = 0
+                            Pts = 0,
+                            TorneoId = 1
                         },
                         new
                         {
@@ -1189,7 +1288,8 @@ namespace Quinela.Infrastructure.Migrations
                             GF = 0,
                             GrupoId = 7,
                             Posicion = 2,
-                            Pts = 0
+                            Pts = 0,
+                            TorneoId = 1
                         },
                         new
                         {
@@ -1203,7 +1303,8 @@ namespace Quinela.Infrastructure.Migrations
                             GF = 0,
                             GrupoId = 7,
                             Posicion = 3,
-                            Pts = 0
+                            Pts = 0,
+                            TorneoId = 1
                         },
                         new
                         {
@@ -1217,7 +1318,8 @@ namespace Quinela.Infrastructure.Migrations
                             GF = 0,
                             GrupoId = 7,
                             Posicion = 4,
-                            Pts = 0
+                            Pts = 0,
+                            TorneoId = 1
                         },
                         new
                         {
@@ -1231,7 +1333,8 @@ namespace Quinela.Infrastructure.Migrations
                             GF = 0,
                             GrupoId = 8,
                             Posicion = 1,
-                            Pts = 0
+                            Pts = 0,
+                            TorneoId = 1
                         },
                         new
                         {
@@ -1245,7 +1348,8 @@ namespace Quinela.Infrastructure.Migrations
                             GF = 0,
                             GrupoId = 8,
                             Posicion = 2,
-                            Pts = 0
+                            Pts = 0,
+                            TorneoId = 1
                         },
                         new
                         {
@@ -1259,7 +1363,8 @@ namespace Quinela.Infrastructure.Migrations
                             GF = 0,
                             GrupoId = 8,
                             Posicion = 3,
-                            Pts = 0
+                            Pts = 0,
+                            TorneoId = 1
                         },
                         new
                         {
@@ -1273,7 +1378,8 @@ namespace Quinela.Infrastructure.Migrations
                             GF = 0,
                             GrupoId = 8,
                             Posicion = 4,
-                            Pts = 0
+                            Pts = 0,
+                            TorneoId = 1
                         },
                         new
                         {
@@ -1287,7 +1393,8 @@ namespace Quinela.Infrastructure.Migrations
                             GF = 0,
                             GrupoId = 9,
                             Posicion = 1,
-                            Pts = 0
+                            Pts = 0,
+                            TorneoId = 1
                         },
                         new
                         {
@@ -1301,7 +1408,8 @@ namespace Quinela.Infrastructure.Migrations
                             GF = 0,
                             GrupoId = 9,
                             Posicion = 2,
-                            Pts = 0
+                            Pts = 0,
+                            TorneoId = 1
                         },
                         new
                         {
@@ -1315,7 +1423,8 @@ namespace Quinela.Infrastructure.Migrations
                             GF = 0,
                             GrupoId = 9,
                             Posicion = 3,
-                            Pts = 0
+                            Pts = 0,
+                            TorneoId = 1
                         },
                         new
                         {
@@ -1329,7 +1438,8 @@ namespace Quinela.Infrastructure.Migrations
                             GF = 0,
                             GrupoId = 9,
                             Posicion = 4,
-                            Pts = 0
+                            Pts = 0,
+                            TorneoId = 1
                         },
                         new
                         {
@@ -1343,7 +1453,8 @@ namespace Quinela.Infrastructure.Migrations
                             GF = 0,
                             GrupoId = 10,
                             Posicion = 1,
-                            Pts = 0
+                            Pts = 0,
+                            TorneoId = 1
                         },
                         new
                         {
@@ -1357,7 +1468,8 @@ namespace Quinela.Infrastructure.Migrations
                             GF = 0,
                             GrupoId = 10,
                             Posicion = 2,
-                            Pts = 0
+                            Pts = 0,
+                            TorneoId = 1
                         },
                         new
                         {
@@ -1371,7 +1483,8 @@ namespace Quinela.Infrastructure.Migrations
                             GF = 0,
                             GrupoId = 10,
                             Posicion = 3,
-                            Pts = 0
+                            Pts = 0,
+                            TorneoId = 1
                         },
                         new
                         {
@@ -1385,7 +1498,8 @@ namespace Quinela.Infrastructure.Migrations
                             GF = 0,
                             GrupoId = 10,
                             Posicion = 4,
-                            Pts = 0
+                            Pts = 0,
+                            TorneoId = 1
                         },
                         new
                         {
@@ -1399,7 +1513,8 @@ namespace Quinela.Infrastructure.Migrations
                             GF = 0,
                             GrupoId = 11,
                             Posicion = 1,
-                            Pts = 0
+                            Pts = 0,
+                            TorneoId = 1
                         },
                         new
                         {
@@ -1413,7 +1528,8 @@ namespace Quinela.Infrastructure.Migrations
                             GF = 0,
                             GrupoId = 11,
                             Posicion = 2,
-                            Pts = 0
+                            Pts = 0,
+                            TorneoId = 1
                         },
                         new
                         {
@@ -1427,7 +1543,8 @@ namespace Quinela.Infrastructure.Migrations
                             GF = 0,
                             GrupoId = 11,
                             Posicion = 3,
-                            Pts = 0
+                            Pts = 0,
+                            TorneoId = 1
                         },
                         new
                         {
@@ -1441,7 +1558,8 @@ namespace Quinela.Infrastructure.Migrations
                             GF = 0,
                             GrupoId = 11,
                             Posicion = 4,
-                            Pts = 0
+                            Pts = 0,
+                            TorneoId = 1
                         },
                         new
                         {
@@ -1455,7 +1573,8 @@ namespace Quinela.Infrastructure.Migrations
                             GF = 0,
                             GrupoId = 12,
                             Posicion = 1,
-                            Pts = 0
+                            Pts = 0,
+                            TorneoId = 1
                         },
                         new
                         {
@@ -1469,7 +1588,8 @@ namespace Quinela.Infrastructure.Migrations
                             GF = 0,
                             GrupoId = 12,
                             Posicion = 2,
-                            Pts = 0
+                            Pts = 0,
+                            TorneoId = 1
                         },
                         new
                         {
@@ -1483,7 +1603,8 @@ namespace Quinela.Infrastructure.Migrations
                             GF = 0,
                             GrupoId = 12,
                             Posicion = 3,
-                            Pts = 0
+                            Pts = 0,
+                            TorneoId = 1
                         },
                         new
                         {
@@ -1497,7 +1618,8 @@ namespace Quinela.Infrastructure.Migrations
                             GF = 0,
                             GrupoId = 12,
                             Posicion = 4,
-                            Pts = 0
+                            Pts = 0,
+                            TorneoId = 1
                         });
                 });
 
@@ -1564,6 +1686,10 @@ namespace Quinela.Infrastructure.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("tipo_partido_id");
 
+                    b.Property<int>("TorneoId")
+                        .HasColumnType("integer")
+                        .HasColumnName("torneo_id");
+
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("updated_at");
@@ -1583,6 +1709,8 @@ namespace Quinela.Infrastructure.Migrations
 
                     b.HasIndex("TipoPartidoId");
 
+                    b.HasIndex("TorneoId");
+
                     b.ToTable("partidos", (string)null);
 
                     b.HasData(
@@ -1597,7 +1725,8 @@ namespace Quinela.Infrastructure.Migrations
                             Estado = 'P',
                             FechaPartido = new DateTime(2026, 6, 11, 0, 0, 0, 0, DateTimeKind.Utc),
                             GrupoId = 1,
-                            TipoPartidoId = 1
+                            TipoPartidoId = 1,
+                            TorneoId = 1
                         },
                         new
                         {
@@ -1610,7 +1739,8 @@ namespace Quinela.Infrastructure.Migrations
                             Estado = 'P',
                             FechaPartido = new DateTime(2026, 6, 11, 0, 0, 0, 0, DateTimeKind.Utc),
                             GrupoId = 1,
-                            TipoPartidoId = 1
+                            TipoPartidoId = 1,
+                            TorneoId = 1
                         },
                         new
                         {
@@ -1623,7 +1753,8 @@ namespace Quinela.Infrastructure.Migrations
                             Estado = 'P',
                             FechaPartido = new DateTime(2026, 6, 12, 0, 0, 0, 0, DateTimeKind.Utc),
                             GrupoId = 2,
-                            TipoPartidoId = 1
+                            TipoPartidoId = 1,
+                            TorneoId = 1
                         },
                         new
                         {
@@ -1636,7 +1767,8 @@ namespace Quinela.Infrastructure.Migrations
                             Estado = 'P',
                             FechaPartido = new DateTime(2026, 6, 12, 0, 0, 0, 0, DateTimeKind.Utc),
                             GrupoId = 4,
-                            TipoPartidoId = 1
+                            TipoPartidoId = 1,
+                            TorneoId = 1
                         },
                         new
                         {
@@ -1649,7 +1781,8 @@ namespace Quinela.Infrastructure.Migrations
                             Estado = 'P',
                             FechaPartido = new DateTime(2026, 6, 13, 0, 0, 0, 0, DateTimeKind.Utc),
                             GrupoId = 2,
-                            TipoPartidoId = 1
+                            TipoPartidoId = 1,
+                            TorneoId = 1
                         },
                         new
                         {
@@ -1662,7 +1795,8 @@ namespace Quinela.Infrastructure.Migrations
                             Estado = 'P',
                             FechaPartido = new DateTime(2026, 6, 13, 0, 0, 0, 0, DateTimeKind.Utc),
                             GrupoId = 3,
-                            TipoPartidoId = 1
+                            TipoPartidoId = 1,
+                            TorneoId = 1
                         },
                         new
                         {
@@ -1675,7 +1809,8 @@ namespace Quinela.Infrastructure.Migrations
                             Estado = 'P',
                             FechaPartido = new DateTime(2026, 6, 13, 0, 0, 0, 0, DateTimeKind.Utc),
                             GrupoId = 3,
-                            TipoPartidoId = 1
+                            TipoPartidoId = 1,
+                            TorneoId = 1
                         },
                         new
                         {
@@ -1688,7 +1823,8 @@ namespace Quinela.Infrastructure.Migrations
                             Estado = 'P',
                             FechaPartido = new DateTime(2026, 6, 13, 0, 0, 0, 0, DateTimeKind.Utc),
                             GrupoId = 4,
-                            TipoPartidoId = 1
+                            TipoPartidoId = 1,
+                            TorneoId = 1
                         },
                         new
                         {
@@ -1701,7 +1837,8 @@ namespace Quinela.Infrastructure.Migrations
                             Estado = 'P',
                             FechaPartido = new DateTime(2026, 6, 14, 0, 0, 0, 0, DateTimeKind.Utc),
                             GrupoId = 5,
-                            TipoPartidoId = 1
+                            TipoPartidoId = 1,
+                            TorneoId = 1
                         },
                         new
                         {
@@ -1714,7 +1851,8 @@ namespace Quinela.Infrastructure.Migrations
                             Estado = 'P',
                             FechaPartido = new DateTime(2026, 6, 14, 0, 0, 0, 0, DateTimeKind.Utc),
                             GrupoId = 6,
-                            TipoPartidoId = 1
+                            TipoPartidoId = 1,
+                            TorneoId = 1
                         },
                         new
                         {
@@ -1727,7 +1865,8 @@ namespace Quinela.Infrastructure.Migrations
                             Estado = 'P',
                             FechaPartido = new DateTime(2026, 6, 14, 0, 0, 0, 0, DateTimeKind.Utc),
                             GrupoId = 5,
-                            TipoPartidoId = 1
+                            TipoPartidoId = 1,
+                            TorneoId = 1
                         },
                         new
                         {
@@ -1740,7 +1879,8 @@ namespace Quinela.Infrastructure.Migrations
                             Estado = 'P',
                             FechaPartido = new DateTime(2026, 6, 14, 0, 0, 0, 0, DateTimeKind.Utc),
                             GrupoId = 6,
-                            TipoPartidoId = 1
+                            TipoPartidoId = 1,
+                            TorneoId = 1
                         },
                         new
                         {
@@ -1753,7 +1893,8 @@ namespace Quinela.Infrastructure.Migrations
                             Estado = 'P',
                             FechaPartido = new DateTime(2026, 6, 15, 0, 0, 0, 0, DateTimeKind.Utc),
                             GrupoId = 8,
-                            TipoPartidoId = 1
+                            TipoPartidoId = 1,
+                            TorneoId = 1
                         },
                         new
                         {
@@ -1766,7 +1907,8 @@ namespace Quinela.Infrastructure.Migrations
                             Estado = 'P',
                             FechaPartido = new DateTime(2026, 6, 15, 0, 0, 0, 0, DateTimeKind.Utc),
                             GrupoId = 7,
-                            TipoPartidoId = 1
+                            TipoPartidoId = 1,
+                            TorneoId = 1
                         },
                         new
                         {
@@ -1779,7 +1921,8 @@ namespace Quinela.Infrastructure.Migrations
                             Estado = 'P',
                             FechaPartido = new DateTime(2026, 6, 15, 0, 0, 0, 0, DateTimeKind.Utc),
                             GrupoId = 8,
-                            TipoPartidoId = 1
+                            TipoPartidoId = 1,
+                            TorneoId = 1
                         },
                         new
                         {
@@ -1792,7 +1935,8 @@ namespace Quinela.Infrastructure.Migrations
                             Estado = 'P',
                             FechaPartido = new DateTime(2026, 6, 15, 0, 0, 0, 0, DateTimeKind.Utc),
                             GrupoId = 7,
-                            TipoPartidoId = 1
+                            TipoPartidoId = 1,
+                            TorneoId = 1
                         },
                         new
                         {
@@ -1805,7 +1949,8 @@ namespace Quinela.Infrastructure.Migrations
                             Estado = 'P',
                             FechaPartido = new DateTime(2026, 6, 16, 0, 0, 0, 0, DateTimeKind.Utc),
                             GrupoId = 9,
-                            TipoPartidoId = 1
+                            TipoPartidoId = 1,
+                            TorneoId = 1
                         },
                         new
                         {
@@ -1818,7 +1963,8 @@ namespace Quinela.Infrastructure.Migrations
                             Estado = 'P',
                             FechaPartido = new DateTime(2026, 6, 16, 0, 0, 0, 0, DateTimeKind.Utc),
                             GrupoId = 9,
-                            TipoPartidoId = 1
+                            TipoPartidoId = 1,
+                            TorneoId = 1
                         },
                         new
                         {
@@ -1831,7 +1977,8 @@ namespace Quinela.Infrastructure.Migrations
                             Estado = 'P',
                             FechaPartido = new DateTime(2026, 6, 16, 0, 0, 0, 0, DateTimeKind.Utc),
                             GrupoId = 10,
-                            TipoPartidoId = 1
+                            TipoPartidoId = 1,
+                            TorneoId = 1
                         },
                         new
                         {
@@ -1844,7 +1991,8 @@ namespace Quinela.Infrastructure.Migrations
                             Estado = 'P',
                             FechaPartido = new DateTime(2026, 6, 16, 0, 0, 0, 0, DateTimeKind.Utc),
                             GrupoId = 10,
-                            TipoPartidoId = 1
+                            TipoPartidoId = 1,
+                            TorneoId = 1
                         },
                         new
                         {
@@ -1857,7 +2005,8 @@ namespace Quinela.Infrastructure.Migrations
                             Estado = 'P',
                             FechaPartido = new DateTime(2026, 6, 17, 0, 0, 0, 0, DateTimeKind.Utc),
                             GrupoId = 11,
-                            TipoPartidoId = 1
+                            TipoPartidoId = 1,
+                            TorneoId = 1
                         },
                         new
                         {
@@ -1870,7 +2019,8 @@ namespace Quinela.Infrastructure.Migrations
                             Estado = 'P',
                             FechaPartido = new DateTime(2026, 6, 17, 0, 0, 0, 0, DateTimeKind.Utc),
                             GrupoId = 12,
-                            TipoPartidoId = 1
+                            TipoPartidoId = 1,
+                            TorneoId = 1
                         },
                         new
                         {
@@ -1883,7 +2033,8 @@ namespace Quinela.Infrastructure.Migrations
                             Estado = 'P',
                             FechaPartido = new DateTime(2026, 6, 17, 0, 0, 0, 0, DateTimeKind.Utc),
                             GrupoId = 12,
-                            TipoPartidoId = 1
+                            TipoPartidoId = 1,
+                            TorneoId = 1
                         },
                         new
                         {
@@ -1896,7 +2047,8 @@ namespace Quinela.Infrastructure.Migrations
                             Estado = 'P',
                             FechaPartido = new DateTime(2026, 6, 17, 0, 0, 0, 0, DateTimeKind.Utc),
                             GrupoId = 11,
-                            TipoPartidoId = 1
+                            TipoPartidoId = 1,
+                            TorneoId = 1
                         },
                         new
                         {
@@ -1909,7 +2061,8 @@ namespace Quinela.Infrastructure.Migrations
                             Estado = 'P',
                             FechaPartido = new DateTime(2026, 6, 18, 0, 0, 0, 0, DateTimeKind.Utc),
                             GrupoId = 1,
-                            TipoPartidoId = 1
+                            TipoPartidoId = 1,
+                            TorneoId = 1
                         },
                         new
                         {
@@ -1922,7 +2075,8 @@ namespace Quinela.Infrastructure.Migrations
                             Estado = 'P',
                             FechaPartido = new DateTime(2026, 6, 18, 0, 0, 0, 0, DateTimeKind.Utc),
                             GrupoId = 2,
-                            TipoPartidoId = 1
+                            TipoPartidoId = 1,
+                            TorneoId = 1
                         },
                         new
                         {
@@ -1935,7 +2089,8 @@ namespace Quinela.Infrastructure.Migrations
                             Estado = 'P',
                             FechaPartido = new DateTime(2026, 6, 18, 0, 0, 0, 0, DateTimeKind.Utc),
                             GrupoId = 2,
-                            TipoPartidoId = 1
+                            TipoPartidoId = 1,
+                            TorneoId = 1
                         },
                         new
                         {
@@ -1948,7 +2103,8 @@ namespace Quinela.Infrastructure.Migrations
                             Estado = 'P',
                             FechaPartido = new DateTime(2026, 6, 18, 0, 0, 0, 0, DateTimeKind.Utc),
                             GrupoId = 1,
-                            TipoPartidoId = 1
+                            TipoPartidoId = 1,
+                            TorneoId = 1
                         },
                         new
                         {
@@ -1961,7 +2117,8 @@ namespace Quinela.Infrastructure.Migrations
                             Estado = 'P',
                             FechaPartido = new DateTime(2026, 6, 19, 0, 0, 0, 0, DateTimeKind.Utc),
                             GrupoId = 4,
-                            TipoPartidoId = 1
+                            TipoPartidoId = 1,
+                            TorneoId = 1
                         },
                         new
                         {
@@ -1974,7 +2131,8 @@ namespace Quinela.Infrastructure.Migrations
                             Estado = 'P',
                             FechaPartido = new DateTime(2026, 6, 19, 0, 0, 0, 0, DateTimeKind.Utc),
                             GrupoId = 3,
-                            TipoPartidoId = 1
+                            TipoPartidoId = 1,
+                            TorneoId = 1
                         },
                         new
                         {
@@ -1987,7 +2145,8 @@ namespace Quinela.Infrastructure.Migrations
                             Estado = 'P',
                             FechaPartido = new DateTime(2026, 6, 19, 0, 0, 0, 0, DateTimeKind.Utc),
                             GrupoId = 3,
-                            TipoPartidoId = 1
+                            TipoPartidoId = 1,
+                            TorneoId = 1
                         },
                         new
                         {
@@ -2000,7 +2159,8 @@ namespace Quinela.Infrastructure.Migrations
                             Estado = 'P',
                             FechaPartido = new DateTime(2026, 6, 19, 0, 0, 0, 0, DateTimeKind.Utc),
                             GrupoId = 4,
-                            TipoPartidoId = 1
+                            TipoPartidoId = 1,
+                            TorneoId = 1
                         },
                         new
                         {
@@ -2013,7 +2173,8 @@ namespace Quinela.Infrastructure.Migrations
                             Estado = 'P',
                             FechaPartido = new DateTime(2026, 6, 20, 0, 0, 0, 0, DateTimeKind.Utc),
                             GrupoId = 6,
-                            TipoPartidoId = 1
+                            TipoPartidoId = 1,
+                            TorneoId = 1
                         },
                         new
                         {
@@ -2026,7 +2187,8 @@ namespace Quinela.Infrastructure.Migrations
                             Estado = 'P',
                             FechaPartido = new DateTime(2026, 6, 20, 0, 0, 0, 0, DateTimeKind.Utc),
                             GrupoId = 5,
-                            TipoPartidoId = 1
+                            TipoPartidoId = 1,
+                            TorneoId = 1
                         },
                         new
                         {
@@ -2039,7 +2201,8 @@ namespace Quinela.Infrastructure.Migrations
                             Estado = 'P',
                             FechaPartido = new DateTime(2026, 6, 20, 0, 0, 0, 0, DateTimeKind.Utc),
                             GrupoId = 5,
-                            TipoPartidoId = 1
+                            TipoPartidoId = 1,
+                            TorneoId = 1
                         },
                         new
                         {
@@ -2052,7 +2215,8 @@ namespace Quinela.Infrastructure.Migrations
                             Estado = 'P',
                             FechaPartido = new DateTime(2026, 6, 20, 0, 0, 0, 0, DateTimeKind.Utc),
                             GrupoId = 6,
-                            TipoPartidoId = 1
+                            TipoPartidoId = 1,
+                            TorneoId = 1
                         },
                         new
                         {
@@ -2065,7 +2229,8 @@ namespace Quinela.Infrastructure.Migrations
                             Estado = 'P',
                             FechaPartido = new DateTime(2026, 6, 21, 0, 0, 0, 0, DateTimeKind.Utc),
                             GrupoId = 8,
-                            TipoPartidoId = 1
+                            TipoPartidoId = 1,
+                            TorneoId = 1
                         },
                         new
                         {
@@ -2078,7 +2243,8 @@ namespace Quinela.Infrastructure.Migrations
                             Estado = 'P',
                             FechaPartido = new DateTime(2026, 6, 21, 0, 0, 0, 0, DateTimeKind.Utc),
                             GrupoId = 7,
-                            TipoPartidoId = 1
+                            TipoPartidoId = 1,
+                            TorneoId = 1
                         },
                         new
                         {
@@ -2091,7 +2257,8 @@ namespace Quinela.Infrastructure.Migrations
                             Estado = 'P',
                             FechaPartido = new DateTime(2026, 6, 21, 0, 0, 0, 0, DateTimeKind.Utc),
                             GrupoId = 8,
-                            TipoPartidoId = 1
+                            TipoPartidoId = 1,
+                            TorneoId = 1
                         },
                         new
                         {
@@ -2104,7 +2271,8 @@ namespace Quinela.Infrastructure.Migrations
                             Estado = 'P',
                             FechaPartido = new DateTime(2026, 6, 21, 0, 0, 0, 0, DateTimeKind.Utc),
                             GrupoId = 7,
-                            TipoPartidoId = 1
+                            TipoPartidoId = 1,
+                            TorneoId = 1
                         },
                         new
                         {
@@ -2117,7 +2285,8 @@ namespace Quinela.Infrastructure.Migrations
                             Estado = 'P',
                             FechaPartido = new DateTime(2026, 6, 22, 0, 0, 0, 0, DateTimeKind.Utc),
                             GrupoId = 10,
-                            TipoPartidoId = 1
+                            TipoPartidoId = 1,
+                            TorneoId = 1
                         },
                         new
                         {
@@ -2130,7 +2299,8 @@ namespace Quinela.Infrastructure.Migrations
                             Estado = 'P',
                             FechaPartido = new DateTime(2026, 6, 22, 0, 0, 0, 0, DateTimeKind.Utc),
                             GrupoId = 9,
-                            TipoPartidoId = 1
+                            TipoPartidoId = 1,
+                            TorneoId = 1
                         },
                         new
                         {
@@ -2143,7 +2313,8 @@ namespace Quinela.Infrastructure.Migrations
                             Estado = 'P',
                             FechaPartido = new DateTime(2026, 6, 22, 0, 0, 0, 0, DateTimeKind.Utc),
                             GrupoId = 9,
-                            TipoPartidoId = 1
+                            TipoPartidoId = 1,
+                            TorneoId = 1
                         },
                         new
                         {
@@ -2156,7 +2327,8 @@ namespace Quinela.Infrastructure.Migrations
                             Estado = 'P',
                             FechaPartido = new DateTime(2026, 6, 22, 0, 0, 0, 0, DateTimeKind.Utc),
                             GrupoId = 10,
-                            TipoPartidoId = 1
+                            TipoPartidoId = 1,
+                            TorneoId = 1
                         },
                         new
                         {
@@ -2169,7 +2341,8 @@ namespace Quinela.Infrastructure.Migrations
                             Estado = 'P',
                             FechaPartido = new DateTime(2026, 6, 23, 0, 0, 0, 0, DateTimeKind.Utc),
                             GrupoId = 11,
-                            TipoPartidoId = 1
+                            TipoPartidoId = 1,
+                            TorneoId = 1
                         },
                         new
                         {
@@ -2182,7 +2355,8 @@ namespace Quinela.Infrastructure.Migrations
                             Estado = 'P',
                             FechaPartido = new DateTime(2026, 6, 23, 0, 0, 0, 0, DateTimeKind.Utc),
                             GrupoId = 12,
-                            TipoPartidoId = 1
+                            TipoPartidoId = 1,
+                            TorneoId = 1
                         },
                         new
                         {
@@ -2195,7 +2369,8 @@ namespace Quinela.Infrastructure.Migrations
                             Estado = 'P',
                             FechaPartido = new DateTime(2026, 6, 23, 0, 0, 0, 0, DateTimeKind.Utc),
                             GrupoId = 12,
-                            TipoPartidoId = 1
+                            TipoPartidoId = 1,
+                            TorneoId = 1
                         },
                         new
                         {
@@ -2208,7 +2383,8 @@ namespace Quinela.Infrastructure.Migrations
                             Estado = 'P',
                             FechaPartido = new DateTime(2026, 6, 23, 0, 0, 0, 0, DateTimeKind.Utc),
                             GrupoId = 11,
-                            TipoPartidoId = 1
+                            TipoPartidoId = 1,
+                            TorneoId = 1
                         },
                         new
                         {
@@ -2221,7 +2397,8 @@ namespace Quinela.Infrastructure.Migrations
                             Estado = 'P',
                             FechaPartido = new DateTime(2026, 6, 24, 0, 0, 0, 0, DateTimeKind.Utc),
                             GrupoId = 2,
-                            TipoPartidoId = 1
+                            TipoPartidoId = 1,
+                            TorneoId = 1
                         },
                         new
                         {
@@ -2234,7 +2411,8 @@ namespace Quinela.Infrastructure.Migrations
                             Estado = 'P',
                             FechaPartido = new DateTime(2026, 6, 24, 0, 0, 0, 0, DateTimeKind.Utc),
                             GrupoId = 2,
-                            TipoPartidoId = 1
+                            TipoPartidoId = 1,
+                            TorneoId = 1
                         },
                         new
                         {
@@ -2247,7 +2425,8 @@ namespace Quinela.Infrastructure.Migrations
                             Estado = 'P',
                             FechaPartido = new DateTime(2026, 6, 24, 0, 0, 0, 0, DateTimeKind.Utc),
                             GrupoId = 3,
-                            TipoPartidoId = 1
+                            TipoPartidoId = 1,
+                            TorneoId = 1
                         },
                         new
                         {
@@ -2260,7 +2439,8 @@ namespace Quinela.Infrastructure.Migrations
                             Estado = 'P',
                             FechaPartido = new DateTime(2026, 6, 24, 0, 0, 0, 0, DateTimeKind.Utc),
                             GrupoId = 3,
-                            TipoPartidoId = 1
+                            TipoPartidoId = 1,
+                            TorneoId = 1
                         },
                         new
                         {
@@ -2273,7 +2453,8 @@ namespace Quinela.Infrastructure.Migrations
                             Estado = 'P',
                             FechaPartido = new DateTime(2026, 6, 24, 0, 0, 0, 0, DateTimeKind.Utc),
                             GrupoId = 1,
-                            TipoPartidoId = 1
+                            TipoPartidoId = 1,
+                            TorneoId = 1
                         },
                         new
                         {
@@ -2286,7 +2467,8 @@ namespace Quinela.Infrastructure.Migrations
                             Estado = 'P',
                             FechaPartido = new DateTime(2026, 6, 24, 0, 0, 0, 0, DateTimeKind.Utc),
                             GrupoId = 1,
-                            TipoPartidoId = 1
+                            TipoPartidoId = 1,
+                            TorneoId = 1
                         },
                         new
                         {
@@ -2299,7 +2481,8 @@ namespace Quinela.Infrastructure.Migrations
                             Estado = 'P',
                             FechaPartido = new DateTime(2026, 6, 25, 0, 0, 0, 0, DateTimeKind.Utc),
                             GrupoId = 5,
-                            TipoPartidoId = 1
+                            TipoPartidoId = 1,
+                            TorneoId = 1
                         },
                         new
                         {
@@ -2312,7 +2495,8 @@ namespace Quinela.Infrastructure.Migrations
                             Estado = 'P',
                             FechaPartido = new DateTime(2026, 6, 25, 0, 0, 0, 0, DateTimeKind.Utc),
                             GrupoId = 5,
-                            TipoPartidoId = 1
+                            TipoPartidoId = 1,
+                            TorneoId = 1
                         },
                         new
                         {
@@ -2325,7 +2509,8 @@ namespace Quinela.Infrastructure.Migrations
                             Estado = 'P',
                             FechaPartido = new DateTime(2026, 6, 25, 0, 0, 0, 0, DateTimeKind.Utc),
                             GrupoId = 6,
-                            TipoPartidoId = 1
+                            TipoPartidoId = 1,
+                            TorneoId = 1
                         },
                         new
                         {
@@ -2338,7 +2523,8 @@ namespace Quinela.Infrastructure.Migrations
                             Estado = 'P',
                             FechaPartido = new DateTime(2026, 6, 25, 0, 0, 0, 0, DateTimeKind.Utc),
                             GrupoId = 6,
-                            TipoPartidoId = 1
+                            TipoPartidoId = 1,
+                            TorneoId = 1
                         },
                         new
                         {
@@ -2351,7 +2537,8 @@ namespace Quinela.Infrastructure.Migrations
                             Estado = 'P',
                             FechaPartido = new DateTime(2026, 6, 25, 0, 0, 0, 0, DateTimeKind.Utc),
                             GrupoId = 4,
-                            TipoPartidoId = 1
+                            TipoPartidoId = 1,
+                            TorneoId = 1
                         },
                         new
                         {
@@ -2364,7 +2551,8 @@ namespace Quinela.Infrastructure.Migrations
                             Estado = 'P',
                             FechaPartido = new DateTime(2026, 6, 25, 0, 0, 0, 0, DateTimeKind.Utc),
                             GrupoId = 4,
-                            TipoPartidoId = 1
+                            TipoPartidoId = 1,
+                            TorneoId = 1
                         },
                         new
                         {
@@ -2377,7 +2565,8 @@ namespace Quinela.Infrastructure.Migrations
                             Estado = 'P',
                             FechaPartido = new DateTime(2026, 6, 26, 0, 0, 0, 0, DateTimeKind.Utc),
                             GrupoId = 9,
-                            TipoPartidoId = 1
+                            TipoPartidoId = 1,
+                            TorneoId = 1
                         },
                         new
                         {
@@ -2390,7 +2579,8 @@ namespace Quinela.Infrastructure.Migrations
                             Estado = 'P',
                             FechaPartido = new DateTime(2026, 6, 26, 0, 0, 0, 0, DateTimeKind.Utc),
                             GrupoId = 9,
-                            TipoPartidoId = 1
+                            TipoPartidoId = 1,
+                            TorneoId = 1
                         },
                         new
                         {
@@ -2403,7 +2593,8 @@ namespace Quinela.Infrastructure.Migrations
                             Estado = 'P',
                             FechaPartido = new DateTime(2026, 6, 26, 0, 0, 0, 0, DateTimeKind.Utc),
                             GrupoId = 8,
-                            TipoPartidoId = 1
+                            TipoPartidoId = 1,
+                            TorneoId = 1
                         },
                         new
                         {
@@ -2416,7 +2607,8 @@ namespace Quinela.Infrastructure.Migrations
                             Estado = 'P',
                             FechaPartido = new DateTime(2026, 6, 26, 0, 0, 0, 0, DateTimeKind.Utc),
                             GrupoId = 8,
-                            TipoPartidoId = 1
+                            TipoPartidoId = 1,
+                            TorneoId = 1
                         },
                         new
                         {
@@ -2429,7 +2621,8 @@ namespace Quinela.Infrastructure.Migrations
                             Estado = 'P',
                             FechaPartido = new DateTime(2026, 6, 26, 0, 0, 0, 0, DateTimeKind.Utc),
                             GrupoId = 7,
-                            TipoPartidoId = 1
+                            TipoPartidoId = 1,
+                            TorneoId = 1
                         },
                         new
                         {
@@ -2442,7 +2635,8 @@ namespace Quinela.Infrastructure.Migrations
                             Estado = 'P',
                             FechaPartido = new DateTime(2026, 6, 26, 0, 0, 0, 0, DateTimeKind.Utc),
                             GrupoId = 7,
-                            TipoPartidoId = 1
+                            TipoPartidoId = 1,
+                            TorneoId = 1
                         },
                         new
                         {
@@ -2455,7 +2649,8 @@ namespace Quinela.Infrastructure.Migrations
                             Estado = 'P',
                             FechaPartido = new DateTime(2026, 6, 27, 0, 0, 0, 0, DateTimeKind.Utc),
                             GrupoId = 12,
-                            TipoPartidoId = 1
+                            TipoPartidoId = 1,
+                            TorneoId = 1
                         },
                         new
                         {
@@ -2468,7 +2663,8 @@ namespace Quinela.Infrastructure.Migrations
                             Estado = 'P',
                             FechaPartido = new DateTime(2026, 6, 27, 0, 0, 0, 0, DateTimeKind.Utc),
                             GrupoId = 12,
-                            TipoPartidoId = 1
+                            TipoPartidoId = 1,
+                            TorneoId = 1
                         },
                         new
                         {
@@ -2481,7 +2677,8 @@ namespace Quinela.Infrastructure.Migrations
                             Estado = 'P',
                             FechaPartido = new DateTime(2026, 6, 27, 0, 0, 0, 0, DateTimeKind.Utc),
                             GrupoId = 11,
-                            TipoPartidoId = 1
+                            TipoPartidoId = 1,
+                            TorneoId = 1
                         },
                         new
                         {
@@ -2494,7 +2691,8 @@ namespace Quinela.Infrastructure.Migrations
                             Estado = 'P',
                             FechaPartido = new DateTime(2026, 6, 27, 0, 0, 0, 0, DateTimeKind.Utc),
                             GrupoId = 11,
-                            TipoPartidoId = 1
+                            TipoPartidoId = 1,
+                            TorneoId = 1
                         },
                         new
                         {
@@ -2507,7 +2705,8 @@ namespace Quinela.Infrastructure.Migrations
                             Estado = 'P',
                             FechaPartido = new DateTime(2026, 6, 27, 0, 0, 0, 0, DateTimeKind.Utc),
                             GrupoId = 10,
-                            TipoPartidoId = 1
+                            TipoPartidoId = 1,
+                            TorneoId = 1
                         },
                         new
                         {
@@ -2520,7 +2719,8 @@ namespace Quinela.Infrastructure.Migrations
                             Estado = 'P',
                             FechaPartido = new DateTime(2026, 6, 27, 0, 0, 0, 0, DateTimeKind.Utc),
                             GrupoId = 10,
-                            TipoPartidoId = 1
+                            TipoPartidoId = 1,
+                            TorneoId = 1
                         });
                 });
 
@@ -2551,6 +2751,10 @@ namespace Quinela.Infrastructure.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("partido_id");
 
+                    b.Property<int>("QuinielaId")
+                        .HasColumnType("integer")
+                        .HasColumnName("quiniela_id");
+
                     b.Property<int?>("Team1Resultado")
                         .HasColumnType("integer")
                         .HasColumnName("team_1_resultado");
@@ -2576,11 +2780,99 @@ namespace Quinela.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("PartidoId", "Username")
+                    b.HasIndex("PartidoId");
+
+                    b.HasIndex("QuinielaId", "PartidoId", "Username")
                         .IsUnique()
                         .HasFilter("active = true");
 
                     b.ToTable("predicciones", (string)null);
+                });
+
+            modelBuilder.Entity("Quinela.Domain.Entities.Quiniela", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("Active")
+                        .HasColumnType("boolean")
+                        .HasColumnName("active");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasMaxLength(250)
+                        .HasColumnType("character varying(250)")
+                        .HasColumnName("created_by");
+
+                    b.Property<string>("Nombre")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("character varying(150)")
+                        .HasColumnName("nombre");
+
+                    b.Property<string>("Reglas")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("reglas");
+
+                    b.Property<int>("TorneoId")
+                        .HasColumnType("integer")
+                        .HasColumnName("torneo_id");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("updated_at");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasMaxLength(250)
+                        .HasColumnType("character varying(250)")
+                        .HasColumnName("updated_by");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TorneoId");
+
+                    b.ToTable("quinielas", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Active = true,
+                            CreatedAt = new DateTime(2026, 6, 8, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatedBy = "seed",
+                            Nombre = "Quiniela Cattrachas",
+                            Reglas = "Reglas por definir.",
+                            TorneoId = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Active = true,
+                            CreatedAt = new DateTime(2026, 6, 8, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatedBy = "seed",
+                            Nombre = "Quiniela Tegra",
+                            Reglas = "Reglas por definir.",
+                            TorneoId = 1
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Active = true,
+                            CreatedAt = new DateTime(2026, 6, 8, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatedBy = "seed",
+                            Nombre = "Quiniela Impex",
+                            Reglas = "Reglas por definir.",
+                            TorneoId = 1
+                        });
                 });
 
             modelBuilder.Entity("Quinela.Domain.Entities.Ranking", b =>
@@ -2610,6 +2902,10 @@ namespace Quinela.Infrastructure.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("pts");
 
+                    b.Property<int>("QuinielaId")
+                        .HasColumnType("integer")
+                        .HasColumnName("quiniela_id");
+
                     b.Property<int>("ResultadoAtinado")
                         .HasColumnType("integer")
                         .HasColumnName("resultado_atinado");
@@ -2634,6 +2930,9 @@ namespace Quinela.Infrastructure.Migrations
                         .HasColumnName("usuario");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("QuinielaId", "Usuario")
+                        .IsUnique();
 
                     b.ToTable("ranking", (string)null);
                 });
@@ -2714,6 +3013,169 @@ namespace Quinela.Infrastructure.Migrations
                         });
                 });
 
+            modelBuilder.Entity("Quinela.Domain.Entities.Torneo", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("Active")
+                        .HasColumnType("boolean")
+                        .HasColumnName("active");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasMaxLength(250)
+                        .HasColumnType("character varying(250)")
+                        .HasColumnName("created_by");
+
+                    b.Property<string>("Descripcion")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)")
+                        .HasColumnName("descripcion");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("updated_at");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasMaxLength(250)
+                        .HasColumnType("character varying(250)")
+                        .HasColumnName("updated_by");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("torneos", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Active = true,
+                            CreatedAt = new DateTime(2026, 6, 8, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatedBy = "seed",
+                            Descripcion = "Copa Mundial de la FIFA 2026"
+                        });
+                });
+
+            modelBuilder.Entity("Quinela.Domain.Entities.UsuarioQuiniela", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("Active")
+                        .HasColumnType("boolean")
+                        .HasColumnName("active");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasMaxLength(250)
+                        .HasColumnType("character varying(250)")
+                        .HasColumnName("created_by");
+
+                    b.Property<int>("QuinielaId")
+                        .HasColumnType("integer")
+                        .HasColumnName("quiniela_id");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("updated_at");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasMaxLength(250)
+                        .HasColumnType("character varying(250)")
+                        .HasColumnName("updated_by");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer")
+                        .HasColumnName("user_id");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("QuinielaId");
+
+                    b.HasIndex("UserId", "QuinielaId")
+                        .IsUnique();
+
+                    b.ToTable("usuarios_quinielas", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Active = true,
+                            CreatedAt = new DateTime(2026, 6, 8, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatedBy = "seed",
+                            QuinielaId = 1,
+                            UserId = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Active = true,
+                            CreatedAt = new DateTime(2026, 6, 8, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatedBy = "seed",
+                            QuinielaId = 2,
+                            UserId = 1
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Active = true,
+                            CreatedAt = new DateTime(2026, 6, 8, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatedBy = "seed",
+                            QuinielaId = 3,
+                            UserId = 1
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Active = true,
+                            CreatedAt = new DateTime(2026, 6, 8, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CreatedBy = "seed",
+                            QuinielaId = 2,
+                            UserId = 2
+                        });
+                });
+
+            modelBuilder.Entity("Quinela.Domain.Entities.Equipo", b =>
+                {
+                    b.HasOne("Quinela.Domain.Entities.Torneo", "Torneo")
+                        .WithMany()
+                        .HasForeignKey("TorneoId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Torneo");
+                });
+
+            modelBuilder.Entity("Quinela.Domain.Entities.Grupo", b =>
+                {
+                    b.HasOne("Quinela.Domain.Entities.Torneo", "Torneo")
+                        .WithMany()
+                        .HasForeignKey("TorneoId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Torneo");
+                });
+
             modelBuilder.Entity("Quinela.Domain.Entities.GrupoEquipo", b =>
                 {
                     b.HasOne("Quinela.Domain.Entities.Equipo", "Equipo")
@@ -2728,9 +3190,17 @@ namespace Quinela.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Quinela.Domain.Entities.Torneo", "Torneo")
+                        .WithMany()
+                        .HasForeignKey("TorneoId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.Navigation("Equipo");
 
                     b.Navigation("Grupo");
+
+                    b.Navigation("Torneo");
                 });
 
             modelBuilder.Entity("Quinela.Domain.Entities.Partido", b =>
@@ -2759,6 +3229,12 @@ namespace Quinela.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.HasOne("Quinela.Domain.Entities.Torneo", "Torneo")
+                        .WithMany()
+                        .HasForeignKey("TorneoId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.Navigation("EquipoLocal");
 
                     b.Navigation("EquipoVisitante");
@@ -2766,6 +3242,8 @@ namespace Quinela.Infrastructure.Migrations
                     b.Navigation("Grupo");
 
                     b.Navigation("TipoPartido");
+
+                    b.Navigation("Torneo");
                 });
 
             modelBuilder.Entity("Quinela.Domain.Entities.Prediccion", b =>
@@ -2776,7 +3254,48 @@ namespace Quinela.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.HasOne("Quinela.Domain.Entities.Quiniela", "Quiniela")
+                        .WithMany()
+                        .HasForeignKey("QuinielaId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.Navigation("Partido");
+
+                    b.Navigation("Quiniela");
+                });
+
+            modelBuilder.Entity("Quinela.Domain.Entities.Quiniela", b =>
+                {
+                    b.HasOne("Quinela.Domain.Entities.Torneo", "Torneo")
+                        .WithMany()
+                        .HasForeignKey("TorneoId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Torneo");
+                });
+
+            modelBuilder.Entity("Quinela.Domain.Entities.Ranking", b =>
+                {
+                    b.HasOne("Quinela.Domain.Entities.Quiniela", "Quiniela")
+                        .WithMany()
+                        .HasForeignKey("QuinielaId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Quiniela");
+                });
+
+            modelBuilder.Entity("Quinela.Domain.Entities.UsuarioQuiniela", b =>
+                {
+                    b.HasOne("Quinela.Domain.Entities.Quiniela", "Quiniela")
+                        .WithMany()
+                        .HasForeignKey("QuinielaId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Quiniela");
                 });
 
             modelBuilder.Entity("Quinela.Domain.Entities.Equipo", b =>

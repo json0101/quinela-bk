@@ -15,7 +15,7 @@ namespace Quinela.Api.Controllers
         public RankingController(ISender sender) => _sender = sender;
 
         [HttpGet]
-        public async Task<IActionResult> GetAll(CancellationToken ct)
-            => (await _sender.Send(new GetAllRankingQuery(), ct)).ToActionResult();
+        public async Task<IActionResult> GetAll([FromQuery] int quinielaId, CancellationToken ct)
+            => (await _sender.Send(new GetAllRankingQuery(quinielaId), ct)).ToActionResult();
     }
 }

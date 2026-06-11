@@ -3,6 +3,7 @@ namespace Quinela.Application.Features.Predicciones
     public class PrediccionDto
     {
         public int Id { get; set; }
+        public int QuinielaId { get; set; }
         public int PartidoId { get; set; }
         public int? Team1Resultado { get; set; }
         public int? Team2Resultado { get; set; }
@@ -16,6 +17,7 @@ namespace Quinela.Application.Features.Predicciones
 
     public class PrediccionCreateDto
     {
+        public int QuinielaId { get; set; }
         public int PartidoId { get; set; }
         public int? Team1Resultado { get; set; }
         public int? Team2Resultado { get; set; }
@@ -24,6 +26,7 @@ namespace Quinela.Application.Features.Predicciones
 
     public class PrediccionUpdateDto
     {
+        public int QuinielaId { get; set; }
         public int PartidoId { get; set; }
         public int? Team1Resultado { get; set; }
         public int? Team2Resultado { get; set; }
@@ -32,6 +35,7 @@ namespace Quinela.Application.Features.Predicciones
 
     public class PrediccionUpsertDto
     {
+        public int QuinielaId { get; set; }
         public int PartidoId { get; set; }
         public int? Team1Resultado { get; set; }
         public int? Team2Resultado { get; set; }

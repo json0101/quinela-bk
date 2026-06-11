@@ -9,6 +9,10 @@ namespace Quinela.Domain.Entities
     /// </summary>
     public class Prediccion : BaseEntity
     {
+        // Las predicciones son por quiniela.
+        public int QuinielaId { get; set; }
+        public Quiniela Quiniela { get; set; } = null!;
+
         public int PartidoId { get; set; }
         public Partido Partido { get; set; } = null!;
 

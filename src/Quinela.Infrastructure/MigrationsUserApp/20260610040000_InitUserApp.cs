@@ -392,12 +392,21 @@ namespace Quinela.Infrastructure.MigrationsUserApp
                     { 10, "Árbol de Accesos", "/sec/tree-access", 1, 9, false, 1, Seed, "seed", null, null, true },
                     { 11, "Árbol de Pantallas", "/sec/tree-screen", 1, 10, false, 1, Seed, "seed", null, null, true },
                     // --- Quinela (application_id = 2) ---
+                    // Padre "Mundial 2026": vistas del torneo en curso.
                     { 12, "Mundial 2026", "#", null, 1, true, 2, Seed, "seed", null, null, true },
-                    { 13, "Grupos", "/quinela/master/grupos", 12, 1, false, 2, Seed, "seed", null, null, true },
-                    { 14, "Equipos", "/quinela/master/equipos", 12, 2, false, 2, Seed, "seed", null, null, true },
-                    { 15, "Predicciones", "/quinela/predicciones", 12, 3, false, 2, Seed, "seed", null, null, true },
-                    { 16, "Ranking", "/quinela/ranking", 12, 4, false, 2, Seed, "seed", null, null, true },
-                    { 17, "Calendario", "/quinela/calendario", 12, 0, false, 2, Seed, "seed", null, null, true }
+                    { 17, "Calendario", "/quinela/calendario", 12, 1, false, 2, Seed, "seed", null, null, true },
+                    { 16, "Ranking", "/quinela/ranking", 12, 2, false, 2, Seed, "seed", null, null, true },
+                    { 24, "Live", "/quinela/live", 12, 3, false, 2, Seed, "seed", null, null, true },
+                    { 25, "Tabla de Grupos", "/quinela/grupos", 12, 4, false, 2, Seed, "seed", null, null, true },
+                    // Padre "Maestros": CRUD de catálogo (el usuario necesita acceso al padre para ver los hijos).
+                    { 21, "Maestros", "#", null, 2, true, 2, Seed, "seed", null, null, true },
+                    { 13, "Grupos", "/quinela/master/grupos", 21, 1, false, 2, Seed, "seed", null, null, true },
+                    { 14, "Equipos", "/quinela/master/equipos", 21, 2, false, 2, Seed, "seed", null, null, true },
+                    { 18, "Quinielas", "/quinela/master/quinielas", 21, 3, false, 2, Seed, "seed", null, null, true },
+                    { 19, "Torneos", "/quinela/master/torneos", 21, 4, false, 2, Seed, "seed", null, null, true },
+                    { 20, "Partidos", "/quinela/master/partidos", 21, 5, false, 2, Seed, "seed", null, null, true },
+                    { 22, "Tipos de Partido", "/quinela/master/tipos-partido", 21, 6, false, 2, Seed, "seed", null, null, true },
+                    { 23, "Usuarios - Quinelas", "/quinela/master/usuarios-quinielas", 21, 7, false, 2, Seed, "seed", null, null, true }
                 });
 
             // 5) Rol -> Screens. "Admin UserApp" (1) ve las screens de UserApp; "Admin Quinela" (2) las de Quinela.
@@ -421,9 +430,16 @@ namespace Quinela.Infrastructure.MigrationsUserApp
                     { 12, 2, 12, Seed, "seed", null, null, true },
                     { 13, 2, 13, Seed, "seed", null, null, true },
                     { 14, 2, 14, Seed, "seed", null, null, true },
-                    { 15, 2, 15, Seed, "seed", null, null, true },
                     { 16, 2, 16, Seed, "seed", null, null, true },
-                    { 17, 2, 17, Seed, "seed", null, null, true }
+                    { 17, 2, 17, Seed, "seed", null, null, true },
+                    { 18, 2, 18, Seed, "seed", null, null, true },
+                    { 19, 2, 19, Seed, "seed", null, null, true },
+                    { 20, 2, 20, Seed, "seed", null, null, true },
+                    { 21, 2, 21, Seed, "seed", null, null, true },
+                    { 22, 2, 22, Seed, "seed", null, null, true },
+                    { 23, 2, 23, Seed, "seed", null, null, true },
+                    { 24, 2, 24, Seed, "seed", null, null, true },
+                    { 25, 2, 25, Seed, "seed", null, null, true }
                 });
 
             // 6) Usuario -> Rol. Ambos usuarios reciben AMBOS roles (acceso total a las dos apps).

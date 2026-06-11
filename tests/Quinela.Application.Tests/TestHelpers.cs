@@ -33,6 +33,14 @@ internal static class TestHelpers
         return mock.Object;
     }
 
+    public static ICurrentUser CurrentUser(string userName, int? userId)
+    {
+        var mock = new Mock<ICurrentUser>();
+        mock.SetupGet(x => x.UserName).Returns(userName);
+        mock.SetupGet(x => x.UserId).Returns(userId);
+        return mock.Object;
+    }
+
     // IUserService que reconoce únicamente los usernames indicados como existentes en UserApp.
     public static IUserService UserService(params string[] existingUserNames)
     {

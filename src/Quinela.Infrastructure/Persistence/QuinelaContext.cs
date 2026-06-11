@@ -13,6 +13,8 @@ public class QuinelaContext : DbContext
     {
     }
 
+    public DbSet<Torneo> Torneos => Set<Torneo>();
+    public DbSet<Quiniela> Quinielas => Set<Quiniela>();
     public DbSet<Equipo> Equipos => Set<Equipo>();
     public DbSet<Grupo> Grupos => Set<Grupo>();
     public DbSet<GrupoEquipo> GruposEquipos => Set<GrupoEquipo>();
@@ -20,6 +22,7 @@ public class QuinelaContext : DbContext
     public DbSet<Partido> Partidos => Set<Partido>();
     public DbSet<Prediccion> Predicciones => Set<Prediccion>();
     public DbSet<Ranking> Rankings => Set<Ranking>();
+    public DbSet<UsuarioQuiniela> UsuariosQuinielas => Set<UsuarioQuiniela>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
