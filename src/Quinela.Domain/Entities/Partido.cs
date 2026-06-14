@@ -36,5 +36,7 @@ namespace Quinela.Domain.Entities
 
         // 'P' previa, 'E' en curso, 'T' terminado.
         public char Estado { get; set; }
+
+        public string? PartidoIdApi { get; set; }
     }
 }

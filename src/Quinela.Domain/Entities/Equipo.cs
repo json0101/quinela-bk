@@ -15,6 +15,9 @@ namespace Quinela.Domain.Entities
         // Nombre del archivo de la bandera (ej. "mx.svg"). La imagen vive en el FT: public/img/flags.
         public string? UrlBandera { get; set; }
 
+        public string? EquipoIdApi { get; set; }
+        public string? EquipoIdApiLargo { get; set; }
+
         // Relación con su grupo a través de la tabla intermedia (posición + estadísticas).
         public ICollection<GrupoEquipo> GrupoEquipos { get; set; } = new List<GrupoEquipo>();
     }

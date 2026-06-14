@@ -15,6 +15,8 @@ namespace Quinela.Infrastructure.Persistence.Configurations
             builder.Property(x => x.Confederacion).HasColumnName("confederacion").HasMaxLength(20).IsRequired();
             builder.Property(x => x.Anfitrion).HasColumnName("anfitrion").IsRequired();
             builder.Property(x => x.UrlBandera).HasColumnName("url_bandera").HasMaxLength(60);
+            builder.Property(x => x.EquipoIdApi).HasColumnName("equipo_id_api").HasMaxLength(20);
+            builder.Property(x => x.EquipoIdApiLargo).HasColumnName("equipo_id_api_largo").HasMaxLength(40);
             builder.Property(x => x.TorneoId).HasColumnName("torneo_id").IsRequired();
             builder.HasOne(x => x.Torneo).WithMany().HasForeignKey(x => x.TorneoId).OnDelete(DeleteBehavior.Restrict);
             builder.HasIndex(x => new { x.TorneoId, x.Nombre }).IsUnique();

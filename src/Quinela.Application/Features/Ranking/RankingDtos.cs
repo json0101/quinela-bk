@@ -3,6 +3,9 @@ namespace Quinela.Application.Features.Ranking
     public class RankingDto
     {
         public int Id { get; set; }
+        // Posición en la tabla (1 = primero). Empatados comparten posición y la
+        // siguiente se "salta" (ranking de competición estándar): 1,1,3...
+        public int Posicion { get; set; }
         public string Usuario { get; set; } = string.Empty;
         public int Pts { get; set; }
         public int ResultadoAtinado { get; set; }

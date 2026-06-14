@@ -55,7 +55,7 @@ namespace Quinela.Application.Features.Predicciones
                 .Where(x => x.Active && x.QuinielaId == request.QuinielaId && x.Username == request.Username
                     && x.Partido.Active && x.Partido.Estado == 'T'
                     && x.Partido.ResultadoLocalId != null && x.Partido.ResultadoVisitanteId != null)
-                .OrderBy(x => x.Partido.FechaPartido).ThenBy(x => x.PartidoId)
+                .OrderByDescending(x => x.Partido.FechaPartido).ThenByDescending(x => x.PartidoId)
                 .Select(x => new Row
                 {
                     PartidoId = x.PartidoId,

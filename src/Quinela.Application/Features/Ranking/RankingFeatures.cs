@@ -37,7 +37,31 @@ namespace Quinela.Application.Features.Ranking
                     UpdatedBy = x.UpdatedBy
                 })
                 .ToListAsync(ct);
+
+            AsignarPosiciones(rows);
             return Result.Success(rows);
+        }
+
+        // Asigna la posición usando ranking de competición estándar (1,1,3...):
+        // dos filas empatan (misma posición) solo si coinciden en Pts, exactos y
+        // atinados; cuando hay empate, la siguiente posición se salta.
+        // La lista debe venir ya ordenada por el criterio de desempate.
+        internal static void AsignarPosiciones(List<RankingDto> rows)
+        {
+            for (int i = 0; i < rows.Count; i++)
+            {
+                var actual = rows[i];
+                var anterior = i > 0 ? rows[i - 1] : null;
+
+                bool empata = anterior != null
+                    && anterior.Pts == actual.Pts
+                    && anterior.ResultadoExacto == actual.ResultadoExacto
+                    && anterior.ResultadoAtinado == actual.ResultadoAtinado;
+
+                // Si empata con el anterior, comparte su posición; si no, ocupa su
+                // índice (1-based), lo que "salta" las posiciones consumidas por empates.
+                actual.Posicion = empata ? anterior!.Posicion : i + 1;
+            }
         }
     }
 }

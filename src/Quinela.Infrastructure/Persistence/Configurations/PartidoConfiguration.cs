@@ -23,6 +23,7 @@ namespace Quinela.Infrastructure.Persistence.Configurations
             builder.Property(x => x.PtsVisitante).HasColumnName("pts_visitante");
             builder.Property(x => x.TipoPartidoId).HasColumnName("tipo_partido_id").IsRequired();
             builder.Property(x => x.Estado).HasColumnName("estado").HasColumnType("char(1)").IsRequired();
+            builder.Property(x => x.PartidoIdApi).HasColumnName("partido_id_api").HasMaxLength(40);
 
             builder.HasOne(x => x.Torneo)
                 .WithMany()
