@@ -42,6 +42,7 @@ namespace Quinela.Application.Features.Master.Partidos
                 PtsLocal = p.PtsLocal,
                 PtsVisitante = p.PtsVisitante,
                 Estado = p.Estado,
+                PartidoIdApi = p.PartidoIdApi,
                 Active = p.Active,
                 CreatedAt = p.CreatedAt,
                 CreatedBy = p.CreatedBy,
@@ -91,7 +92,7 @@ namespace Quinela.Application.Features.Master.Partidos
     // ----- Create -----
     public sealed record CreatePartidoCommand(
         DateTime FechaPartido, int TorneoId, int GrupoId, int EquipoLocalId, int EquipoVisitanteId, int TipoPartidoId,
-        char Estado, int? ResultadoLocal, int? ResultadoVisitante, bool Active)
+        char Estado, int? ResultadoLocal, int? ResultadoVisitante, string? PartidoIdApi, bool Active)
         : IRequest<Result<PartidoAdminDto>>;
 
     public sealed class CreatePartidoValidator : AbstractValidator<CreatePartidoCommand>
@@ -135,6 +136,7 @@ namespace Quinela.Application.Features.Master.Partidos
                 EquipoLocalId = cmd.EquipoLocalId,
                 EquipoVisitanteId = cmd.EquipoVisitanteId,
                 TipoPartidoId = cmd.TipoPartidoId,
+                PartidoIdApi = cmd.PartidoIdApi,
                 Active = cmd.Active,
                 CreatedAt = DateTime.UtcNow,
                 CreatedBy = _currentUser.UserName
@@ -158,7 +160,7 @@ namespace Quinela.Application.Features.Master.Partidos
     // ----- Update (edición manual completa: ficha + estado + goles, y recalcula el ranking) -----
     public sealed record UpdatePartidoCommand(
         int Id, DateTime FechaPartido, int TorneoId, int GrupoId, int EquipoLocalId, int EquipoVisitanteId, int TipoPartidoId,
-        char Estado, int? ResultadoLocal, int? ResultadoVisitante, bool Active)
+        char Estado, int? ResultadoLocal, int? ResultadoVisitante, string? PartidoIdApi, bool Active)
         : IRequest<Result<PartidoAdminDto>>;
 
     public sealed class UpdatePartidoValidator : AbstractValidator<UpdatePartidoCommand>
@@ -204,6 +206,7 @@ namespace Quinela.Application.Features.Master.Partidos
             entity.EquipoLocalId = cmd.EquipoLocalId;
             entity.EquipoVisitanteId = cmd.EquipoVisitanteId;
             entity.TipoPartidoId = cmd.TipoPartidoId;
+            entity.PartidoIdApi = cmd.PartidoIdApi;
             entity.Active = cmd.Active;
             // Estado + goles + puntos del partido (P limpia el marcador; E/T lo calcula).
             PartidoEstadoHelper.Aplicar(entity, cmd.Estado, cmd.ResultadoLocal, cmd.ResultadoVisitante, tipo);

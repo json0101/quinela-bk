@@ -27,6 +27,8 @@ namespace Quinela.Application.Features.Master.Partidos
         public int? PtsVisitante { get; set; }
 
         public char Estado { get; set; }
+        // Id del game en el API externo (worldcup26.ir).
+        public string? PartidoIdApi { get; set; }
         public bool Active { get; set; }
         public DateTime CreatedAt { get; set; }
         public string CreatedBy { get; set; } = string.Empty;
@@ -45,6 +47,7 @@ namespace Quinela.Application.Features.Master.Partidos
         public char Estado { get; set; } = 'P';
         public int? ResultadoLocal { get; set; }
         public int? ResultadoVisitante { get; set; }
+        public string? PartidoIdApi { get; set; }
         public bool Active { get; set; } = true;
     }
 
@@ -60,6 +63,7 @@ namespace Quinela.Application.Features.Master.Partidos
         public char Estado { get; set; } = 'P';
         public int? ResultadoLocal { get; set; }
         public int? ResultadoVisitante { get; set; }
+        public string? PartidoIdApi { get; set; }
         public bool Active { get; set; }
     }
 }

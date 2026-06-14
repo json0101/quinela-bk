@@ -7,6 +7,8 @@ namespace Quinela.Application.Features.Master.Equipos
         public string Confederacion { get; set; } = string.Empty;
         public bool Anfitrion { get; set; }
         public string? UrlBandera { get; set; }
+        public string? EquipoIdApi { get; set; }
+        public string? EquipoIdApiLargo { get; set; }
         public int TorneoId { get; set; }
         public string Torneo { get; set; } = string.Empty;
         public bool Active { get; set; }
@@ -22,6 +24,8 @@ namespace Quinela.Application.Features.Master.Equipos
         public string Confederacion { get; set; } = string.Empty;
         public bool Anfitrion { get; set; }
         public string? UrlBandera { get; set; }
+        public string? EquipoIdApi { get; set; }
+        public string? EquipoIdApiLargo { get; set; }
         public int TorneoId { get; set; }
         public bool Active { get; set; } = true;
     }
@@ -32,6 +36,8 @@ namespace Quinela.Application.Features.Master.Equipos
         public string Confederacion { get; set; } = string.Empty;
         public bool Anfitrion { get; set; }
         public string? UrlBandera { get; set; }
+        public string? EquipoIdApi { get; set; }
+        public string? EquipoIdApiLargo { get; set; }
         public int TorneoId { get; set; }
         public bool Active { get; set; }
     }

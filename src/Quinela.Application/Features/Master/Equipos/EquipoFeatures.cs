@@ -28,6 +28,7 @@ namespace Quinela.Application.Features.Master.Equipos
                 .Select(x => new EquipoDto
                 {
                     Id = x.Id, Nombre = x.Nombre, Confederacion = x.Confederacion, Anfitrion = x.Anfitrion, UrlBandera = x.UrlBandera,
+                    EquipoIdApi = x.EquipoIdApi, EquipoIdApiLargo = x.EquipoIdApiLargo,
                     TorneoId = x.TorneoId, Torneo = x.Torneo.Descripcion, Active = x.Active,
                     CreatedAt = x.CreatedAt, CreatedBy = x.CreatedBy, UpdatedAt = x.UpdatedAt, UpdatedBy = x.UpdatedBy
                 }).ToListAsync(ct);
@@ -49,6 +50,7 @@ namespace Quinela.Application.Features.Master.Equipos
                 .Select(e => new EquipoDto
                 {
                     Id = e.Id, Nombre = e.Nombre, Confederacion = e.Confederacion, Anfitrion = e.Anfitrion, UrlBandera = e.UrlBandera,
+                    EquipoIdApi = e.EquipoIdApi, EquipoIdApiLargo = e.EquipoIdApiLargo,
                     TorneoId = e.TorneoId, Torneo = e.Torneo.Descripcion, Active = e.Active,
                     CreatedAt = e.CreatedAt, CreatedBy = e.CreatedBy, UpdatedAt = e.UpdatedAt, UpdatedBy = e.UpdatedBy
                 })
@@ -59,7 +61,7 @@ namespace Quinela.Application.Features.Master.Equipos
     }
 
     // ----- Create -----
-    public sealed record CreateEquipoCommand(string Nombre, string Confederacion, bool Anfitrion, string? UrlBandera, int TorneoId, bool Active) : IRequest<Result<EquipoDto>>;
+    public sealed record CreateEquipoCommand(string Nombre, string Confederacion, bool Anfitrion, string? UrlBandera, string? EquipoIdApi, string? EquipoIdApiLargo, int TorneoId, bool Active) : IRequest<Result<EquipoDto>>;
 
     public sealed class CreateEquipoValidator : AbstractValidator<CreateEquipoCommand>
     {
@@ -93,7 +95,8 @@ namespace Quinela.Application.Features.Master.Equipos
             var entity = new Equipo
             {
                 Nombre = nombre, Confederacion = cmd.Confederacion.Trim(), Anfitrion = cmd.Anfitrion,
-                UrlBandera = cmd.UrlBandera, TorneoId = cmd.TorneoId, Active = cmd.Active,
+                UrlBandera = cmd.UrlBandera, EquipoIdApi = cmd.EquipoIdApi, EquipoIdApiLargo = cmd.EquipoIdApiLargo,
+                TorneoId = cmd.TorneoId, Active = cmd.Active,
                 CreatedAt = DateTime.UtcNow, CreatedBy = _currentUser.UserName
             };
             _repo.Insert(entity);
@@ -102,14 +105,16 @@ namespace Quinela.Application.Features.Master.Equipos
             return Result.Success(new EquipoDto
             {
                 Id = entity.Id, Nombre = entity.Nombre, Confederacion = entity.Confederacion,
-                Anfitrion = entity.Anfitrion, UrlBandera = entity.UrlBandera, TorneoId = entity.TorneoId, Active = entity.Active,
+                Anfitrion = entity.Anfitrion, UrlBandera = entity.UrlBandera,
+                EquipoIdApi = entity.EquipoIdApi, EquipoIdApiLargo = entity.EquipoIdApiLargo,
+                TorneoId = entity.TorneoId, Active = entity.Active,
                 CreatedAt = entity.CreatedAt, CreatedBy = entity.CreatedBy
             });
         }
     }
 
     // ----- Update -----
-    public sealed record UpdateEquipoCommand(int Id, string Nombre, string Confederacion, bool Anfitrion, string? UrlBandera, int TorneoId, bool Active) : IRequest<Result<EquipoDto>>;
+    public sealed record UpdateEquipoCommand(int Id, string Nombre, string Confederacion, bool Anfitrion, string? UrlBandera, string? EquipoIdApi, string? EquipoIdApiLargo, int TorneoId, bool Active) : IRequest<Result<EquipoDto>>;
 
     public sealed class UpdateEquipoValidator : AbstractValidator<UpdateEquipoCommand>
     {
@@ -147,6 +152,8 @@ namespace Quinela.Application.Features.Master.Equipos
             entity.Confederacion = cmd.Confederacion.Trim();
             entity.Anfitrion = cmd.Anfitrion;
             entity.UrlBandera = cmd.UrlBandera;
+            entity.EquipoIdApi = cmd.EquipoIdApi;
+            entity.EquipoIdApiLargo = cmd.EquipoIdApiLargo;
             entity.TorneoId = cmd.TorneoId;
             entity.Active = cmd.Active;
             entity.UpdatedAt = DateTime.UtcNow;
@@ -156,7 +163,9 @@ namespace Quinela.Application.Features.Master.Equipos
             return Result.Success(new EquipoDto
             {
                 Id = entity.Id, Nombre = entity.Nombre, Confederacion = entity.Confederacion,
-                Anfitrion = entity.Anfitrion, UrlBandera = entity.UrlBandera, TorneoId = entity.TorneoId, Active = entity.Active,
+                Anfitrion = entity.Anfitrion, UrlBandera = entity.UrlBandera,
+                EquipoIdApi = entity.EquipoIdApi, EquipoIdApiLargo = entity.EquipoIdApiLargo,
+                TorneoId = entity.TorneoId, Active = entity.Active,
                 CreatedAt = entity.CreatedAt, CreatedBy = entity.CreatedBy,
                 UpdatedAt = entity.UpdatedAt, UpdatedBy = entity.UpdatedBy
             });

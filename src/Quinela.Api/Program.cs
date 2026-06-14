@@ -80,6 +80,21 @@ builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 // Servicio de recálculo de grupos + ranking (se dispara al cambiar el estado de un partido).
 builder.Services.AddScoped<IRankingService, Quinela.Application.Features.Ranking.RankingService>();
 
+// --- Automatización de partidos (worldcup26.ir) ---
+// Cliente HTTP tipado del API externo.
+var worldCupApiBaseUrl = builder.Configuration["AppSetting:WorldCupApiBaseUrl"] ?? "https://worldcup26.ir";
+builder.Services.AddHttpClient<Quinela.Application.Features.AutomationMatch.IWorldCupApiClient,
+    Quinela.Application.Features.AutomationMatch.WorldCupApiClient>(client =>
+{
+    client.BaseAddress = new Uri(worldCupApiBaseUrl);
+    client.Timeout = TimeSpan.FromSeconds(15);
+});
+// Servicios hermanos del feature AutomationMatch.
+builder.Services.AddScoped<Quinela.Application.Features.AutomationMatch.MatchStartVerificationService>();
+builder.Services.AddScoped<Quinela.Application.Features.AutomationMatch.MatchStatusVerificationService>();
+// Orquestador en background (cada 30s); se apaga con AppSetting:AutomationMatchEnabled = false.
+builder.Services.AddHostedService<Quinela.Api.AutomationMatch.AutomationMatchHostedService>();
+
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

@@ -27,13 +27,13 @@ namespace Quinela.Api.Controllers.Master
         public async Task<IActionResult> Create([FromBody] PartidoCreateDto dto, CancellationToken ct)
             => (await _sender.Send(new CreatePartidoCommand(
                 dto.FechaPartido, dto.TorneoId, dto.GrupoId, dto.EquipoLocalId, dto.EquipoVisitanteId, dto.TipoPartidoId,
-                dto.Estado, dto.ResultadoLocal, dto.ResultadoVisitante, dto.Active), ct)).ToActionResult();
+                dto.Estado, dto.ResultadoLocal, dto.ResultadoVisitante, dto.PartidoIdApi, dto.Active), ct)).ToActionResult();
 
         [HttpPut("{id:int}")]
         public async Task<IActionResult> Update(int id, [FromBody] PartidoUpdateDto dto, CancellationToken ct)
             => (await _sender.Send(new UpdatePartidoCommand(
                 id, dto.FechaPartido, dto.TorneoId, dto.GrupoId, dto.EquipoLocalId, dto.EquipoVisitanteId, dto.TipoPartidoId,
-                dto.Estado, dto.ResultadoLocal, dto.ResultadoVisitante, dto.Active), ct)).ToActionResult();
+                dto.Estado, dto.ResultadoLocal, dto.ResultadoVisitante, dto.PartidoIdApi, dto.Active), ct)).ToActionResult();
 
         [HttpDelete("{id:int}")]
         public async Task<IActionResult> Delete(int id, CancellationToken ct)
