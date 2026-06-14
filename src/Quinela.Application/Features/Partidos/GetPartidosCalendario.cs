@@ -13,6 +13,9 @@ namespace Quinela.Application.Features.Partidos
     internal sealed class GetPartidosCalendarioHandler
         : IRequestHandler<GetPartidosCalendarioQuery, Result<List<PartidoCalendarioDto>>>
     {
+        // Honduras = UTC-6 todo el año (sin horario de verano).
+        private static readonly TimeZoneInfo Tegucigalpa = TimeZoneInfo.FindSystemTimeZoneById("America/Tegucigalpa");
+
         private readonly IRepository<Partido> _partidos;
         private readonly IRepository<Prediccion> _predicciones;
         private readonly IRepository<Quiniela> _quinielas;
@@ -30,11 +33,16 @@ namespace Quinela.Application.Features.Partidos
                 .Where(q => q.Id == request.QuinielaId).Select(q => (int?)q.TorneoId).FirstOrDefaultAsync(ct);
             if (torneoId is null) return Result.Success(new List<PartidoCalendarioDto>());
 
-            // Normaliza el rango a límites UTC por día (la columna es timestamptz).
+            // El cliente envía las fechas como DÍAS de Tegucigalpa (así las ve el usuario).
+            // Se convierten a límites UTC [inicio del día, inicio del día siguiente) para
+            // filtrar la columna timestamptz, de modo que el día mostrado (en hora de
+            // Tegucigalpa) coincida con el día filtrado.
             DateTime? desde = request.Desde.HasValue
-                ? DateTime.SpecifyKind(request.Desde.Value.Date, DateTimeKind.Utc) : null;
+                ? TimeZoneInfo.ConvertTimeToUtc(DateTime.SpecifyKind(request.Desde.Value.Date, DateTimeKind.Unspecified), Tegucigalpa)
+                : null;
             DateTime? hasta = request.Hasta.HasValue
-                ? DateTime.SpecifyKind(request.Hasta.Value.Date.AddDays(1), DateTimeKind.Utc) : null;
+                ? TimeZoneInfo.ConvertTimeToUtc(DateTime.SpecifyKind(request.Hasta.Value.Date.AddDays(1), DateTimeKind.Unspecified), Tegucigalpa)
+                : null;
 
             var rows = await _partidos.GetDbSet().AsNoTracking()
                 .Where(p => p.Active && p.TorneoId == torneoId.Value)
