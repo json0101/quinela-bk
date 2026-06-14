@@ -30,9 +30,11 @@ namespace Quinela.Application.Features.AutomationMatch
 
         public async Task EjecutarAsync(CancellationToken ct)
         {
-            var ahoraUtc = DateTime.UtcNow;
+            // Arranca 30s antes de la hora oficial: así el partido ya está en curso si hay
+            // un gol temprano y se evita que los usuarios cambien su predicción por el delay.
+            var ahoraUtc = DateTime.UtcNow.AddSeconds(30);
 
-            // Partidos en 'Previa' activos cuya fecha/hora (UTC en BD) ya llegó.
+            // Partidos en 'Previa' activos cuya fecha/hora (UTC en BD) ya llegó (o llega en 30s).
             var porArrancar = await _partidos.GetDbSet().AsNoTracking()
                 .Where(p => p.Active && p.Estado == 'P' && p.FechaPartido <= ahoraUtc)
                 .Select(p => new PartidoCmd(
