@@ -80,6 +80,10 @@ builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 // Servicio de recálculo de grupos + ranking (se dispara al cambiar el estado de un partido).
 builder.Services.AddScoped<IRankingService, Quinela.Application.Features.Ranking.RankingService>();
 
+// Distribución de la eliminatoria del Mundial 2026 (resuelve equipos y propaga el árbol).
+builder.Services.AddScoped<Quinela.Application.Features.Eliminatoria.IDistributionEliminatoryWorldCup2026,
+    Quinela.Application.Features.Eliminatoria.DistributionEliminatoryWorldCup2026>();
+
 // --- Automatización de partidos (worldcup26.ir) ---
 // Cliente HTTP tipado del API externo.
 var worldCupApiBaseUrl = builder.Configuration["AppSetting:WorldCupApiBaseUrl"] ?? "https://worldcup26.ir";

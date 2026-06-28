@@ -25,13 +25,13 @@ namespace Quinela.Api.Controllers.Master
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] TipoPartidoCreateDto dto, CancellationToken ct)
             => (await _sender.Send(new CreateTipoPartidoCommand(
-                dto.Descripcion, dto.PtsPartidoVictoria, dto.PtsPartidoEmpate,
+                dto.Descripcion, dto.FaseId, dto.PtsPartidoVictoria, dto.PtsPartidoEmpate,
                 dto.PtsQuinelaResultadoExacto, dto.PtsQuinelaResultadoAcertado, dto.Active), ct)).ToActionResult();
 
         [HttpPut("{id:int}")]
         public async Task<IActionResult> Update(int id, [FromBody] TipoPartidoUpdateDto dto, CancellationToken ct)
             => (await _sender.Send(new UpdateTipoPartidoCommand(
-                id, dto.Descripcion, dto.PtsPartidoVictoria, dto.PtsPartidoEmpate,
+                id, dto.Descripcion, dto.FaseId, dto.PtsPartidoVictoria, dto.PtsPartidoEmpate,
                 dto.PtsQuinelaResultadoExacto, dto.PtsQuinelaResultadoAcertado, dto.Active), ct)).ToActionResult();
 
         [HttpDelete("{id:int}")]

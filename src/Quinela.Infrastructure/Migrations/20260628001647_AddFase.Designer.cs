@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Quinela.Infrastructure.Persistence;
@@ -11,9 +12,11 @@ using Quinela.Infrastructure.Persistence;
 namespace Quinela.Infrastructure.Migrations
 {
     [DbContext(typeof(QuinelaContext))]
-    partial class QuinelaContextModelSnapshot : ModelSnapshot
+    [Migration("20260628001647_AddFase")]
+    partial class AddFase
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1716,12 +1719,6 @@ namespace Quinela.Infrastructure.Migrations
                         .HasColumnType("boolean")
                         .HasColumnName("active");
 
-                    b.Property<bool>("AplicaDefinicionPenales")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("boolean")
-                        .HasDefaultValue(false)
-                        .HasColumnName("aplica_definicion_penales");
-
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("created_at");
@@ -1731,10 +1728,6 @@ namespace Quinela.Infrastructure.Migrations
                         .HasMaxLength(250)
                         .HasColumnType("character varying(250)")
                         .HasColumnName("created_by");
-
-                    b.Property<int?>("EquipoGanadorId")
-                        .HasColumnType("integer")
-                        .HasColumnName("equipo_ganador_id");
 
                     b.Property<int>("EquipoLocalId")
                         .HasColumnType("integer")
@@ -1748,10 +1741,6 @@ namespace Quinela.Infrastructure.Migrations
                         .HasColumnType("char(1)")
                         .HasColumnName("estado");
 
-                    b.Property<int>("FaseId")
-                        .HasColumnType("integer")
-                        .HasColumnName("fase_id");
-
                     b.Property<DateTime>("FechaPartido")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("fecha_partido");
@@ -1760,30 +1749,10 @@ namespace Quinela.Infrastructure.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("grupo_id");
 
-                    b.Property<int?>("PartidoGanadorLocalId")
-                        .HasColumnType("integer")
-                        .HasColumnName("partido_ganador_local_id");
-
-                    b.Property<int?>("PartidoGanadorVisitanteId")
-                        .HasColumnType("integer")
-                        .HasColumnName("partido_ganador_visitante_id");
-
                     b.Property<string>("PartidoIdApi")
                         .HasMaxLength(40)
                         .HasColumnType("character varying(40)")
                         .HasColumnName("partido_id_api");
-
-                    b.Property<bool?>("PartidoSeDefiniraEnPenales")
-                        .HasColumnType("boolean")
-                        .HasColumnName("partido_se_definira_en_penales");
-
-                    b.Property<int?>("PenalesAnotadosLocal")
-                        .HasColumnType("integer")
-                        .HasColumnName("penales_anotados_local");
-
-                    b.Property<int?>("PenalesAnotadosVisitante")
-                        .HasColumnType("integer")
-                        .HasColumnName("penales_anotados_visitante");
 
                     b.Property<int?>("PtsLocal")
                         .HasColumnType("integer")
@@ -1820,19 +1789,11 @@ namespace Quinela.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("EquipoGanadorId");
-
                     b.HasIndex("EquipoLocalId");
 
                     b.HasIndex("EquipoVisitanteId");
 
-                    b.HasIndex("FaseId");
-
                     b.HasIndex("GrupoId");
-
-                    b.HasIndex("PartidoGanadorLocalId");
-
-                    b.HasIndex("PartidoGanadorVisitanteId");
 
                     b.HasIndex("TipoPartidoId");
 
@@ -1845,13 +1806,11 @@ namespace Quinela.Infrastructure.Migrations
                         {
                             Id = 1,
                             Active = true,
-                            AplicaDefinicionPenales = false,
                             CreatedAt = new DateTime(2026, 6, 8, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "seed",
                             EquipoLocalId = 1,
                             EquipoVisitanteId = 2,
                             Estado = 'P',
-                            FaseId = 1,
                             FechaPartido = new DateTime(2026, 6, 11, 0, 0, 0, 0, DateTimeKind.Utc),
                             GrupoId = 1,
                             TipoPartidoId = 1,
@@ -1861,13 +1820,11 @@ namespace Quinela.Infrastructure.Migrations
                         {
                             Id = 2,
                             Active = true,
-                            AplicaDefinicionPenales = false,
                             CreatedAt = new DateTime(2026, 6, 8, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "seed",
                             EquipoLocalId = 3,
                             EquipoVisitanteId = 4,
                             Estado = 'P',
-                            FaseId = 1,
                             FechaPartido = new DateTime(2026, 6, 11, 0, 0, 0, 0, DateTimeKind.Utc),
                             GrupoId = 1,
                             TipoPartidoId = 1,
@@ -1877,13 +1834,11 @@ namespace Quinela.Infrastructure.Migrations
                         {
                             Id = 3,
                             Active = true,
-                            AplicaDefinicionPenales = false,
                             CreatedAt = new DateTime(2026, 6, 8, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "seed",
                             EquipoLocalId = 5,
                             EquipoVisitanteId = 6,
                             Estado = 'P',
-                            FaseId = 1,
                             FechaPartido = new DateTime(2026, 6, 12, 0, 0, 0, 0, DateTimeKind.Utc),
                             GrupoId = 2,
                             TipoPartidoId = 1,
@@ -1893,13 +1848,11 @@ namespace Quinela.Infrastructure.Migrations
                         {
                             Id = 4,
                             Active = true,
-                            AplicaDefinicionPenales = false,
                             CreatedAt = new DateTime(2026, 6, 8, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "seed",
                             EquipoLocalId = 13,
                             EquipoVisitanteId = 14,
                             Estado = 'P',
-                            FaseId = 1,
                             FechaPartido = new DateTime(2026, 6, 12, 0, 0, 0, 0, DateTimeKind.Utc),
                             GrupoId = 4,
                             TipoPartidoId = 1,
@@ -1909,13 +1862,11 @@ namespace Quinela.Infrastructure.Migrations
                         {
                             Id = 5,
                             Active = true,
-                            AplicaDefinicionPenales = false,
                             CreatedAt = new DateTime(2026, 6, 8, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "seed",
                             EquipoLocalId = 7,
                             EquipoVisitanteId = 8,
                             Estado = 'P',
-                            FaseId = 1,
                             FechaPartido = new DateTime(2026, 6, 13, 0, 0, 0, 0, DateTimeKind.Utc),
                             GrupoId = 2,
                             TipoPartidoId = 1,
@@ -1925,13 +1876,11 @@ namespace Quinela.Infrastructure.Migrations
                         {
                             Id = 6,
                             Active = true,
-                            AplicaDefinicionPenales = false,
                             CreatedAt = new DateTime(2026, 6, 8, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "seed",
                             EquipoLocalId = 9,
                             EquipoVisitanteId = 10,
                             Estado = 'P',
-                            FaseId = 1,
                             FechaPartido = new DateTime(2026, 6, 13, 0, 0, 0, 0, DateTimeKind.Utc),
                             GrupoId = 3,
                             TipoPartidoId = 1,
@@ -1941,13 +1890,11 @@ namespace Quinela.Infrastructure.Migrations
                         {
                             Id = 7,
                             Active = true,
-                            AplicaDefinicionPenales = false,
                             CreatedAt = new DateTime(2026, 6, 8, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "seed",
                             EquipoLocalId = 11,
                             EquipoVisitanteId = 12,
                             Estado = 'P',
-                            FaseId = 1,
                             FechaPartido = new DateTime(2026, 6, 13, 0, 0, 0, 0, DateTimeKind.Utc),
                             GrupoId = 3,
                             TipoPartidoId = 1,
@@ -1957,13 +1904,11 @@ namespace Quinela.Infrastructure.Migrations
                         {
                             Id = 8,
                             Active = true,
-                            AplicaDefinicionPenales = false,
                             CreatedAt = new DateTime(2026, 6, 8, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "seed",
                             EquipoLocalId = 15,
                             EquipoVisitanteId = 16,
                             Estado = 'P',
-                            FaseId = 1,
                             FechaPartido = new DateTime(2026, 6, 13, 0, 0, 0, 0, DateTimeKind.Utc),
                             GrupoId = 4,
                             TipoPartidoId = 1,
@@ -1973,13 +1918,11 @@ namespace Quinela.Infrastructure.Migrations
                         {
                             Id = 9,
                             Active = true,
-                            AplicaDefinicionPenales = false,
                             CreatedAt = new DateTime(2026, 6, 8, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "seed",
                             EquipoLocalId = 17,
                             EquipoVisitanteId = 18,
                             Estado = 'P',
-                            FaseId = 1,
                             FechaPartido = new DateTime(2026, 6, 14, 0, 0, 0, 0, DateTimeKind.Utc),
                             GrupoId = 5,
                             TipoPartidoId = 1,
@@ -1989,13 +1932,11 @@ namespace Quinela.Infrastructure.Migrations
                         {
                             Id = 10,
                             Active = true,
-                            AplicaDefinicionPenales = false,
                             CreatedAt = new DateTime(2026, 6, 8, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "seed",
                             EquipoLocalId = 21,
                             EquipoVisitanteId = 22,
                             Estado = 'P',
-                            FaseId = 1,
                             FechaPartido = new DateTime(2026, 6, 14, 0, 0, 0, 0, DateTimeKind.Utc),
                             GrupoId = 6,
                             TipoPartidoId = 1,
@@ -2005,13 +1946,11 @@ namespace Quinela.Infrastructure.Migrations
                         {
                             Id = 11,
                             Active = true,
-                            AplicaDefinicionPenales = false,
                             CreatedAt = new DateTime(2026, 6, 8, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "seed",
                             EquipoLocalId = 19,
                             EquipoVisitanteId = 20,
                             Estado = 'P',
-                            FaseId = 1,
                             FechaPartido = new DateTime(2026, 6, 14, 0, 0, 0, 0, DateTimeKind.Utc),
                             GrupoId = 5,
                             TipoPartidoId = 1,
@@ -2021,13 +1960,11 @@ namespace Quinela.Infrastructure.Migrations
                         {
                             Id = 12,
                             Active = true,
-                            AplicaDefinicionPenales = false,
                             CreatedAt = new DateTime(2026, 6, 8, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "seed",
                             EquipoLocalId = 23,
                             EquipoVisitanteId = 24,
                             Estado = 'P',
-                            FaseId = 1,
                             FechaPartido = new DateTime(2026, 6, 14, 0, 0, 0, 0, DateTimeKind.Utc),
                             GrupoId = 6,
                             TipoPartidoId = 1,
@@ -2037,13 +1974,11 @@ namespace Quinela.Infrastructure.Migrations
                         {
                             Id = 13,
                             Active = true,
-                            AplicaDefinicionPenales = false,
                             CreatedAt = new DateTime(2026, 6, 8, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "seed",
                             EquipoLocalId = 29,
                             EquipoVisitanteId = 30,
                             Estado = 'P',
-                            FaseId = 1,
                             FechaPartido = new DateTime(2026, 6, 15, 0, 0, 0, 0, DateTimeKind.Utc),
                             GrupoId = 8,
                             TipoPartidoId = 1,
@@ -2053,13 +1988,11 @@ namespace Quinela.Infrastructure.Migrations
                         {
                             Id = 14,
                             Active = true,
-                            AplicaDefinicionPenales = false,
                             CreatedAt = new DateTime(2026, 6, 8, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "seed",
                             EquipoLocalId = 25,
                             EquipoVisitanteId = 26,
                             Estado = 'P',
-                            FaseId = 1,
                             FechaPartido = new DateTime(2026, 6, 15, 0, 0, 0, 0, DateTimeKind.Utc),
                             GrupoId = 7,
                             TipoPartidoId = 1,
@@ -2069,13 +2002,11 @@ namespace Quinela.Infrastructure.Migrations
                         {
                             Id = 15,
                             Active = true,
-                            AplicaDefinicionPenales = false,
                             CreatedAt = new DateTime(2026, 6, 8, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "seed",
                             EquipoLocalId = 31,
                             EquipoVisitanteId = 32,
                             Estado = 'P',
-                            FaseId = 1,
                             FechaPartido = new DateTime(2026, 6, 15, 0, 0, 0, 0, DateTimeKind.Utc),
                             GrupoId = 8,
                             TipoPartidoId = 1,
@@ -2085,13 +2016,11 @@ namespace Quinela.Infrastructure.Migrations
                         {
                             Id = 16,
                             Active = true,
-                            AplicaDefinicionPenales = false,
                             CreatedAt = new DateTime(2026, 6, 8, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "seed",
                             EquipoLocalId = 27,
                             EquipoVisitanteId = 28,
                             Estado = 'P',
-                            FaseId = 1,
                             FechaPartido = new DateTime(2026, 6, 15, 0, 0, 0, 0, DateTimeKind.Utc),
                             GrupoId = 7,
                             TipoPartidoId = 1,
@@ -2101,13 +2030,11 @@ namespace Quinela.Infrastructure.Migrations
                         {
                             Id = 17,
                             Active = true,
-                            AplicaDefinicionPenales = false,
                             CreatedAt = new DateTime(2026, 6, 8, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "seed",
                             EquipoLocalId = 33,
                             EquipoVisitanteId = 34,
                             Estado = 'P',
-                            FaseId = 1,
                             FechaPartido = new DateTime(2026, 6, 16, 0, 0, 0, 0, DateTimeKind.Utc),
                             GrupoId = 9,
                             TipoPartidoId = 1,
@@ -2117,13 +2044,11 @@ namespace Quinela.Infrastructure.Migrations
                         {
                             Id = 18,
                             Active = true,
-                            AplicaDefinicionPenales = false,
                             CreatedAt = new DateTime(2026, 6, 8, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "seed",
                             EquipoLocalId = 35,
                             EquipoVisitanteId = 36,
                             Estado = 'P',
-                            FaseId = 1,
                             FechaPartido = new DateTime(2026, 6, 16, 0, 0, 0, 0, DateTimeKind.Utc),
                             GrupoId = 9,
                             TipoPartidoId = 1,
@@ -2133,13 +2058,11 @@ namespace Quinela.Infrastructure.Migrations
                         {
                             Id = 19,
                             Active = true,
-                            AplicaDefinicionPenales = false,
                             CreatedAt = new DateTime(2026, 6, 8, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "seed",
                             EquipoLocalId = 37,
                             EquipoVisitanteId = 38,
                             Estado = 'P',
-                            FaseId = 1,
                             FechaPartido = new DateTime(2026, 6, 16, 0, 0, 0, 0, DateTimeKind.Utc),
                             GrupoId = 10,
                             TipoPartidoId = 1,
@@ -2149,13 +2072,11 @@ namespace Quinela.Infrastructure.Migrations
                         {
                             Id = 20,
                             Active = true,
-                            AplicaDefinicionPenales = false,
                             CreatedAt = new DateTime(2026, 6, 8, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "seed",
                             EquipoLocalId = 39,
                             EquipoVisitanteId = 40,
                             Estado = 'P',
-                            FaseId = 1,
                             FechaPartido = new DateTime(2026, 6, 16, 0, 0, 0, 0, DateTimeKind.Utc),
                             GrupoId = 10,
                             TipoPartidoId = 1,
@@ -2165,13 +2086,11 @@ namespace Quinela.Infrastructure.Migrations
                         {
                             Id = 21,
                             Active = true,
-                            AplicaDefinicionPenales = false,
                             CreatedAt = new DateTime(2026, 6, 8, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "seed",
                             EquipoLocalId = 41,
                             EquipoVisitanteId = 42,
                             Estado = 'P',
-                            FaseId = 1,
                             FechaPartido = new DateTime(2026, 6, 17, 0, 0, 0, 0, DateTimeKind.Utc),
                             GrupoId = 11,
                             TipoPartidoId = 1,
@@ -2181,13 +2100,11 @@ namespace Quinela.Infrastructure.Migrations
                         {
                             Id = 22,
                             Active = true,
-                            AplicaDefinicionPenales = false,
                             CreatedAt = new DateTime(2026, 6, 8, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "seed",
                             EquipoLocalId = 45,
                             EquipoVisitanteId = 46,
                             Estado = 'P',
-                            FaseId = 1,
                             FechaPartido = new DateTime(2026, 6, 17, 0, 0, 0, 0, DateTimeKind.Utc),
                             GrupoId = 12,
                             TipoPartidoId = 1,
@@ -2197,13 +2114,11 @@ namespace Quinela.Infrastructure.Migrations
                         {
                             Id = 23,
                             Active = true,
-                            AplicaDefinicionPenales = false,
                             CreatedAt = new DateTime(2026, 6, 8, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "seed",
                             EquipoLocalId = 47,
                             EquipoVisitanteId = 48,
                             Estado = 'P',
-                            FaseId = 1,
                             FechaPartido = new DateTime(2026, 6, 17, 0, 0, 0, 0, DateTimeKind.Utc),
                             GrupoId = 12,
                             TipoPartidoId = 1,
@@ -2213,13 +2128,11 @@ namespace Quinela.Infrastructure.Migrations
                         {
                             Id = 24,
                             Active = true,
-                            AplicaDefinicionPenales = false,
                             CreatedAt = new DateTime(2026, 6, 8, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "seed",
                             EquipoLocalId = 43,
                             EquipoVisitanteId = 44,
                             Estado = 'P',
-                            FaseId = 1,
                             FechaPartido = new DateTime(2026, 6, 17, 0, 0, 0, 0, DateTimeKind.Utc),
                             GrupoId = 11,
                             TipoPartidoId = 1,
@@ -2229,13 +2142,11 @@ namespace Quinela.Infrastructure.Migrations
                         {
                             Id = 25,
                             Active = true,
-                            AplicaDefinicionPenales = false,
                             CreatedAt = new DateTime(2026, 6, 8, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "seed",
                             EquipoLocalId = 4,
                             EquipoVisitanteId = 2,
                             Estado = 'P',
-                            FaseId = 1,
                             FechaPartido = new DateTime(2026, 6, 18, 0, 0, 0, 0, DateTimeKind.Utc),
                             GrupoId = 1,
                             TipoPartidoId = 1,
@@ -2245,13 +2156,11 @@ namespace Quinela.Infrastructure.Migrations
                         {
                             Id = 26,
                             Active = true,
-                            AplicaDefinicionPenales = false,
                             CreatedAt = new DateTime(2026, 6, 8, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "seed",
                             EquipoLocalId = 8,
                             EquipoVisitanteId = 6,
                             Estado = 'P',
-                            FaseId = 1,
                             FechaPartido = new DateTime(2026, 6, 18, 0, 0, 0, 0, DateTimeKind.Utc),
                             GrupoId = 2,
                             TipoPartidoId = 1,
@@ -2261,13 +2170,11 @@ namespace Quinela.Infrastructure.Migrations
                         {
                             Id = 27,
                             Active = true,
-                            AplicaDefinicionPenales = false,
                             CreatedAt = new DateTime(2026, 6, 8, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "seed",
                             EquipoLocalId = 5,
                             EquipoVisitanteId = 7,
                             Estado = 'P',
-                            FaseId = 1,
                             FechaPartido = new DateTime(2026, 6, 18, 0, 0, 0, 0, DateTimeKind.Utc),
                             GrupoId = 2,
                             TipoPartidoId = 1,
@@ -2277,13 +2184,11 @@ namespace Quinela.Infrastructure.Migrations
                         {
                             Id = 28,
                             Active = true,
-                            AplicaDefinicionPenales = false,
                             CreatedAt = new DateTime(2026, 6, 8, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "seed",
                             EquipoLocalId = 1,
                             EquipoVisitanteId = 3,
                             Estado = 'P',
-                            FaseId = 1,
                             FechaPartido = new DateTime(2026, 6, 18, 0, 0, 0, 0, DateTimeKind.Utc),
                             GrupoId = 1,
                             TipoPartidoId = 1,
@@ -2293,13 +2198,11 @@ namespace Quinela.Infrastructure.Migrations
                         {
                             Id = 29,
                             Active = true,
-                            AplicaDefinicionPenales = false,
                             CreatedAt = new DateTime(2026, 6, 8, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "seed",
                             EquipoLocalId = 13,
                             EquipoVisitanteId = 15,
                             Estado = 'P',
-                            FaseId = 1,
                             FechaPartido = new DateTime(2026, 6, 19, 0, 0, 0, 0, DateTimeKind.Utc),
                             GrupoId = 4,
                             TipoPartidoId = 1,
@@ -2309,13 +2212,11 @@ namespace Quinela.Infrastructure.Migrations
                         {
                             Id = 30,
                             Active = true,
-                            AplicaDefinicionPenales = false,
                             CreatedAt = new DateTime(2026, 6, 8, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "seed",
                             EquipoLocalId = 12,
                             EquipoVisitanteId = 10,
                             Estado = 'P',
-                            FaseId = 1,
                             FechaPartido = new DateTime(2026, 6, 19, 0, 0, 0, 0, DateTimeKind.Utc),
                             GrupoId = 3,
                             TipoPartidoId = 1,
@@ -2325,13 +2226,11 @@ namespace Quinela.Infrastructure.Migrations
                         {
                             Id = 31,
                             Active = true,
-                            AplicaDefinicionPenales = false,
                             CreatedAt = new DateTime(2026, 6, 8, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "seed",
                             EquipoLocalId = 9,
                             EquipoVisitanteId = 11,
                             Estado = 'P',
-                            FaseId = 1,
                             FechaPartido = new DateTime(2026, 6, 19, 0, 0, 0, 0, DateTimeKind.Utc),
                             GrupoId = 3,
                             TipoPartidoId = 1,
@@ -2341,13 +2240,11 @@ namespace Quinela.Infrastructure.Migrations
                         {
                             Id = 32,
                             Active = true,
-                            AplicaDefinicionPenales = false,
                             CreatedAt = new DateTime(2026, 6, 8, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "seed",
                             EquipoLocalId = 16,
                             EquipoVisitanteId = 14,
                             Estado = 'P',
-                            FaseId = 1,
                             FechaPartido = new DateTime(2026, 6, 19, 0, 0, 0, 0, DateTimeKind.Utc),
                             GrupoId = 4,
                             TipoPartidoId = 1,
@@ -2357,13 +2254,11 @@ namespace Quinela.Infrastructure.Migrations
                         {
                             Id = 33,
                             Active = true,
-                            AplicaDefinicionPenales = false,
                             CreatedAt = new DateTime(2026, 6, 8, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "seed",
                             EquipoLocalId = 21,
                             EquipoVisitanteId = 23,
                             Estado = 'P',
-                            FaseId = 1,
                             FechaPartido = new DateTime(2026, 6, 20, 0, 0, 0, 0, DateTimeKind.Utc),
                             GrupoId = 6,
                             TipoPartidoId = 1,
@@ -2373,13 +2268,11 @@ namespace Quinela.Infrastructure.Migrations
                         {
                             Id = 34,
                             Active = true,
-                            AplicaDefinicionPenales = false,
                             CreatedAt = new DateTime(2026, 6, 8, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "seed",
                             EquipoLocalId = 17,
                             EquipoVisitanteId = 19,
                             Estado = 'P',
-                            FaseId = 1,
                             FechaPartido = new DateTime(2026, 6, 20, 0, 0, 0, 0, DateTimeKind.Utc),
                             GrupoId = 5,
                             TipoPartidoId = 1,
@@ -2389,13 +2282,11 @@ namespace Quinela.Infrastructure.Migrations
                         {
                             Id = 35,
                             Active = true,
-                            AplicaDefinicionPenales = false,
                             CreatedAt = new DateTime(2026, 6, 8, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "seed",
                             EquipoLocalId = 20,
                             EquipoVisitanteId = 18,
                             Estado = 'P',
-                            FaseId = 1,
                             FechaPartido = new DateTime(2026, 6, 20, 0, 0, 0, 0, DateTimeKind.Utc),
                             GrupoId = 5,
                             TipoPartidoId = 1,
@@ -2405,13 +2296,11 @@ namespace Quinela.Infrastructure.Migrations
                         {
                             Id = 36,
                             Active = true,
-                            AplicaDefinicionPenales = false,
                             CreatedAt = new DateTime(2026, 6, 8, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "seed",
                             EquipoLocalId = 24,
                             EquipoVisitanteId = 22,
                             Estado = 'P',
-                            FaseId = 1,
                             FechaPartido = new DateTime(2026, 6, 20, 0, 0, 0, 0, DateTimeKind.Utc),
                             GrupoId = 6,
                             TipoPartidoId = 1,
@@ -2421,13 +2310,11 @@ namespace Quinela.Infrastructure.Migrations
                         {
                             Id = 37,
                             Active = true,
-                            AplicaDefinicionPenales = false,
                             CreatedAt = new DateTime(2026, 6, 8, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "seed",
                             EquipoLocalId = 29,
                             EquipoVisitanteId = 31,
                             Estado = 'P',
-                            FaseId = 1,
                             FechaPartido = new DateTime(2026, 6, 21, 0, 0, 0, 0, DateTimeKind.Utc),
                             GrupoId = 8,
                             TipoPartidoId = 1,
@@ -2437,13 +2324,11 @@ namespace Quinela.Infrastructure.Migrations
                         {
                             Id = 38,
                             Active = true,
-                            AplicaDefinicionPenales = false,
                             CreatedAt = new DateTime(2026, 6, 8, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "seed",
                             EquipoLocalId = 25,
                             EquipoVisitanteId = 27,
                             Estado = 'P',
-                            FaseId = 1,
                             FechaPartido = new DateTime(2026, 6, 21, 0, 0, 0, 0, DateTimeKind.Utc),
                             GrupoId = 7,
                             TipoPartidoId = 1,
@@ -2453,13 +2338,11 @@ namespace Quinela.Infrastructure.Migrations
                         {
                             Id = 39,
                             Active = true,
-                            AplicaDefinicionPenales = false,
                             CreatedAt = new DateTime(2026, 6, 8, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "seed",
                             EquipoLocalId = 32,
                             EquipoVisitanteId = 30,
                             Estado = 'P',
-                            FaseId = 1,
                             FechaPartido = new DateTime(2026, 6, 21, 0, 0, 0, 0, DateTimeKind.Utc),
                             GrupoId = 8,
                             TipoPartidoId = 1,
@@ -2469,13 +2352,11 @@ namespace Quinela.Infrastructure.Migrations
                         {
                             Id = 40,
                             Active = true,
-                            AplicaDefinicionPenales = false,
                             CreatedAt = new DateTime(2026, 6, 8, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "seed",
                             EquipoLocalId = 28,
                             EquipoVisitanteId = 26,
                             Estado = 'P',
-                            FaseId = 1,
                             FechaPartido = new DateTime(2026, 6, 21, 0, 0, 0, 0, DateTimeKind.Utc),
                             GrupoId = 7,
                             TipoPartidoId = 1,
@@ -2485,13 +2366,11 @@ namespace Quinela.Infrastructure.Migrations
                         {
                             Id = 41,
                             Active = true,
-                            AplicaDefinicionPenales = false,
                             CreatedAt = new DateTime(2026, 6, 8, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "seed",
                             EquipoLocalId = 37,
                             EquipoVisitanteId = 39,
                             Estado = 'P',
-                            FaseId = 1,
                             FechaPartido = new DateTime(2026, 6, 22, 0, 0, 0, 0, DateTimeKind.Utc),
                             GrupoId = 10,
                             TipoPartidoId = 1,
@@ -2501,13 +2380,11 @@ namespace Quinela.Infrastructure.Migrations
                         {
                             Id = 42,
                             Active = true,
-                            AplicaDefinicionPenales = false,
                             CreatedAt = new DateTime(2026, 6, 8, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "seed",
                             EquipoLocalId = 33,
                             EquipoVisitanteId = 35,
                             Estado = 'P',
-                            FaseId = 1,
                             FechaPartido = new DateTime(2026, 6, 22, 0, 0, 0, 0, DateTimeKind.Utc),
                             GrupoId = 9,
                             TipoPartidoId = 1,
@@ -2517,13 +2394,11 @@ namespace Quinela.Infrastructure.Migrations
                         {
                             Id = 43,
                             Active = true,
-                            AplicaDefinicionPenales = false,
                             CreatedAt = new DateTime(2026, 6, 8, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "seed",
                             EquipoLocalId = 36,
                             EquipoVisitanteId = 34,
                             Estado = 'P',
-                            FaseId = 1,
                             FechaPartido = new DateTime(2026, 6, 22, 0, 0, 0, 0, DateTimeKind.Utc),
                             GrupoId = 9,
                             TipoPartidoId = 1,
@@ -2533,13 +2408,11 @@ namespace Quinela.Infrastructure.Migrations
                         {
                             Id = 44,
                             Active = true,
-                            AplicaDefinicionPenales = false,
                             CreatedAt = new DateTime(2026, 6, 8, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "seed",
                             EquipoLocalId = 40,
                             EquipoVisitanteId = 38,
                             Estado = 'P',
-                            FaseId = 1,
                             FechaPartido = new DateTime(2026, 6, 22, 0, 0, 0, 0, DateTimeKind.Utc),
                             GrupoId = 10,
                             TipoPartidoId = 1,
@@ -2549,13 +2422,11 @@ namespace Quinela.Infrastructure.Migrations
                         {
                             Id = 45,
                             Active = true,
-                            AplicaDefinicionPenales = false,
                             CreatedAt = new DateTime(2026, 6, 8, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "seed",
                             EquipoLocalId = 41,
                             EquipoVisitanteId = 43,
                             Estado = 'P',
-                            FaseId = 1,
                             FechaPartido = new DateTime(2026, 6, 23, 0, 0, 0, 0, DateTimeKind.Utc),
                             GrupoId = 11,
                             TipoPartidoId = 1,
@@ -2565,13 +2436,11 @@ namespace Quinela.Infrastructure.Migrations
                         {
                             Id = 46,
                             Active = true,
-                            AplicaDefinicionPenales = false,
                             CreatedAt = new DateTime(2026, 6, 8, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "seed",
                             EquipoLocalId = 45,
                             EquipoVisitanteId = 47,
                             Estado = 'P',
-                            FaseId = 1,
                             FechaPartido = new DateTime(2026, 6, 23, 0, 0, 0, 0, DateTimeKind.Utc),
                             GrupoId = 12,
                             TipoPartidoId = 1,
@@ -2581,13 +2450,11 @@ namespace Quinela.Infrastructure.Migrations
                         {
                             Id = 47,
                             Active = true,
-                            AplicaDefinicionPenales = false,
                             CreatedAt = new DateTime(2026, 6, 8, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "seed",
                             EquipoLocalId = 48,
                             EquipoVisitanteId = 46,
                             Estado = 'P',
-                            FaseId = 1,
                             FechaPartido = new DateTime(2026, 6, 23, 0, 0, 0, 0, DateTimeKind.Utc),
                             GrupoId = 12,
                             TipoPartidoId = 1,
@@ -2597,13 +2464,11 @@ namespace Quinela.Infrastructure.Migrations
                         {
                             Id = 48,
                             Active = true,
-                            AplicaDefinicionPenales = false,
                             CreatedAt = new DateTime(2026, 6, 8, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "seed",
                             EquipoLocalId = 44,
                             EquipoVisitanteId = 42,
                             Estado = 'P',
-                            FaseId = 1,
                             FechaPartido = new DateTime(2026, 6, 23, 0, 0, 0, 0, DateTimeKind.Utc),
                             GrupoId = 11,
                             TipoPartidoId = 1,
@@ -2613,13 +2478,11 @@ namespace Quinela.Infrastructure.Migrations
                         {
                             Id = 49,
                             Active = true,
-                            AplicaDefinicionPenales = false,
                             CreatedAt = new DateTime(2026, 6, 8, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "seed",
                             EquipoLocalId = 8,
                             EquipoVisitanteId = 5,
                             Estado = 'P',
-                            FaseId = 1,
                             FechaPartido = new DateTime(2026, 6, 24, 0, 0, 0, 0, DateTimeKind.Utc),
                             GrupoId = 2,
                             TipoPartidoId = 1,
@@ -2629,13 +2492,11 @@ namespace Quinela.Infrastructure.Migrations
                         {
                             Id = 50,
                             Active = true,
-                            AplicaDefinicionPenales = false,
                             CreatedAt = new DateTime(2026, 6, 8, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "seed",
                             EquipoLocalId = 6,
                             EquipoVisitanteId = 7,
                             Estado = 'P',
-                            FaseId = 1,
                             FechaPartido = new DateTime(2026, 6, 24, 0, 0, 0, 0, DateTimeKind.Utc),
                             GrupoId = 2,
                             TipoPartidoId = 1,
@@ -2645,13 +2506,11 @@ namespace Quinela.Infrastructure.Migrations
                         {
                             Id = 51,
                             Active = true,
-                            AplicaDefinicionPenales = false,
                             CreatedAt = new DateTime(2026, 6, 8, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "seed",
                             EquipoLocalId = 10,
                             EquipoVisitanteId = 11,
                             Estado = 'P',
-                            FaseId = 1,
                             FechaPartido = new DateTime(2026, 6, 24, 0, 0, 0, 0, DateTimeKind.Utc),
                             GrupoId = 3,
                             TipoPartidoId = 1,
@@ -2661,13 +2520,11 @@ namespace Quinela.Infrastructure.Migrations
                         {
                             Id = 52,
                             Active = true,
-                            AplicaDefinicionPenales = false,
                             CreatedAt = new DateTime(2026, 6, 8, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "seed",
                             EquipoLocalId = 12,
                             EquipoVisitanteId = 9,
                             Estado = 'P',
-                            FaseId = 1,
                             FechaPartido = new DateTime(2026, 6, 24, 0, 0, 0, 0, DateTimeKind.Utc),
                             GrupoId = 3,
                             TipoPartidoId = 1,
@@ -2677,13 +2534,11 @@ namespace Quinela.Infrastructure.Migrations
                         {
                             Id = 53,
                             Active = true,
-                            AplicaDefinicionPenales = false,
                             CreatedAt = new DateTime(2026, 6, 8, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "seed",
                             EquipoLocalId = 2,
                             EquipoVisitanteId = 3,
                             Estado = 'P',
-                            FaseId = 1,
                             FechaPartido = new DateTime(2026, 6, 24, 0, 0, 0, 0, DateTimeKind.Utc),
                             GrupoId = 1,
                             TipoPartidoId = 1,
@@ -2693,13 +2548,11 @@ namespace Quinela.Infrastructure.Migrations
                         {
                             Id = 54,
                             Active = true,
-                            AplicaDefinicionPenales = false,
                             CreatedAt = new DateTime(2026, 6, 8, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "seed",
                             EquipoLocalId = 4,
                             EquipoVisitanteId = 1,
                             Estado = 'P',
-                            FaseId = 1,
                             FechaPartido = new DateTime(2026, 6, 24, 0, 0, 0, 0, DateTimeKind.Utc),
                             GrupoId = 1,
                             TipoPartidoId = 1,
@@ -2709,13 +2562,11 @@ namespace Quinela.Infrastructure.Migrations
                         {
                             Id = 55,
                             Active = true,
-                            AplicaDefinicionPenales = false,
                             CreatedAt = new DateTime(2026, 6, 8, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "seed",
                             EquipoLocalId = 18,
                             EquipoVisitanteId = 19,
                             Estado = 'P',
-                            FaseId = 1,
                             FechaPartido = new DateTime(2026, 6, 25, 0, 0, 0, 0, DateTimeKind.Utc),
                             GrupoId = 5,
                             TipoPartidoId = 1,
@@ -2725,13 +2576,11 @@ namespace Quinela.Infrastructure.Migrations
                         {
                             Id = 56,
                             Active = true,
-                            AplicaDefinicionPenales = false,
                             CreatedAt = new DateTime(2026, 6, 8, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "seed",
                             EquipoLocalId = 20,
                             EquipoVisitanteId = 17,
                             Estado = 'P',
-                            FaseId = 1,
                             FechaPartido = new DateTime(2026, 6, 25, 0, 0, 0, 0, DateTimeKind.Utc),
                             GrupoId = 5,
                             TipoPartidoId = 1,
@@ -2741,13 +2590,11 @@ namespace Quinela.Infrastructure.Migrations
                         {
                             Id = 57,
                             Active = true,
-                            AplicaDefinicionPenales = false,
                             CreatedAt = new DateTime(2026, 6, 8, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "seed",
                             EquipoLocalId = 24,
                             EquipoVisitanteId = 21,
                             Estado = 'P',
-                            FaseId = 1,
                             FechaPartido = new DateTime(2026, 6, 25, 0, 0, 0, 0, DateTimeKind.Utc),
                             GrupoId = 6,
                             TipoPartidoId = 1,
@@ -2757,13 +2604,11 @@ namespace Quinela.Infrastructure.Migrations
                         {
                             Id = 58,
                             Active = true,
-                            AplicaDefinicionPenales = false,
                             CreatedAt = new DateTime(2026, 6, 8, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "seed",
                             EquipoLocalId = 22,
                             EquipoVisitanteId = 23,
                             Estado = 'P',
-                            FaseId = 1,
                             FechaPartido = new DateTime(2026, 6, 25, 0, 0, 0, 0, DateTimeKind.Utc),
                             GrupoId = 6,
                             TipoPartidoId = 1,
@@ -2773,13 +2618,11 @@ namespace Quinela.Infrastructure.Migrations
                         {
                             Id = 59,
                             Active = true,
-                            AplicaDefinicionPenales = false,
                             CreatedAt = new DateTime(2026, 6, 8, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "seed",
                             EquipoLocalId = 16,
                             EquipoVisitanteId = 13,
                             Estado = 'P',
-                            FaseId = 1,
                             FechaPartido = new DateTime(2026, 6, 25, 0, 0, 0, 0, DateTimeKind.Utc),
                             GrupoId = 4,
                             TipoPartidoId = 1,
@@ -2789,13 +2632,11 @@ namespace Quinela.Infrastructure.Migrations
                         {
                             Id = 60,
                             Active = true,
-                            AplicaDefinicionPenales = false,
                             CreatedAt = new DateTime(2026, 6, 8, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "seed",
                             EquipoLocalId = 14,
                             EquipoVisitanteId = 15,
                             Estado = 'P',
-                            FaseId = 1,
                             FechaPartido = new DateTime(2026, 6, 25, 0, 0, 0, 0, DateTimeKind.Utc),
                             GrupoId = 4,
                             TipoPartidoId = 1,
@@ -2805,13 +2646,11 @@ namespace Quinela.Infrastructure.Migrations
                         {
                             Id = 61,
                             Active = true,
-                            AplicaDefinicionPenales = false,
                             CreatedAt = new DateTime(2026, 6, 8, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "seed",
                             EquipoLocalId = 36,
                             EquipoVisitanteId = 33,
                             Estado = 'P',
-                            FaseId = 1,
                             FechaPartido = new DateTime(2026, 6, 26, 0, 0, 0, 0, DateTimeKind.Utc),
                             GrupoId = 9,
                             TipoPartidoId = 1,
@@ -2821,13 +2660,11 @@ namespace Quinela.Infrastructure.Migrations
                         {
                             Id = 62,
                             Active = true,
-                            AplicaDefinicionPenales = false,
                             CreatedAt = new DateTime(2026, 6, 8, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "seed",
                             EquipoLocalId = 34,
                             EquipoVisitanteId = 35,
                             Estado = 'P',
-                            FaseId = 1,
                             FechaPartido = new DateTime(2026, 6, 26, 0, 0, 0, 0, DateTimeKind.Utc),
                             GrupoId = 9,
                             TipoPartidoId = 1,
@@ -2837,13 +2674,11 @@ namespace Quinela.Infrastructure.Migrations
                         {
                             Id = 63,
                             Active = true,
-                            AplicaDefinicionPenales = false,
                             CreatedAt = new DateTime(2026, 6, 8, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "seed",
                             EquipoLocalId = 30,
                             EquipoVisitanteId = 31,
                             Estado = 'P',
-                            FaseId = 1,
                             FechaPartido = new DateTime(2026, 6, 26, 0, 0, 0, 0, DateTimeKind.Utc),
                             GrupoId = 8,
                             TipoPartidoId = 1,
@@ -2853,13 +2688,11 @@ namespace Quinela.Infrastructure.Migrations
                         {
                             Id = 64,
                             Active = true,
-                            AplicaDefinicionPenales = false,
                             CreatedAt = new DateTime(2026, 6, 8, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "seed",
                             EquipoLocalId = 32,
                             EquipoVisitanteId = 29,
                             Estado = 'P',
-                            FaseId = 1,
                             FechaPartido = new DateTime(2026, 6, 26, 0, 0, 0, 0, DateTimeKind.Utc),
                             GrupoId = 8,
                             TipoPartidoId = 1,
@@ -2869,13 +2702,11 @@ namespace Quinela.Infrastructure.Migrations
                         {
                             Id = 65,
                             Active = true,
-                            AplicaDefinicionPenales = false,
                             CreatedAt = new DateTime(2026, 6, 8, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "seed",
                             EquipoLocalId = 28,
                             EquipoVisitanteId = 25,
                             Estado = 'P',
-                            FaseId = 1,
                             FechaPartido = new DateTime(2026, 6, 26, 0, 0, 0, 0, DateTimeKind.Utc),
                             GrupoId = 7,
                             TipoPartidoId = 1,
@@ -2885,13 +2716,11 @@ namespace Quinela.Infrastructure.Migrations
                         {
                             Id = 66,
                             Active = true,
-                            AplicaDefinicionPenales = false,
                             CreatedAt = new DateTime(2026, 6, 8, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "seed",
                             EquipoLocalId = 26,
                             EquipoVisitanteId = 27,
                             Estado = 'P',
-                            FaseId = 1,
                             FechaPartido = new DateTime(2026, 6, 26, 0, 0, 0, 0, DateTimeKind.Utc),
                             GrupoId = 7,
                             TipoPartidoId = 1,
@@ -2901,13 +2730,11 @@ namespace Quinela.Infrastructure.Migrations
                         {
                             Id = 67,
                             Active = true,
-                            AplicaDefinicionPenales = false,
                             CreatedAt = new DateTime(2026, 6, 8, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "seed",
                             EquipoLocalId = 48,
                             EquipoVisitanteId = 45,
                             Estado = 'P',
-                            FaseId = 1,
                             FechaPartido = new DateTime(2026, 6, 27, 0, 0, 0, 0, DateTimeKind.Utc),
                             GrupoId = 12,
                             TipoPartidoId = 1,
@@ -2917,13 +2744,11 @@ namespace Quinela.Infrastructure.Migrations
                         {
                             Id = 68,
                             Active = true,
-                            AplicaDefinicionPenales = false,
                             CreatedAt = new DateTime(2026, 6, 8, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "seed",
                             EquipoLocalId = 46,
                             EquipoVisitanteId = 47,
                             Estado = 'P',
-                            FaseId = 1,
                             FechaPartido = new DateTime(2026, 6, 27, 0, 0, 0, 0, DateTimeKind.Utc),
                             GrupoId = 12,
                             TipoPartidoId = 1,
@@ -2933,13 +2758,11 @@ namespace Quinela.Infrastructure.Migrations
                         {
                             Id = 69,
                             Active = true,
-                            AplicaDefinicionPenales = false,
                             CreatedAt = new DateTime(2026, 6, 8, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "seed",
                             EquipoLocalId = 44,
                             EquipoVisitanteId = 41,
                             Estado = 'P',
-                            FaseId = 1,
                             FechaPartido = new DateTime(2026, 6, 27, 0, 0, 0, 0, DateTimeKind.Utc),
                             GrupoId = 11,
                             TipoPartidoId = 1,
@@ -2949,13 +2772,11 @@ namespace Quinela.Infrastructure.Migrations
                         {
                             Id = 70,
                             Active = true,
-                            AplicaDefinicionPenales = false,
                             CreatedAt = new DateTime(2026, 6, 8, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "seed",
                             EquipoLocalId = 42,
                             EquipoVisitanteId = 43,
                             Estado = 'P',
-                            FaseId = 1,
                             FechaPartido = new DateTime(2026, 6, 27, 0, 0, 0, 0, DateTimeKind.Utc),
                             GrupoId = 11,
                             TipoPartidoId = 1,
@@ -2965,13 +2786,11 @@ namespace Quinela.Infrastructure.Migrations
                         {
                             Id = 71,
                             Active = true,
-                            AplicaDefinicionPenales = false,
                             CreatedAt = new DateTime(2026, 6, 8, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "seed",
                             EquipoLocalId = 38,
                             EquipoVisitanteId = 39,
                             Estado = 'P',
-                            FaseId = 1,
                             FechaPartido = new DateTime(2026, 6, 27, 0, 0, 0, 0, DateTimeKind.Utc),
                             GrupoId = 10,
                             TipoPartidoId = 1,
@@ -2981,13 +2800,11 @@ namespace Quinela.Infrastructure.Migrations
                         {
                             Id = 72,
                             Active = true,
-                            AplicaDefinicionPenales = false,
                             CreatedAt = new DateTime(2026, 6, 8, 0, 0, 0, 0, DateTimeKind.Utc),
                             CreatedBy = "seed",
                             EquipoLocalId = 40,
                             EquipoVisitanteId = 37,
                             Estado = 'P',
-                            FaseId = 1,
                             FechaPartido = new DateTime(2026, 6, 27, 0, 0, 0, 0, DateTimeKind.Utc),
                             GrupoId = 10,
                             TipoPartidoId = 1,
@@ -3494,11 +3311,6 @@ namespace Quinela.Infrastructure.Migrations
 
             modelBuilder.Entity("Quinela.Domain.Entities.Partido", b =>
                 {
-                    b.HasOne("Quinela.Domain.Entities.Equipo", "EquipoGanador")
-                        .WithMany()
-                        .HasForeignKey("EquipoGanadorId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
                     b.HasOne("Quinela.Domain.Entities.Equipo", "EquipoLocal")
                         .WithMany()
                         .HasForeignKey("EquipoLocalId")
@@ -3511,27 +3323,11 @@ namespace Quinela.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("Quinela.Domain.Entities.Fase", "Fase")
-                        .WithMany()
-                        .HasForeignKey("FaseId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
                     b.HasOne("Quinela.Domain.Entities.Grupo", "Grupo")
                         .WithMany()
                         .HasForeignKey("GrupoId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
-
-                    b.HasOne("Quinela.Domain.Entities.Partido", null)
-                        .WithMany()
-                        .HasForeignKey("PartidoGanadorLocalId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.HasOne("Quinela.Domain.Entities.Partido", null)
-                        .WithMany()
-                        .HasForeignKey("PartidoGanadorVisitanteId")
-                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("Quinela.Domain.Entities.TipoPartido", "TipoPartido")
                         .WithMany()
@@ -3545,13 +3341,9 @@ namespace Quinela.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.Navigation("EquipoGanador");
-
                     b.Navigation("EquipoLocal");
 
                     b.Navigation("EquipoVisitante");
-
-                    b.Navigation("Fase");
 
                     b.Navigation("Grupo");
 

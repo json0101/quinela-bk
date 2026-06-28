@@ -4,6 +4,7 @@ namespace Quinela.Application.Features.Master.TiposPartido
     {
         public int Id { get; set; }
         public string Descripcion { get; set; } = string.Empty;
+        public int FaseId { get; set; }
         public int PtsPartidoVictoria { get; set; }
         public int PtsPartidoEmpate { get; set; }
         public int PtsQuinelaResultadoExacto { get; set; }
@@ -18,6 +19,7 @@ namespace Quinela.Application.Features.Master.TiposPartido
     public class TipoPartidoCreateDto
     {
         public string Descripcion { get; set; } = string.Empty;
+        public int FaseId { get; set; }
         public int PtsPartidoVictoria { get; set; }
         public int PtsPartidoEmpate { get; set; }
         public int PtsQuinelaResultadoExacto { get; set; }
@@ -28,6 +30,7 @@ namespace Quinela.Application.Features.Master.TiposPartido
     public class TipoPartidoUpdateDto
     {
         public string Descripcion { get; set; } = string.Empty;
+        public int FaseId { get; set; }
         public int PtsPartidoVictoria { get; set; }
         public int PtsPartidoEmpate { get; set; }
         public int PtsQuinelaResultadoExacto { get; set; }

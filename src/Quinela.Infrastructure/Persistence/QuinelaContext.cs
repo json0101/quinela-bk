@@ -14,6 +14,7 @@ public class QuinelaContext : DbContext
     }
 
     public DbSet<Torneo> Torneos => Set<Torneo>();
+    public DbSet<Fase> Fases => Set<Fase>();
     public DbSet<Quiniela> Quinielas => Set<Quiniela>();
     public DbSet<Equipo> Equipos => Set<Equipo>();
     public DbSet<Grupo> Grupos => Set<Grupo>();

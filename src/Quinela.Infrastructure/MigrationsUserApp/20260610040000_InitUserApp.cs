@@ -406,7 +406,8 @@ namespace Quinela.Infrastructure.MigrationsUserApp
                     { 19, "Torneos", "/quinela/master/torneos", 21, 4, false, 2, Seed, "seed", null, null, true },
                     { 20, "Partidos", "/quinela/master/partidos", 21, 5, false, 2, Seed, "seed", null, null, true },
                     { 22, "Tipos de Partido", "/quinela/master/tipos-partido", 21, 6, false, 2, Seed, "seed", null, null, true },
-                    { 23, "Usuarios - Quinelas", "/quinela/master/usuarios-quinielas", 21, 7, false, 2, Seed, "seed", null, null, true }
+                    { 23, "Usuarios - Quinelas", "/quinela/master/usuarios-quinielas", 21, 7, false, 2, Seed, "seed", null, null, true },
+                    { 26, "Fases", "/quinela/master/fases", 21, 8, false, 2, Seed, "seed", null, null, true }
                 });
 
             // 5) Rol -> Screens. "Admin UserApp" (1) ve las screens de UserApp; "Admin Quinela" (2) las de Quinela.
@@ -439,7 +440,8 @@ namespace Quinela.Infrastructure.MigrationsUserApp
                     { 22, 2, 22, Seed, "seed", null, null, true },
                     { 23, 2, 23, Seed, "seed", null, null, true },
                     { 24, 2, 24, Seed, "seed", null, null, true },
-                    { 25, 2, 25, Seed, "seed", null, null, true }
+                    { 25, 2, 25, Seed, "seed", null, null, true },
+                    { 26, 2, 26, Seed, "seed", null, null, true }
                 });
 
             // 6) Usuario -> Rol. Ambos usuarios reciben AMBOS roles (acceso total a las dos apps).

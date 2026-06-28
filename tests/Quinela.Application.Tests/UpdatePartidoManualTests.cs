@@ -19,19 +19,28 @@ public class UpdatePartidoManualTests
         public Task RecalcularAsync(int torneoId, CancellationToken ct = default) { Veces++; return Task.CompletedTask; }
     }
 
+    private sealed class FakeEliminatoria : Quinela.Application.Features.Eliminatoria.IDistributionEliminatoryWorldCup2026
+    {
+        private static readonly Quinela.Application.Features.Eliminatoria.BracketPreviewDto Vacio = new(0, new());
+        public Task<Quinela.Application.Features.Eliminatoria.BracketPreviewDto> PreviewAsync(int torneoId, CancellationToken ct = default) => Task.FromResult(Vacio);
+        public Task<Quinela.Application.Features.Eliminatoria.BracketPreviewDto> RecalcularAsync(int torneoId, CancellationToken ct = default) => Task.FromResult(Vacio);
+    }
+
     private static (UpdatePartidoHandler handler, FakeRankingService ranking) NewHandler(QuinelaContext ctx)
     {
         var ranking = new FakeRankingService();
         var rel = new PartidoRelacionesValidator(
-            new Repository<Torneo>(ctx), new Repository<Grupo>(ctx), new Repository<Equipo>(ctx), new Repository<TipoPartido>(ctx));
+            new Repository<Torneo>(ctx), new Repository<Grupo>(ctx), new Repository<Equipo>(ctx), new Repository<TipoPartido>(ctx),
+            new Repository<Fase>(ctx), new Repository<Partido>(ctx));
         var handler = new UpdatePartidoHandler(
-            new Repository<Partido>(ctx), new Repository<TipoPartido>(ctx), rel, ranking,
+            new Repository<Partido>(ctx), new Repository<TipoPartido>(ctx), rel, ranking, new FakeEliminatoria(),
             new UnitOfWork(ctx), TestHelpers.CurrentUser("admin"));
         return (handler, ranking);
     }
 
     private static UpdatePartidoCommand Cmd(Partido p, char estado, int? rl, int? rv) =>
-        new(p.Id, p.FechaPartido, p.TorneoId, p.GrupoId, p.EquipoLocalId, p.EquipoVisitanteId, p.TipoPartidoId, estado, rl, rv, p.PartidoIdApi, p.Active);
+        new(p.Id, p.FechaPartido, p.TorneoId, p.GrupoId, p.FaseId, p.EquipoLocalId, p.EquipoVisitanteId, p.TipoPartidoId, estado, rl, rv, p.PartidoIdApi, p.Active,
+            null, null, null, null, null, null);
 
     [Fact]
     public async Task Terminado_FijaGolesYPuntosDeVictoria_YRecalcula()

@@ -16,6 +16,9 @@ namespace Quinela.Application.Features.Master.Partidos
         public static readonly Error EquipoLocalInvalido = Error.NotFound("Partido.EquipoLocalInvalido", "El equipo local no existe o no pertenece al torneo.");
         public static readonly Error EquipoVisitanteInvalido = Error.NotFound("Partido.EquipoVisitanteInvalido", "El equipo visitante no existe o no pertenece al torneo.");
         public static readonly Error TipoPartidoNotFound = Error.NotFound("Partido.TipoPartidoNotFound", "No se encontró el tipo de partido.");
+        public static readonly Error FaseNotFound = Error.NotFound("Partido.FaseNotFound", "No se encontró la fase.");
+        public static readonly Error EquipoGanadorInvalido = Error.NotFound("Partido.EquipoGanadorInvalido", "El equipo ganador no existe o no pertenece al torneo.");
+        public static readonly Error PartidoGanadorInvalido = Error.NotFound("Partido.PartidoGanadorInvalido", "Un partido del árbol de eliminatoria no existe.");
         public static readonly Error MismosEquipos = Error.Validation("Partido.MismosEquipos", "El equipo local y el visitante no pueden ser el mismo.");
     }
 
@@ -31,10 +34,14 @@ namespace Quinela.Application.Features.Master.Partidos
                 Torneo = p.Torneo.Descripcion,
                 GrupoId = p.GrupoId,
                 Grupo = p.Grupo.Nombre,
+                FaseId = p.FaseId,
+                Fase = p.Fase.Descripcion,
                 EquipoLocalId = p.EquipoLocalId,
                 EquipoLocal = p.EquipoLocal.Nombre,
                 EquipoVisitanteId = p.EquipoVisitanteId,
                 EquipoVisitante = p.EquipoVisitante.Nombre,
+                EquipoGanadorId = p.EquipoGanadorId,
+                EquipoGanador = p.EquipoGanador != null ? p.EquipoGanador.Nombre : null,
                 TipoPartidoId = p.TipoPartidoId,
                 TipoPartido = p.TipoPartido.Descripcion,
                 ResultadoLocal = p.ResultadoLocalId,
@@ -43,6 +50,12 @@ namespace Quinela.Application.Features.Master.Partidos
                 PtsVisitante = p.PtsVisitante,
                 Estado = p.Estado,
                 PartidoIdApi = p.PartidoIdApi,
+                AplicaDefinicionPenales = p.AplicaDefinicionPenales,
+                PartidoSeDefiniraEnPenales = p.PartidoSeDefiniraEnPenales,
+                PenalesAnotadosLocal = p.PenalesAnotadosLocal,
+                PenalesAnotadosVisitante = p.PenalesAnotadosVisitante,
+                PartidoGanadorLocalId = p.PartidoGanadorLocalId,
+                PartidoGanadorVisitanteId = p.PartidoGanadorVisitanteId,
                 Active = p.Active,
                 CreatedAt = p.CreatedAt,
                 CreatedBy = p.CreatedBy,
@@ -91,8 +104,10 @@ namespace Quinela.Application.Features.Master.Partidos
 
     // ----- Create -----
     public sealed record CreatePartidoCommand(
-        DateTime FechaPartido, int TorneoId, int GrupoId, int EquipoLocalId, int EquipoVisitanteId, int TipoPartidoId,
-        char Estado, int? ResultadoLocal, int? ResultadoVisitante, string? PartidoIdApi, bool Active)
+        DateTime FechaPartido, int TorneoId, int GrupoId, int FaseId, int EquipoLocalId, int EquipoVisitanteId, int TipoPartidoId,
+        char Estado, int? ResultadoLocal, int? ResultadoVisitante, string? PartidoIdApi, bool Active,
+        bool? PartidoSeDefiniraEnPenales, int? PenalesAnotadosLocal, int? PenalesAnotadosVisitante,
+        int? EquipoGanadorId, int? PartidoGanadorLocalId, int? PartidoGanadorVisitanteId)
         : IRequest<Result<PartidoAdminDto>>;
 
     public sealed class CreatePartidoValidator : AbstractValidator<CreatePartidoCommand>
@@ -102,6 +117,7 @@ namespace Quinela.Application.Features.Master.Partidos
             RuleFor(x => x.FechaPartido).NotEmpty().WithMessage("La fecha del partido es requerida.");
             RuleFor(x => x.TorneoId).GreaterThan(0).WithMessage("El torneo es requerido.");
             RuleFor(x => x.GrupoId).GreaterThan(0).WithMessage("El grupo es requerido.");
+            RuleFor(x => x.FaseId).GreaterThan(0).WithMessage("La fase es requerida.");
             RuleFor(x => x.EquipoLocalId).GreaterThan(0).WithMessage("El equipo local es requerido.");
             RuleFor(x => x.EquipoVisitanteId).GreaterThan(0).WithMessage("El equipo visitante es requerido.");
             RuleFor(x => x.TipoPartidoId).GreaterThan(0).WithMessage("El tipo de partido es requerido.");
@@ -123,26 +139,25 @@ namespace Quinela.Application.Features.Master.Partidos
 
         public async Task<Result<PartidoAdminDto>> Handle(CreatePartidoCommand cmd, CancellationToken ct)
         {
-            var check = await _rel.ValidarAsync(cmd.TorneoId, cmd.GrupoId, cmd.EquipoLocalId, cmd.EquipoVisitanteId, cmd.TipoPartidoId, ct);
+            var check = await _rel.ValidarAsync(cmd.TorneoId, cmd.GrupoId, cmd.FaseId, cmd.EquipoLocalId, cmd.EquipoVisitanteId,
+                cmd.TipoPartidoId, cmd.EquipoGanadorId, cmd.PartidoGanadorLocalId, cmd.PartidoGanadorVisitanteId, ct);
             if (check is not null) return Result.Failure<PartidoAdminDto>(check);
 
             var tipo = await _tipos.GetDbSet().AsNoTracking().FirstAsync(t => t.Id == cmd.TipoPartidoId, ct);
 
-            var entity = new Partido
-            {
-                FechaPartido = DateTime.SpecifyKind(cmd.FechaPartido, DateTimeKind.Utc),
-                TorneoId = cmd.TorneoId,
-                GrupoId = cmd.GrupoId,
-                EquipoLocalId = cmd.EquipoLocalId,
-                EquipoVisitanteId = cmd.EquipoVisitanteId,
-                TipoPartidoId = cmd.TipoPartidoId,
-                PartidoIdApi = cmd.PartidoIdApi,
-                Active = cmd.Active,
-                CreatedAt = DateTime.UtcNow,
-                CreatedBy = _currentUser.UserName
-            };
-            // Estado + goles + puntos del partido (la misma fórmula que el cambio de estado).
-            PartidoEstadoHelper.Aplicar(entity, cmd.Estado, cmd.ResultadoLocal, cmd.ResultadoVisitante, tipo);
+            // Builder: la ficha base se arma igual en cualquier fase; en eliminatoria
+            // se agrega la definición (penales/árbol). En grupos esos campos quedan nulos.
+            var builder = PartidoBuilder.DeFase(cmd.FaseId)
+                .ConFicha(cmd.FechaPartido, cmd.TorneoId, cmd.GrupoId, cmd.EquipoLocalId, cmd.EquipoVisitanteId, cmd.TipoPartidoId, cmd.PartidoIdApi, cmd.Active)
+                .ConEstado(cmd.Estado, cmd.ResultadoLocal, cmd.ResultadoVisitante, tipo)
+                .ConAuditoria(_currentUser.UserName);
+
+            if (FasesConocidas.Tipo(cmd.FaseId) == TipoFase.Eliminatoria)
+                builder.ConDefinicionEliminatoria(new DefinicionEliminatoria(
+                    cmd.PartidoSeDefiniraEnPenales, cmd.PenalesAnotadosLocal, cmd.PenalesAnotadosVisitante,
+                    cmd.EquipoGanadorId, cmd.PartidoGanadorLocalId, cmd.PartidoGanadorVisitanteId));
+
+            var entity = builder.Build();
 
             _repo.Insert(entity);
             await _uow.SaveChangesAsync(ct);
@@ -159,8 +174,10 @@ namespace Quinela.Application.Features.Master.Partidos
 
     // ----- Update (edición manual completa: ficha + estado + goles, y recalcula el ranking) -----
     public sealed record UpdatePartidoCommand(
-        int Id, DateTime FechaPartido, int TorneoId, int GrupoId, int EquipoLocalId, int EquipoVisitanteId, int TipoPartidoId,
-        char Estado, int? ResultadoLocal, int? ResultadoVisitante, string? PartidoIdApi, bool Active)
+        int Id, DateTime FechaPartido, int TorneoId, int GrupoId, int FaseId, int EquipoLocalId, int EquipoVisitanteId, int TipoPartidoId,
+        char Estado, int? ResultadoLocal, int? ResultadoVisitante, string? PartidoIdApi, bool Active,
+        bool? PartidoSeDefiniraEnPenales, int? PenalesAnotadosLocal, int? PenalesAnotadosVisitante,
+        int? EquipoGanadorId, int? PartidoGanadorLocalId, int? PartidoGanadorVisitanteId)
         : IRequest<Result<PartidoAdminDto>>;
 
     public sealed class UpdatePartidoValidator : AbstractValidator<UpdatePartidoCommand>
@@ -170,6 +187,7 @@ namespace Quinela.Application.Features.Master.Partidos
             RuleFor(x => x.FechaPartido).NotEmpty().WithMessage("La fecha del partido es requerida.");
             RuleFor(x => x.TorneoId).GreaterThan(0).WithMessage("El torneo es requerido.");
             RuleFor(x => x.GrupoId).GreaterThan(0).WithMessage("El grupo es requerido.");
+            RuleFor(x => x.FaseId).GreaterThan(0).WithMessage("La fase es requerida.");
             RuleFor(x => x.EquipoLocalId).GreaterThan(0).WithMessage("El equipo local es requerido.");
             RuleFor(x => x.EquipoVisitanteId).GreaterThan(0).WithMessage("El equipo visitante es requerido.");
             RuleFor(x => x.TipoPartidoId).GreaterThan(0).WithMessage("El tipo de partido es requerido.");
@@ -183,18 +201,21 @@ namespace Quinela.Application.Features.Master.Partidos
         private readonly IRepository<TipoPartido> _tipos;
         private readonly PartidoRelacionesValidator _rel;
         private readonly IRankingService _ranking;
+        private readonly Eliminatoria.IDistributionEliminatoryWorldCup2026 _eliminatoria;
         private readonly IUnitOfWork _uow;
         private readonly ICurrentUser _currentUser;
         public UpdatePartidoHandler(IRepository<Partido> repo, IRepository<TipoPartido> tipos,
-            PartidoRelacionesValidator rel, IRankingService ranking, IUnitOfWork uow, ICurrentUser currentUser)
-        { _repo = repo; _tipos = tipos; _rel = rel; _ranking = ranking; _uow = uow; _currentUser = currentUser; }
+            PartidoRelacionesValidator rel, IRankingService ranking,
+            Eliminatoria.IDistributionEliminatoryWorldCup2026 eliminatoria, IUnitOfWork uow, ICurrentUser currentUser)
+        { _repo = repo; _tipos = tipos; _rel = rel; _ranking = ranking; _eliminatoria = eliminatoria; _uow = uow; _currentUser = currentUser; }
 
         public async Task<Result<PartidoAdminDto>> Handle(UpdatePartidoCommand cmd, CancellationToken ct)
         {
             var entity = await _repo.GetDbSet().FirstOrDefaultAsync(x => x.Id == cmd.Id, ct);
             if (entity is null) return Result.Failure<PartidoAdminDto>(PartidoAdminErrors.NotFound);
 
-            var check = await _rel.ValidarAsync(cmd.TorneoId, cmd.GrupoId, cmd.EquipoLocalId, cmd.EquipoVisitanteId, cmd.TipoPartidoId, ct);
+            var check = await _rel.ValidarAsync(cmd.TorneoId, cmd.GrupoId, cmd.FaseId, cmd.EquipoLocalId, cmd.EquipoVisitanteId,
+                cmd.TipoPartidoId, cmd.EquipoGanadorId, cmd.PartidoGanadorLocalId, cmd.PartidoGanadorVisitanteId, ct);
             if (check is not null) return Result.Failure<PartidoAdminDto>(check);
 
             var tipo = await _tipos.GetDbSet().AsNoTracking().FirstAsync(t => t.Id == cmd.TipoPartidoId, ct);
@@ -203,6 +224,7 @@ namespace Quinela.Application.Features.Master.Partidos
             entity.FechaPartido = DateTime.SpecifyKind(cmd.FechaPartido, DateTimeKind.Utc);
             entity.TorneoId = cmd.TorneoId;
             entity.GrupoId = cmd.GrupoId;
+            entity.FaseId = cmd.FaseId;
             entity.EquipoLocalId = cmd.EquipoLocalId;
             entity.EquipoVisitanteId = cmd.EquipoVisitanteId;
             entity.TipoPartidoId = cmd.TipoPartidoId;
@@ -210,6 +232,13 @@ namespace Quinela.Application.Features.Master.Partidos
             entity.Active = cmd.Active;
             // Estado + goles + puntos del partido (P limpia el marcador; E/T lo calcula).
             PartidoEstadoHelper.Aplicar(entity, cmd.Estado, cmd.ResultadoLocal, cmd.ResultadoVisitante, tipo);
+            // Reescribe la definición de eliminatoria según la fase (en grupos la limpia).
+            if (FasesConocidas.Tipo(cmd.FaseId) == TipoFase.Eliminatoria)
+                DefinicionEliminatoriaAplicador.Aplicar(entity, new DefinicionEliminatoria(
+                    cmd.PartidoSeDefiniraEnPenales, cmd.PenalesAnotadosLocal, cmd.PenalesAnotadosVisitante,
+                    cmd.EquipoGanadorId, cmd.PartidoGanadorLocalId, cmd.PartidoGanadorVisitanteId));
+            else
+                DefinicionEliminatoriaAplicador.Limpiar(entity);
             entity.UpdatedAt = DateTime.UtcNow;
             entity.UpdatedBy = _currentUser.UserName;
             await _uow.SaveChangesAsync(ct);
@@ -218,6 +247,11 @@ namespace Quinela.Application.Features.Master.Partidos
             await _ranking.RecalcularAsync(entity.TorneoId, ct);
             if (torneoAnterior != entity.TorneoId)
                 await _ranking.RecalcularAsync(torneoAnterior, ct);
+
+            // Al cambiar un resultado se reacomoda el cuadro de eliminatoria (equipos + ganadores + árbol).
+            await _eliminatoria.RecalcularAsync(entity.TorneoId, ct);
+            if (torneoAnterior != entity.TorneoId)
+                await _eliminatoria.RecalcularAsync(torneoAnterior, ct);
 
             var dto = await _repo.GetDbSet().AsNoTracking()
                 .Where(p => p.Id == entity.Id).Select(PartidoAdminProjection.ToDto).FirstAsync(ct);
@@ -298,12 +332,15 @@ namespace Quinela.Application.Features.Master.Partidos
         private readonly IRepository<Grupo> _grupos;
         private readonly IRepository<Equipo> _equipos;
         private readonly IRepository<TipoPartido> _tipos;
+        private readonly IRepository<Fase> _fases;
+        private readonly IRepository<Partido> _partidos;
 
         public PartidoRelacionesValidator(IRepository<Torneo> torneos, IRepository<Grupo> grupos,
-            IRepository<Equipo> equipos, IRepository<TipoPartido> tipos)
-        { _torneos = torneos; _grupos = grupos; _equipos = equipos; _tipos = tipos; }
+            IRepository<Equipo> equipos, IRepository<TipoPartido> tipos, IRepository<Fase> fases, IRepository<Partido> partidos)
+        { _torneos = torneos; _grupos = grupos; _equipos = equipos; _tipos = tipos; _fases = fases; _partidos = partidos; }
 
-        public async Task<Error?> ValidarAsync(int torneoId, int grupoId, int equipoLocalId, int equipoVisitanteId, int tipoPartidoId, CancellationToken ct)
+        public async Task<Error?> ValidarAsync(int torneoId, int grupoId, int faseId, int equipoLocalId, int equipoVisitanteId,
+            int tipoPartidoId, int? equipoGanadorId, int? partidoGanadorLocalId, int? partidoGanadorVisitanteId, CancellationToken ct)
         {
             if (equipoLocalId == equipoVisitanteId) return PartidoAdminErrors.MismosEquipos;
 
@@ -311,12 +348,25 @@ namespace Quinela.Application.Features.Master.Partidos
                 return PartidoAdminErrors.TorneoNotFound;
             if (!await _grupos.GetDbSet().AsNoTracking().AnyAsync(g => g.Id == grupoId && g.TorneoId == torneoId, ct))
                 return PartidoAdminErrors.GrupoInvalido;
+            if (!await _fases.GetDbSet().AsNoTracking().AnyAsync(f => f.Id == faseId, ct))
+                return PartidoAdminErrors.FaseNotFound;
             if (!await _equipos.GetDbSet().AsNoTracking().AnyAsync(e => e.Id == equipoLocalId && e.TorneoId == torneoId, ct))
                 return PartidoAdminErrors.EquipoLocalInvalido;
             if (!await _equipos.GetDbSet().AsNoTracking().AnyAsync(e => e.Id == equipoVisitanteId && e.TorneoId == torneoId, ct))
                 return PartidoAdminErrors.EquipoVisitanteInvalido;
             if (!await _tipos.GetDbSet().AsNoTracking().AnyAsync(t => t.Id == tipoPartidoId, ct))
                 return PartidoAdminErrors.TipoPartidoNotFound;
+
+            // Campos opcionales de eliminatoria: validar solo si vienen informados.
+            if (equipoGanadorId.HasValue &&
+                !await _equipos.GetDbSet().AsNoTracking().AnyAsync(e => e.Id == equipoGanadorId.Value && e.TorneoId == torneoId, ct))
+                return PartidoAdminErrors.EquipoGanadorInvalido;
+            if (partidoGanadorLocalId.HasValue &&
+                !await _partidos.GetDbSet().AsNoTracking().AnyAsync(p => p.Id == partidoGanadorLocalId.Value, ct))
+                return PartidoAdminErrors.PartidoGanadorInvalido;
+            if (partidoGanadorVisitanteId.HasValue &&
+                !await _partidos.GetDbSet().AsNoTracking().AnyAsync(p => p.Id == partidoGanadorVisitanteId.Value, ct))
+                return PartidoAdminErrors.PartidoGanadorInvalido;
 
             return null;
         }

@@ -9,6 +9,8 @@ namespace Quinela.Domain.Entities
     public class TipoPartido : BaseEntity
     {
         public string Descripcion { get; set; } = null!;
+        public int FaseId { get; set; }
+        public Fase Fase { get; set; } = null!;
         public int PtsPartidoVictoria { get; set; }
         public int PtsPartidoEmpate { get; set; }
         public int PtsQuinelaResultadoExacto { get; set; }

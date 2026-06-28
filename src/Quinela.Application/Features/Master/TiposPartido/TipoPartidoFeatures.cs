@@ -11,6 +11,7 @@ namespace Quinela.Application.Features.Master.TiposPartido
     {
         public static readonly Error NotFound = Error.NotFound("TipoPartido.NotFound", "No se encontró el tipo de partido.");
         public static readonly Error Duplicate = Error.Conflict("TipoPartido.Duplicate", "Ya existe un tipo de partido con esa descripción.");
+        public static readonly Error FaseNotFound = Error.NotFound("TipoPartido.FaseNotFound", "No se encontró la fase indicada.");
     }
 
     // ----- GetAll -----
@@ -48,7 +49,7 @@ namespace Quinela.Application.Features.Master.TiposPartido
 
     // ----- Create -----
     public sealed record CreateTipoPartidoCommand(
-        string Descripcion, int PtsPartidoVictoria, int PtsPartidoEmpate,
+        string Descripcion, int FaseId, int PtsPartidoVictoria, int PtsPartidoEmpate,
         int PtsQuinelaResultadoExacto, int PtsQuinelaResultadoAcertado, bool Active) : IRequest<Result<TipoPartidoDto>>;
 
     public sealed class CreateTipoPartidoValidator : AbstractValidator<CreateTipoPartidoCommand>
@@ -56,6 +57,7 @@ namespace Quinela.Application.Features.Master.TiposPartido
         public CreateTipoPartidoValidator()
         {
             RuleFor(x => x.Descripcion).NotEmpty().WithMessage("La descripción es requerida.").MaximumLength(120);
+            RuleFor(x => x.FaseId).GreaterThan(0).WithMessage("La fase es requerida.");
             RuleFor(x => x.PtsPartidoVictoria).GreaterThanOrEqualTo(0);
             RuleFor(x => x.PtsPartidoEmpate).GreaterThanOrEqualTo(0);
             RuleFor(x => x.PtsQuinelaResultadoExacto).GreaterThanOrEqualTo(0);
@@ -66,13 +68,17 @@ namespace Quinela.Application.Features.Master.TiposPartido
     internal sealed class CreateTipoPartidoHandler : IRequestHandler<CreateTipoPartidoCommand, Result<TipoPartidoDto>>
     {
         private readonly IRepository<TipoPartido> _repo;
+        private readonly IRepository<Fase> _fases;
         private readonly IUnitOfWork _uow;
         private readonly ICurrentUser _currentUser;
-        public CreateTipoPartidoHandler(IRepository<TipoPartido> repo, IUnitOfWork uow, ICurrentUser currentUser)
-        { _repo = repo; _uow = uow; _currentUser = currentUser; }
+        public CreateTipoPartidoHandler(IRepository<TipoPartido> repo, IRepository<Fase> fases, IUnitOfWork uow, ICurrentUser currentUser)
+        { _repo = repo; _fases = fases; _uow = uow; _currentUser = currentUser; }
 
         public async Task<Result<TipoPartidoDto>> Handle(CreateTipoPartidoCommand cmd, CancellationToken ct)
         {
+            var faseExists = await _fases.GetDbSet().AsNoTracking().AnyAsync(x => x.Id == cmd.FaseId, ct);
+            if (!faseExists) return Result.Failure<TipoPartidoDto>(TipoPartidoErrors.FaseNotFound);
+
             var descripcion = cmd.Descripcion.Trim();
             var exists = await _repo.GetDbSet().AsNoTracking()
                 .AnyAsync(x => x.Descripcion.ToLower() == descripcion.ToLower(), ct);
@@ -81,6 +87,7 @@ namespace Quinela.Application.Features.Master.TiposPartido
             var entity = new TipoPartido
             {
                 Descripcion = descripcion,
+                FaseId = cmd.FaseId,
                 PtsPartidoVictoria = cmd.PtsPartidoVictoria,
                 PtsPartidoEmpate = cmd.PtsPartidoEmpate,
                 PtsQuinelaResultadoExacto = cmd.PtsQuinelaResultadoExacto,
@@ -96,7 +103,7 @@ namespace Quinela.Application.Features.Master.TiposPartido
 
     // ----- Update -----
     public sealed record UpdateTipoPartidoCommand(
-        int Id, string Descripcion, int PtsPartidoVictoria, int PtsPartidoEmpate,
+        int Id, string Descripcion, int FaseId, int PtsPartidoVictoria, int PtsPartidoEmpate,
         int PtsQuinelaResultadoExacto, int PtsQuinelaResultadoAcertado, bool Active) : IRequest<Result<TipoPartidoDto>>;
 
     public sealed class UpdateTipoPartidoValidator : AbstractValidator<UpdateTipoPartidoCommand>
@@ -104,6 +111,7 @@ namespace Quinela.Application.Features.Master.TiposPartido
         public UpdateTipoPartidoValidator()
         {
             RuleFor(x => x.Descripcion).NotEmpty().WithMessage("La descripción es requerida.").MaximumLength(120);
+            RuleFor(x => x.FaseId).GreaterThan(0).WithMessage("La fase es requerida.");
             RuleFor(x => x.PtsPartidoVictoria).GreaterThanOrEqualTo(0);
             RuleFor(x => x.PtsPartidoEmpate).GreaterThanOrEqualTo(0);
             RuleFor(x => x.PtsQuinelaResultadoExacto).GreaterThanOrEqualTo(0);
@@ -114,15 +122,19 @@ namespace Quinela.Application.Features.Master.TiposPartido
     internal sealed class UpdateTipoPartidoHandler : IRequestHandler<UpdateTipoPartidoCommand, Result<TipoPartidoDto>>
     {
         private readonly IRepository<TipoPartido> _repo;
+        private readonly IRepository<Fase> _fases;
         private readonly IUnitOfWork _uow;
         private readonly ICurrentUser _currentUser;
-        public UpdateTipoPartidoHandler(IRepository<TipoPartido> repo, IUnitOfWork uow, ICurrentUser currentUser)
-        { _repo = repo; _uow = uow; _currentUser = currentUser; }
+        public UpdateTipoPartidoHandler(IRepository<TipoPartido> repo, IRepository<Fase> fases, IUnitOfWork uow, ICurrentUser currentUser)
+        { _repo = repo; _fases = fases; _uow = uow; _currentUser = currentUser; }
 
         public async Task<Result<TipoPartidoDto>> Handle(UpdateTipoPartidoCommand cmd, CancellationToken ct)
         {
             var entity = await _repo.GetDbSet().FirstOrDefaultAsync(x => x.Id == cmd.Id, ct);
             if (entity is null) return Result.Failure<TipoPartidoDto>(TipoPartidoErrors.NotFound);
+
+            var faseExists = await _fases.GetDbSet().AsNoTracking().AnyAsync(x => x.Id == cmd.FaseId, ct);
+            if (!faseExists) return Result.Failure<TipoPartidoDto>(TipoPartidoErrors.FaseNotFound);
 
             var descripcion = cmd.Descripcion.Trim();
             var dup = await _repo.GetDbSet().AsNoTracking()
@@ -130,6 +142,7 @@ namespace Quinela.Application.Features.Master.TiposPartido
             if (dup) return Result.Failure<TipoPartidoDto>(TipoPartidoErrors.Duplicate);
 
             entity.Descripcion = descripcion;
+            entity.FaseId = cmd.FaseId;
             entity.PtsPartidoVictoria = cmd.PtsPartidoVictoria;
             entity.PtsPartidoEmpate = cmd.PtsPartidoEmpate;
             entity.PtsQuinelaResultadoExacto = cmd.PtsQuinelaResultadoExacto;
@@ -169,6 +182,7 @@ namespace Quinela.Application.Features.Master.TiposPartido
         {
             Id = x.Id,
             Descripcion = x.Descripcion,
+            FaseId = x.FaseId,
             PtsPartidoVictoria = x.PtsPartidoVictoria,
             PtsPartidoEmpate = x.PtsPartidoEmpate,
             PtsQuinelaResultadoExacto = x.PtsQuinelaResultadoExacto,

@@ -26,14 +26,18 @@ namespace Quinela.Api.Controllers.Master
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] PartidoCreateDto dto, CancellationToken ct)
             => (await _sender.Send(new CreatePartidoCommand(
-                dto.FechaPartido, dto.TorneoId, dto.GrupoId, dto.EquipoLocalId, dto.EquipoVisitanteId, dto.TipoPartidoId,
-                dto.Estado, dto.ResultadoLocal, dto.ResultadoVisitante, dto.PartidoIdApi, dto.Active), ct)).ToActionResult();
+                dto.FechaPartido, dto.TorneoId, dto.GrupoId, dto.FaseId, dto.EquipoLocalId, dto.EquipoVisitanteId, dto.TipoPartidoId,
+                dto.Estado, dto.ResultadoLocal, dto.ResultadoVisitante, dto.PartidoIdApi, dto.Active,
+                dto.PartidoSeDefiniraEnPenales, dto.PenalesAnotadosLocal, dto.PenalesAnotadosVisitante,
+                dto.EquipoGanadorId, dto.PartidoGanadorLocalId, dto.PartidoGanadorVisitanteId), ct)).ToActionResult();
 
         [HttpPut("{id:int}")]
         public async Task<IActionResult> Update(int id, [FromBody] PartidoUpdateDto dto, CancellationToken ct)
             => (await _sender.Send(new UpdatePartidoCommand(
-                id, dto.FechaPartido, dto.TorneoId, dto.GrupoId, dto.EquipoLocalId, dto.EquipoVisitanteId, dto.TipoPartidoId,
-                dto.Estado, dto.ResultadoLocal, dto.ResultadoVisitante, dto.PartidoIdApi, dto.Active), ct)).ToActionResult();
+                id, dto.FechaPartido, dto.TorneoId, dto.GrupoId, dto.FaseId, dto.EquipoLocalId, dto.EquipoVisitanteId, dto.TipoPartidoId,
+                dto.Estado, dto.ResultadoLocal, dto.ResultadoVisitante, dto.PartidoIdApi, dto.Active,
+                dto.PartidoSeDefiniraEnPenales, dto.PenalesAnotadosLocal, dto.PenalesAnotadosVisitante,
+                dto.EquipoGanadorId, dto.PartidoGanadorLocalId, dto.PartidoGanadorVisitanteId), ct)).ToActionResult();
 
         [HttpDelete("{id:int}")]
         public async Task<IActionResult> Delete(int id, CancellationToken ct)

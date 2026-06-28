@@ -39,8 +39,10 @@ namespace Quinela.Application.Features.AutomationMatch
             var enCurso = await _partidos.GetDbSet().AsNoTracking()
                 .Where(p => p.Active && p.Estado == 'E' && p.PartidoIdApi != null)
                 .Select(p => new PartidoCmd(
-                    p.Id, p.FechaPartido, p.TorneoId, p.GrupoId, p.EquipoLocalId, p.EquipoVisitanteId,
-                    p.TipoPartidoId, p.PartidoIdApi!, p.ResultadoLocalId, p.ResultadoVisitanteId, p.Active))
+                    p.Id, p.FechaPartido, p.TorneoId, p.GrupoId, p.FaseId, p.EquipoLocalId, p.EquipoVisitanteId,
+                    p.TipoPartidoId, p.PartidoIdApi!, p.ResultadoLocalId, p.ResultadoVisitanteId, p.Active,
+                    p.PartidoSeDefiniraEnPenales, p.PenalesAnotadosLocal, p.PenalesAnotadosVisitante,
+                    p.EquipoGanadorId, p.PartidoGanadorLocalId, p.PartidoGanadorVisitanteId))
                 .ToListAsync(ct);
 
             foreach (var p in enCurso)
@@ -68,8 +70,10 @@ namespace Quinela.Application.Features.AutomationMatch
                 if (!game.Finished && !golesCambiaron) continue;
 
                 var res = await _sender.Send(new UpdatePartidoCommand(
-                    p.Id, p.FechaPartido, p.TorneoId, p.GrupoId, p.EquipoLocalId, p.EquipoVisitanteId,
-                    p.TipoPartidoId, nuevoEstado, game.HomeScore, game.AwayScore, p.PartidoIdApi, p.Active), ct);
+                    p.Id, p.FechaPartido, p.TorneoId, p.GrupoId, p.FaseId, p.EquipoLocalId, p.EquipoVisitanteId,
+                    p.TipoPartidoId, nuevoEstado, game.HomeScore, game.AwayScore, p.PartidoIdApi, p.Active,
+                    p.PartidoSeDefiniraEnPenales, p.PenalesAnotadosLocal, p.PenalesAnotadosVisitante,
+                    p.EquipoGanadorId, p.PartidoGanadorLocalId, p.PartidoGanadorVisitanteId), ct);
 
                 if (res.IsFailure)
                     _logger.LogWarning("No se pudo actualizar el partido {Id}: {Error}", p.Id, res.Error.Message);
@@ -78,8 +82,10 @@ namespace Quinela.Application.Features.AutomationMatch
             }
         }
 
-        private sealed record PartidoCmd(int Id, DateTime FechaPartido, int TorneoId, int GrupoId,
+        private sealed record PartidoCmd(int Id, DateTime FechaPartido, int TorneoId, int GrupoId, int FaseId,
             int EquipoLocalId, int EquipoVisitanteId, int TipoPartidoId, string PartidoIdApi,
-            int? ResultadoLocal, int? ResultadoVisitante, bool Active);
+            int? ResultadoLocal, int? ResultadoVisitante, bool Active,
+            bool? PartidoSeDefiniraEnPenales, int? PenalesAnotadosLocal, int? PenalesAnotadosVisitante,
+            int? EquipoGanadorId, int? PartidoGanadorLocalId, int? PartidoGanadorVisitanteId);
     }
 }

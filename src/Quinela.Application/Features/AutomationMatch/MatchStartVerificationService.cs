@@ -38,16 +38,20 @@ namespace Quinela.Application.Features.AutomationMatch
             var porArrancar = await _partidos.GetDbSet().AsNoTracking()
                 .Where(p => p.Active && p.Estado == 'P' && p.FechaPartido <= ahoraUtc)
                 .Select(p => new PartidoCmd(
-                    p.Id, p.FechaPartido, p.TorneoId, p.GrupoId, p.EquipoLocalId, p.EquipoVisitanteId,
-                    p.TipoPartidoId, p.PartidoIdApi, p.Active))
+                    p.Id, p.FechaPartido, p.TorneoId, p.GrupoId, p.FaseId, p.EquipoLocalId, p.EquipoVisitanteId,
+                    p.TipoPartidoId, p.PartidoIdApi, p.Active,
+                    p.PartidoSeDefiniraEnPenales, p.PenalesAnotadosLocal, p.PenalesAnotadosVisitante,
+                    p.EquipoGanadorId, p.PartidoGanadorLocalId, p.PartidoGanadorVisitanteId))
                 .ToListAsync(ct);
 
             foreach (var p in porArrancar)
             {
                 // Estado 'E' + marcador 0-0. Reusa el CRUD (dispara recálculo de ranking/grupos).
                 var res = await _sender.Send(new UpdatePartidoCommand(
-                    p.Id, p.FechaPartido, p.TorneoId, p.GrupoId, p.EquipoLocalId, p.EquipoVisitanteId,
-                    p.TipoPartidoId, 'E', 0, 0, p.PartidoIdApi, p.Active), ct);
+                    p.Id, p.FechaPartido, p.TorneoId, p.GrupoId, p.FaseId, p.EquipoLocalId, p.EquipoVisitanteId,
+                    p.TipoPartidoId, 'E', 0, 0, p.PartidoIdApi, p.Active,
+                    p.PartidoSeDefiniraEnPenales, p.PenalesAnotadosLocal, p.PenalesAnotadosVisitante,
+                    p.EquipoGanadorId, p.PartidoGanadorLocalId, p.PartidoGanadorVisitanteId), ct);
 
                 if (res.IsFailure)
                     _logger.LogWarning("No se pudo arrancar el partido {Id}: {Error}", p.Id, res.Error.Message);
@@ -56,7 +60,9 @@ namespace Quinela.Application.Features.AutomationMatch
             }
         }
 
-        private sealed record PartidoCmd(int Id, DateTime FechaPartido, int TorneoId, int GrupoId,
-            int EquipoLocalId, int EquipoVisitanteId, int TipoPartidoId, string? PartidoIdApi, bool Active);
+        private sealed record PartidoCmd(int Id, DateTime FechaPartido, int TorneoId, int GrupoId, int FaseId,
+            int EquipoLocalId, int EquipoVisitanteId, int TipoPartidoId, string? PartidoIdApi, bool Active,
+            bool? PartidoSeDefiniraEnPenales, int? PenalesAnotadosLocal, int? PenalesAnotadosVisitante,
+            int? EquipoGanadorId, int? PartidoGanadorLocalId, int? PartidoGanadorVisitanteId);
     }
 }
