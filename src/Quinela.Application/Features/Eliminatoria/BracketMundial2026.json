@@ -2,7 +2,7 @@
   "torneoId": 1,
   "descripcion": "Cuadro de eliminatoria del Mundial 2026 (estructura oficial FIFA). El Id de cada partido es el numero de partido FIFA (73-104). Los slots se resuelven asi: 1X = 1ro del grupo X, 2X = 2do del grupo X, 3ro = mejor tercero (asignado en orden de partido), W{n} = ganador del partido n, L{n} = perdedor del partido n.",
   "partidos": [
-    { "id": 73, "ronda": "R32", "fecha": "2026-06-28T18:00:00Z", "local": "2B", "visitante": "2A" },
+    { "id": 73, "ronda": "R32", "fecha": "2026-06-28T18:00:00Z", "local": "2A", "visitante": "2B" },
     { "id": 74, "ronda": "R32", "fecha": "2026-06-29T18:00:00Z", "local": "1E", "visitante": "3ro" },
     { "id": 75, "ronda": "R32", "fecha": "2026-06-29T21:00:00Z", "local": "1F", "visitante": "2C" },
     { "id": 76, "ronda": "R32", "fecha": "2026-06-29T23:00:00Z", "local": "1C", "visitante": "2F" },
