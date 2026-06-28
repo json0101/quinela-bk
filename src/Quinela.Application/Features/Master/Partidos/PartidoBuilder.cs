@@ -50,7 +50,7 @@ namespace Quinela.Application.Features.Master.Partidos
         }
 
         public PartidoBuilder ConFicha(
-            DateTime fechaPartido, int torneoId, int grupoId, int equipoLocalId,
+            DateTime fechaPartido, int torneoId, int? grupoId, int equipoLocalId,
             int equipoVisitanteId, int tipoPartidoId, string? partidoIdApi, bool active)
         {
             _partido.FechaPartido = DateTime.SpecifyKind(fechaPartido, DateTimeKind.Utc);

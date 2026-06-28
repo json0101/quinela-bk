@@ -125,7 +125,7 @@ namespace Quinela.Application.Features.Master.Partidos
             // Uno "por definirse" se arma del árbol: esos campos no aplican.
             When(x => !x.PorDefinirse, () =>
             {
-                RuleFor(x => x.GrupoId).Must(v => v is > 0).WithMessage("El grupo es requerido.");
+                // El grupo es opcional (se puede dejar sin grupo); los equipos sí se requieren.
                 RuleFor(x => x.EquipoLocalId).Must(v => v is > 0).WithMessage("El equipo local es requerido.");
                 RuleFor(x => x.EquipoVisitanteId).Must(v => v is > 0).WithMessage("El equipo visitante es requerido.");
                 PartidoEstadoHelper.AplicarReglas(this, x => x.Estado, x => x.ResultadoLocal, x => x.ResultadoVisitante);
@@ -169,7 +169,7 @@ namespace Quinela.Application.Features.Master.Partidos
                 var tipo = await _tipos.GetDbSet().AsNoTracking().FirstAsync(t => t.Id == cmd.TipoPartidoId, ct);
                 // La ficha base se arma igual en cualquier fase; en eliminatoria se agrega la definición.
                 var builder = PartidoBuilder.DeFase(cmd.FaseId)
-                    .ConFicha(cmd.FechaPartido, cmd.TorneoId, cmd.GrupoId!.Value, cmd.EquipoLocalId!.Value, cmd.EquipoVisitanteId!.Value, cmd.TipoPartidoId, cmd.PartidoIdApi, cmd.Active)
+                    .ConFicha(cmd.FechaPartido, cmd.TorneoId, cmd.GrupoId, cmd.EquipoLocalId!.Value, cmd.EquipoVisitanteId!.Value, cmd.TipoPartidoId, cmd.PartidoIdApi, cmd.Active)
                     .ConEstado(cmd.Estado, cmd.ResultadoLocal, cmd.ResultadoVisitante, tipo)
                     .ConAuditoria(_currentUser.UserName);
 
@@ -215,7 +215,7 @@ namespace Quinela.Application.Features.Master.Partidos
             RuleFor(x => x.TipoPartidoId).GreaterThan(0).WithMessage("El tipo de partido es requerido.");
             When(x => !x.PorDefinirse, () =>
             {
-                RuleFor(x => x.GrupoId).Must(v => v is > 0).WithMessage("El grupo es requerido.");
+                // El grupo es opcional (se puede dejar sin grupo); los equipos sí se requieren.
                 RuleFor(x => x.EquipoLocalId).Must(v => v is > 0).WithMessage("El equipo local es requerido.");
                 RuleFor(x => x.EquipoVisitanteId).Must(v => v is > 0).WithMessage("El equipo visitante es requerido.");
                 PartidoEstadoHelper.AplicarReglas(this, x => x.Estado, x => x.ResultadoLocal, x => x.ResultadoVisitante);
@@ -415,7 +415,8 @@ namespace Quinela.Application.Features.Master.Partidos
             else
             {
                 if (equipoLocalId == equipoVisitanteId) return PartidoAdminErrors.MismosEquipos;
-                if (grupoId is not int g || !await _grupos.GetDbSet().AsNoTracking().AnyAsync(x => x.Id == g && x.TorneoId == torneoId, ct))
+                // El grupo es opcional: solo se valida si viene informado.
+                if (grupoId is int g && !await _grupos.GetDbSet().AsNoTracking().AnyAsync(x => x.Id == g && x.TorneoId == torneoId, ct))
                     return PartidoAdminErrors.GrupoInvalido;
                 if (equipoLocalId is not int el || !await _equipos.GetDbSet().AsNoTracking().AnyAsync(e => e.Id == el && e.TorneoId == torneoId, ct))
                     return PartidoAdminErrors.EquipoLocalInvalido;
