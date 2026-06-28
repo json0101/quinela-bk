@@ -89,8 +89,10 @@ namespace Quinela.Application.Features.Eliminatoria
         {
             var ids = Bracket.Partidos.Select(x => x.Id).ToList();
 
+            // Solo partidos ACTIVOS de la BD: un partido eliminado (Active=false) no se carga,
+            // así no aparece en el cuadro y su dependiente queda sin ese equipo.
             var partidos = await _partidos.GetDbSet()
-                .Where(p => p.TorneoId == torneoId && ids.Contains(p.Id))
+                .Where(p => p.TorneoId == torneoId && p.Active && ids.Contains(p.Id))
                 .ToListAsync(ct);
             var porId = partidos.ToDictionary(p => p.Id);
 
@@ -197,6 +199,9 @@ namespace Quinela.Application.Features.Eliminatoria
         private BracketPreviewDto Construir(int torneoId, Resuelto r)
         {
             var rondas = Bracket.Partidos
+                // Solo se muestran los partidos que existen activos en la BD (el JSON solo
+                // aporta la estructura del árbol, no obliga a mostrar choques inexistentes).
+                .Where(def => r.PorId.ContainsKey(def.Id))
                 .GroupBy(x => x.Ronda)
                 .Select(g => new BracketRondaDto(g.Key, g.Select(def =>
                 {
