@@ -299,9 +299,15 @@ namespace Quinela.Application.Features.Master.Partidos
                 await _ranking.RecalcularAsync(torneoAnterior, ct);
 
             // Al cambiar un resultado se reacomoda el cuadro de eliminatoria (equipos + ganadores + árbol).
-            await _eliminatoria.RecalcularAsync(entity.TorneoId, ct);
-            if (torneoAnterior != entity.TorneoId)
-                await _eliminatoria.RecalcularAsync(torneoAnterior, ct);
+            // EXCEPCIÓN: editar un dieciseisavos (eliminatoria con equipos cargados a mano, NO "por
+            // definir") no recalcula, para no pisar lo manual ni reacomodar los demás (control manual).
+            var esDieciseisavoManual = FasesConocidas.Tipo(cmd.FaseId) == TipoFase.Eliminatoria && !cmd.PorDefinirse;
+            if (!esDieciseisavoManual)
+            {
+                await _eliminatoria.RecalcularAsync(entity.TorneoId, ct);
+                if (torneoAnterior != entity.TorneoId)
+                    await _eliminatoria.RecalcularAsync(torneoAnterior, ct);
+            }
 
             var dto = await _repo.GetDbSet().AsNoTracking()
                 .Where(p => p.Id == entity.Id).Select(PartidoAdminProjection.ToDto).FirstAsync(ct);

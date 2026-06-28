@@ -111,25 +111,9 @@ namespace Quinela.Application.Features.Eliminatoria
 
             var pos1 = standings.Where(s => s.Posicion == 1).ToDictionary(s => s.Grupo, s => s.EquipoId);
             var pos2 = standings.Where(s => s.Posicion == 2).ToDictionary(s => s.Grupo, s => s.EquipoId);
-
-            // Mejores terceros: top 8 por Pts -> Diff -> GF -> grupo. PREVIEW: simplificación
-            // respecto a la tabla FIFA de 495 combinaciones (se corrige luego).
-            var mejoresTerceros = standings.Where(s => s.Posicion == 3)
-                .OrderByDescending(s => s.Pts).ThenByDescending(s => s.Diff)
-                .ThenByDescending(s => s.GF).ThenBy(s => s.Grupo)
-                .Take(8).Select(s => s.EquipoId).ToList();
-
-            // Asigna cada tercero a los slots "3ro" en orden de aparición (matches 74,77,79,...).
-            var terceroPorPartido = new Dictionary<int, int>();
-            var iTercero = 0;
-            foreach (var def in Bracket.Partidos)
-            {
-                if (def.Local == Tercero || def.Visitante == Tercero)
-                {
-                    if (iTercero < mejoresTerceros.Count) terceroPorPartido[def.Id] = mejoresTerceros[iTercero];
-                    iTercero++;
-                }
-            }
+            // Terceros por grupo: el JSON indica el grupo específico de cada tercero (slot "3X"),
+            // según la asignación oficial de la FIFA (no una simplificación por puntos).
+            var pos3 = standings.Where(s => s.Posicion == 3).ToDictionary(s => s.Grupo, s => s.EquipoId);
 
             var local = new Dictionary<int, int?>();
             var visitante = new Dictionary<int, int?>();
@@ -143,10 +127,10 @@ namespace Quinela.Application.Features.Eliminatoria
 
                 int? l = p?.PartidoGanadorLocalId is int pl
                     ? ganador.GetValueOrDefault(pl)
-                    : ResolverSlot(def.Local, def.Id, pos1, pos2, terceroPorPartido, ganador, perdedor);
+                    : ResolverSlot(def.Local, pos1, pos2, pos3, ganador, perdedor);
                 int? v = p?.PartidoGanadorVisitanteId is int pv
                     ? ganador.GetValueOrDefault(pv)
-                    : ResolverSlot(def.Visitante, def.Id, pos1, pos2, terceroPorPartido, ganador, perdedor);
+                    : ResolverSlot(def.Visitante, pos1, pos2, pos3, ganador, perdedor);
 
                 local[def.Id] = l;
                 visitante[def.Id] = v;
@@ -159,17 +143,16 @@ namespace Quinela.Application.Features.Eliminatoria
             return new Resuelto(porId, nombres, banderas, local, visitante, ganador);
         }
 
-        private static int? ResolverSlot(string code, int matchId,
-            Dictionary<string, int> pos1, Dictionary<string, int> pos2,
-            Dictionary<int, int> terceroPorPartido,
+        private static int? ResolverSlot(string code,
+            Dictionary<string, int> pos1, Dictionary<string, int> pos2, Dictionary<string, int> pos3,
             Dictionary<int, int?> ganador, Dictionary<int, int?> perdedor)
         {
-            if (code == Tercero)
-                return terceroPorPartido.TryGetValue(matchId, out var t) ? t : (int?)null;
             if (code.Length >= 2 && code[0] == '1')
                 return pos1.TryGetValue(code[1..], out var a) ? a : (int?)null;
             if (code.Length >= 2 && code[0] == '2')
                 return pos2.TryGetValue(code[1..], out var b) ? b : (int?)null;
+            if (code.Length >= 2 && code[0] == '3')
+                return pos3.TryGetValue(code[1..], out var c) ? c : (int?)null;
             if (code.Length >= 2 && code[0] == 'W' && int.TryParse(code[1..], out var w))
                 return ganador.GetValueOrDefault(w);
             if (code.Length >= 2 && code[0] == 'L' && int.TryParse(code[1..], out var lp))
@@ -185,6 +168,7 @@ namespace Quinela.Application.Features.Eliminatoria
             if (p is null || !p.Active || p.Estado != 'T' || localId is null || visitId is null) return (null, null);
 
             int lado; // +1 gana local, -1 gana visitante, 0 sin definir
+            // Gana por goles; si quedaron empatados, decide la tanda de penales (cargada a mano).
             if (p.ResultadoLocalId is int rl && p.ResultadoVisitanteId is int rv && rl != rv)
                 lado = rl > rv ? 1 : -1;
             else if (p.PenalesAnotadosLocal is int pl && p.PenalesAnotadosVisitante is int pv && pl != pv)
@@ -236,17 +220,15 @@ namespace Quinela.Application.Features.Eliminatoria
 
         private static string SlotLabel(string code)
         {
-            if (code == Tercero) return "Mejor 3°";
             if (code.Length >= 2 && code[0] == '1') return $"1° Grupo {code[1..]}";
             if (code.Length >= 2 && code[0] == '2') return $"2° Grupo {code[1..]}";
+            if (code.Length >= 2 && code[0] == '3') return $"3° Grupo {code[1..]}";
             if (code.Length >= 2 && code[0] == 'W') return $"Ganador #{code[1..]}";
             if (code.Length >= 2 && code[0] == 'L') return $"Perdedor #{code[1..]}";
             return code;
         }
 
         // ----- Estructura del bracket (recurso embebido, se carga una vez) -----
-        private const string Tercero = "3ro";
-
         private static readonly BracketDef Bracket = CargarBracket();
 
         private static BracketDef CargarBracket()
