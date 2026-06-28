@@ -46,6 +46,8 @@ namespace Quinela.Application.Features.Partidos
 
             var rows = await _partidos.GetDbSet().AsNoTracking()
                 .Where(p => p.Active && p.TorneoId == torneoId.Value)
+                // Solo partidos con equipos definidos (los de eliminatoria "por definirse" aún no).
+                .Where(p => p.EquipoLocalId != null && p.EquipoVisitanteId != null)
                 .Where(p => !desde.HasValue || p.FechaPartido >= desde.Value)
                 .Where(p => !hasta.HasValue || p.FechaPartido < hasta.Value)
                 .OrderBy(p => p.FechaPartido).ThenBy(p => p.Id)
@@ -53,12 +55,12 @@ namespace Quinela.Application.Features.Partidos
                 {
                     Id = p.Id,
                     FechaPartido = p.FechaPartido,
-                    Grupo = p.Grupo!.Nombre,
+                    Grupo = p.Grupo != null ? p.Grupo.Nombre : "",
                     Estado = p.Estado,
-                    LocalId = p.EquipoLocalId,
+                    LocalId = p.EquipoLocalId!.Value,
                     LocalNombre = p.EquipoLocal!.Nombre,
                     LocalBandera = p.EquipoLocal.UrlBandera,
-                    VisitanteId = p.EquipoVisitanteId,
+                    VisitanteId = p.EquipoVisitanteId!.Value,
                     VisitanteNombre = p.EquipoVisitante!.Nombre,
                     VisitanteBandera = p.EquipoVisitante.UrlBandera,
                     ResultadoLocal = p.ResultadoLocalId,

@@ -11,7 +11,9 @@ namespace Quinela.Application.Features.Eliminatoria
     public sealed record BracketRondaDto(string Ronda, List<BracketPartidoDto> Partidos);
     public sealed record BracketPartidoDto(
         int Id, DateTime Fecha, string Ronda, string Local, string Visitante, string Estado,
-        int? GolesLocal, int? GolesVisitante, int? PenalesLocal, int? PenalesVisitante, string? Ganador);
+        int? GolesLocal, int? GolesVisitante, int? PenalesLocal, int? PenalesVisitante, string? Ganador,
+        int? FuenteLocalId, int? FuenteVisitanteId,
+        string? LocalBandera, string? VisitanteBandera, bool PorDefinirse);
 
     /// <summary>
     /// Arma la eliminatoria del Mundial 2026 a partir de las posiciones de grupo (ya calculadas
@@ -59,8 +61,21 @@ namespace Quinela.Application.Features.Eliminatoria
                 var ganador = r.Ganador.GetValueOrDefault(def.Id);
 
                 var cambio = false;
-                if (local is int l && p.EquipoLocalId != l) { p.EquipoLocalId = l; cambio = true; }
-                if (visit is int v && p.EquipoVisitanteId != v) { p.EquipoVisitanteId = v; cambio = true; }
+                // Slot alimentado por el árbol (PartidoGanador*Id): refleja EXACTO el ganador
+                // de la fuente, incluso null (si la fuente no terminó o se eliminó -> se limpia).
+                // Slot de grupo (dieciseisavos, sin fuente): solo se setea cuando resuelve.
+                if (p.PartidoGanadorLocalId.HasValue)
+                {
+                    if (p.EquipoLocalId != local) { p.EquipoLocalId = local; cambio = true; }
+                }
+                else if (local is int l && p.EquipoLocalId != l) { p.EquipoLocalId = l; cambio = true; }
+
+                if (p.PartidoGanadorVisitanteId.HasValue)
+                {
+                    if (p.EquipoVisitanteId != visit) { p.EquipoVisitanteId = visit; cambio = true; }
+                }
+                else if (visit is int v && p.EquipoVisitanteId != v) { p.EquipoVisitanteId = v; cambio = true; }
+
                 if (p.EquipoGanadorId != ganador) { p.EquipoGanadorId = ganador; cambio = true; }
                 if (cambio) { p.UpdatedAt = ahora; p.UpdatedBy = "eliminatoria"; }
             }
@@ -85,9 +100,12 @@ namespace Quinela.Application.Features.Eliminatoria
                 .Select(ge => new StandingRow(ge.Grupo.Nombre, ge.EquipoId, ge.Posicion, ge.Pts, ge.Diff, ge.GF))
                 .ToListAsync(ct);
 
-            var nombres = await _equipos.GetDbSet().AsNoTracking()
+            var equipos = await _equipos.GetDbSet().AsNoTracking()
                 .Where(e => e.TorneoId == torneoId)
-                .ToDictionaryAsync(e => e.Id, e => e.Nombre, ct);
+                .Select(e => new { e.Id, e.Nombre, e.UrlBandera })
+                .ToListAsync(ct);
+            var nombres = equipos.ToDictionary(e => e.Id, e => e.Nombre);
+            var banderas = equipos.ToDictionary(e => e.Id, e => e.UrlBandera);
 
             var pos1 = standings.Where(s => s.Posicion == 1).ToDictionary(s => s.Grupo, s => s.EquipoId);
             var pos2 = standings.Where(s => s.Posicion == 2).ToDictionary(s => s.Grupo, s => s.EquipoId);
@@ -136,7 +154,7 @@ namespace Quinela.Application.Features.Eliminatoria
                 perdedor[def.Id] = lo;
             }
 
-            return new Resuelto(porId, nombres, local, visitante, ganador);
+            return new Resuelto(porId, nombres, banderas, local, visitante, ganador);
         }
 
         private static int? ResolverSlot(string code, int matchId,
@@ -160,7 +178,9 @@ namespace Quinela.Application.Features.Eliminatoria
         // Ganador/perdedor de un partido terminado: por goles; si empató, por penales.
         private static (int? ganador, int? perdedor) CalcularGanador(Partido? p, int? localId, int? visitId)
         {
-            if (p is null || p.Estado != 'T' || localId is null || visitId is null) return (null, null);
+            // Un partido eliminado (Active=false) o no terminado no aporta ganador: así, al
+            // borrar el partido de referencia, el dependiente que lo usaba queda en null.
+            if (p is null || !p.Active || p.Estado != 'T' || localId is null || visitId is null) return (null, null);
 
             int lado; // +1 gana local, -1 gana visitante, 0 sin definir
             if (p.ResultadoLocalId is int rl && p.ResultadoVisitanteId is int rv && rl != rv)
@@ -181,19 +201,29 @@ namespace Quinela.Application.Features.Eliminatoria
                 .Select(g => new BracketRondaDto(g.Key, g.Select(def =>
                 {
                     r.PorId.TryGetValue(def.Id, out var p);
+                    var localId = r.Local.GetValueOrDefault(def.Id);
+                    var visitId = r.Visitante.GetValueOrDefault(def.Id);
                     return new BracketPartidoDto(
                         def.Id, def.Fecha, def.Ronda,
-                        Etiqueta(def.Local, r.Local.GetValueOrDefault(def.Id), r.Nombres),
-                        Etiqueta(def.Visitante, r.Visitante.GetValueOrDefault(def.Id), r.Nombres),
+                        Etiqueta(def.Local, localId, r.Nombres),
+                        Etiqueta(def.Visitante, visitId, r.Nombres),
                         (p?.Estado ?? 'P').ToString(),
                         p?.ResultadoLocalId, p?.ResultadoVisitanteId,
                         p?.PenalesAnotadosLocal, p?.PenalesAnotadosVisitante,
-                        r.Ganador.GetValueOrDefault(def.Id) is int gid ? r.Nombres.GetValueOrDefault(gid) : null);
+                        r.Ganador.GetValueOrDefault(def.Id) is int gid ? r.Nombres.GetValueOrDefault(gid) : null,
+                        FuenteId(def.Local), FuenteId(def.Visitante),
+                        localId is int li ? r.Banderas.GetValueOrDefault(li) : null,
+                        visitId is int vi ? r.Banderas.GetValueOrDefault(vi) : null,
+                        localId is null || visitId is null);
                 }).ToList()))
                 .ToList();
 
             return new BracketPreviewDto(torneoId, rondas);
         }
+
+        // Id del partido que alimenta un slot W{n}/L{n} (null si es un slot de grupo).
+        private static int? FuenteId(string code) =>
+            code.Length >= 2 && (code[0] == 'W' || code[0] == 'L') && int.TryParse(code[1..], out var n) ? n : (int?)null;
 
         // Nombre del equipo si está resuelto; si no, la etiqueta del slot (1° Grupo A, Ganador #74...).
         private static string Etiqueta(string code, int? equipoId, Dictionary<int, string> nombres) =>
@@ -228,6 +258,7 @@ namespace Quinela.Application.Features.Eliminatoria
         private sealed record Resuelto(
             Dictionary<int, Partido> PorId,
             Dictionary<int, string> Nombres,
+            Dictionary<int, string?> Banderas,
             Dictionary<int, int?> Local,
             Dictionary<int, int?> Visitante,
             Dictionary<int, int?> Ganador);

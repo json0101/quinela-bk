@@ -398,6 +398,7 @@ namespace Quinela.Infrastructure.MigrationsUserApp
                     { 16, "Ranking", "/quinela/ranking", 12, 2, false, 2, Seed, "seed", null, null, true },
                     { 24, "Live", "/quinela/live", 12, 3, false, 2, Seed, "seed", null, null, true },
                     { 25, "Tabla de Grupos", "/quinela/grupos", 12, 4, false, 2, Seed, "seed", null, null, true },
+                    { 27, "Eliminatoria", "/quinela/eliminatoria", 12, 5, false, 2, Seed, "seed", null, null, true },
                     // Padre "Maestros": CRUD de catálogo (el usuario necesita acceso al padre para ver los hijos).
                     { 21, "Maestros", "#", null, 2, true, 2, Seed, "seed", null, null, true },
                     { 13, "Grupos", "/quinela/master/grupos", 21, 1, false, 2, Seed, "seed", null, null, true },
@@ -441,7 +442,8 @@ namespace Quinela.Infrastructure.MigrationsUserApp
                     { 23, 2, 23, Seed, "seed", null, null, true },
                     { 24, 2, 24, Seed, "seed", null, null, true },
                     { 25, 2, 25, Seed, "seed", null, null, true },
-                    { 26, 2, 26, Seed, "seed", null, null, true }
+                    { 26, 2, 26, Seed, "seed", null, null, true },
+                    { 27, 2, 27, Seed, "seed", null, null, true }
                 });
 
             // 6) Usuario -> Rol. Ambos usuarios reciben AMBOS roles (acceso total a las dos apps).

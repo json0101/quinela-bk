@@ -77,11 +77,14 @@ namespace Quinela.Application.Features.Ranking
 
             foreach (var j in jugados)
             {
+                // Solo cuentan los partidos de grupo (los de eliminatoria no tienen grupo/equipos fijos).
+                if (j.GrupoId is not int grupo || j.EquipoLocalId is not int local || j.EquipoVisitanteId is not int visit)
+                    continue;
                 var signo = Math.Sign(j.ResultadoLocal - j.ResultadoVisitante);
                 var ptsLocal = signo > 0 ? j.PtsVictoria : signo == 0 ? j.PtsEmpate : 0;
                 var ptsVisitante = signo < 0 ? j.PtsVictoria : signo == 0 ? j.PtsEmpate : 0;
-                Sumar(j.GrupoId, j.EquipoLocalId, j.ResultadoLocal, j.ResultadoVisitante, ptsLocal);
-                Sumar(j.GrupoId, j.EquipoVisitanteId, j.ResultadoVisitante, j.ResultadoLocal, ptsVisitante);
+                Sumar(grupo, local, j.ResultadoLocal, j.ResultadoVisitante, ptsLocal);
+                Sumar(grupo, visit, j.ResultadoVisitante, j.ResultadoLocal, ptsVisitante);
             }
 
             var filas = await _gruposEquipos.GetDbSet().Where(x => x.TorneoId == torneoId).ToListAsync(ct);
@@ -184,9 +187,9 @@ namespace Quinela.Application.Features.Ranking
         private sealed class PartidoJugado
         {
             public int Id { get; set; }
-            public int GrupoId { get; set; }
-            public int EquipoLocalId { get; set; }
-            public int EquipoVisitanteId { get; set; }
+            public int? GrupoId { get; set; }
+            public int? EquipoLocalId { get; set; }
+            public int? EquipoVisitanteId { get; set; }
             public int ResultadoLocal { get; set; }
             public int ResultadoVisitante { get; set; }
             public int PtsVictoria { get; set; }

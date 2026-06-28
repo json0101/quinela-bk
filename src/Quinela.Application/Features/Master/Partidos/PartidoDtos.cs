@@ -37,6 +37,7 @@ namespace Quinela.Application.Features.Master.Partidos
         public string? PartidoIdApi { get; set; }
 
         // Definición de eliminatoria (null/false en grupos).
+        public bool PorDefinirse { get; set; }
         public bool AplicaDefinicionPenales { get; set; }
         public bool? PartidoSeDefiniraEnPenales { get; set; }
         public int? PenalesAnotadosLocal { get; set; }
@@ -55,12 +56,16 @@ namespace Quinela.Application.Features.Master.Partidos
     {
         public DateTime FechaPartido { get; set; }
         public int TorneoId { get; set; }
-        public int GrupoId { get; set; }
+        public int? GrupoId { get; set; }
         // Fase del partido (Grupos por defecto). En eliminatoria habilita los campos de definición.
         public int FaseId { get; set; } = 1;
-        public int EquipoLocalId { get; set; }
-        public int EquipoVisitanteId { get; set; }
+        public int? EquipoLocalId { get; set; }
+        public int? EquipoVisitanteId { get; set; }
         public int TipoPartidoId { get; set; }
+        // "Por definirse": el partido se arma del árbol (sin grupo ni equipos). Solo eliminatoria.
+        public bool PorDefinirse { get; set; }
+        // ¿Aplica definición por penales? (solo eliminatoria; en grupos el backend lo guarda false).
+        public bool AplicaDefinicionPenales { get; set; } = true;
         public char Estado { get; set; } = 'P';
         public int? ResultadoLocal { get; set; }
         public int? ResultadoVisitante { get; set; }
@@ -81,11 +86,13 @@ namespace Quinela.Application.Features.Master.Partidos
     {
         public DateTime FechaPartido { get; set; }
         public int TorneoId { get; set; }
-        public int GrupoId { get; set; }
+        public int? GrupoId { get; set; }
         public int FaseId { get; set; } = 1;
-        public int EquipoLocalId { get; set; }
-        public int EquipoVisitanteId { get; set; }
+        public int? EquipoLocalId { get; set; }
+        public int? EquipoVisitanteId { get; set; }
         public int TipoPartidoId { get; set; }
+        public bool PorDefinirse { get; set; }
+        public bool AplicaDefinicionPenales { get; set; } = true;
         public char Estado { get; set; } = 'P';
         public int? ResultadoLocal { get; set; }
         public int? ResultadoVisitante { get; set; }

@@ -14,10 +14,10 @@ namespace Quinela.Infrastructure.Persistence.Configurations
             builder.Property(x => x.Id).HasColumnName("id");
             builder.Property(x => x.FechaPartido).HasColumnName("fecha_partido").IsRequired();
             builder.Property(x => x.TorneoId).HasColumnName("torneo_id").IsRequired();
-            builder.Property(x => x.GrupoId).HasColumnName("grupo_id").IsRequired();
+            builder.Property(x => x.GrupoId).HasColumnName("grupo_id");
             builder.Property(x => x.FaseId).HasColumnName("fase_id").IsRequired();
-            builder.Property(x => x.EquipoLocalId).HasColumnName("equipo_local_id").IsRequired();
-            builder.Property(x => x.EquipoVisitanteId).HasColumnName("equipo_visitante_id").IsRequired();
+            builder.Property(x => x.EquipoLocalId).HasColumnName("equipo_local_id");
+            builder.Property(x => x.EquipoVisitanteId).HasColumnName("equipo_visitante_id");
             builder.Property(x => x.EquipoGanadorId).HasColumnName("equipo_ganador_id");
             builder.Property(x => x.ResultadoLocalId).HasColumnName("resultado_local_id");
             builder.Property(x => x.ResultadoVisitanteId).HasColumnName("resultado_visitante_id");
@@ -28,6 +28,7 @@ namespace Quinela.Infrastructure.Persistence.Configurations
             builder.Property(x => x.PartidoIdApi).HasColumnName("partido_id_api").HasMaxLength(40);
 
             // Definición de eliminatoria (null/false en grupos).
+            builder.Property(x => x.PorDefinirse).HasColumnName("por_definirse").IsRequired().HasDefaultValue(false);
             builder.Property(x => x.AplicaDefinicionPenales).HasColumnName("aplica_definicion_penales").IsRequired().HasDefaultValue(false);
             builder.Property(x => x.PartidoSeDefiniraEnPenales).HasColumnName("partido_se_definira_en_penales");
             builder.Property(x => x.PenalesAnotadosLocal).HasColumnName("penales_anotados_local");

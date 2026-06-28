@@ -4,6 +4,7 @@ namespace Quinela.Application.Features.Master.Partidos
 {
     /// <summary>Campos extra que solo existen en la fase de eliminatoria.</summary>
     public sealed record DefinicionEliminatoria(
+        bool AplicaDefinicionPenales,
         bool? SeDefiniraEnPenales,
         int? PenalesAnotadosLocal,
         int? PenalesAnotadosVisitante,
@@ -24,6 +25,29 @@ namespace Quinela.Application.Features.Master.Partidos
         private PartidoBuilder(int faseId) => _partido = new Partido { FaseId = faseId };
 
         public static PartidoBuilder DeFase(int faseId) => new(faseId);
+
+        /// <summary>
+        /// Construye un partido de eliminatoria "por definirse": sus participantes salen
+        /// del árbol (ganadores de otros partidos). Solo habilita estos campos: de qué
+        /// partidos depende (local/visitante), la fecha y el torneo. La fase DEBE ser
+        /// eliminatoria (validación del BK).
+        /// </summary>
+        public static PartidoBuilder PorDefinirse(int faseId, int torneoId, DateTime fechaPartido,
+            int? partidoGanadorLocalId, int? partidoGanadorVisitanteId)
+        {
+            if (FasesConocidas.Tipo(faseId) != TipoFase.Eliminatoria)
+                throw new InvalidOperationException("Un partido 'por definirse' solo puede ser de fase eliminatoria.");
+
+            var b = new PartidoBuilder(faseId);
+            b._partido.TorneoId = torneoId;
+            b._partido.FechaPartido = DateTime.SpecifyKind(fechaPartido, DateTimeKind.Utc);
+            b._partido.PorDefinirse = true;
+            b._partido.AplicaDefinicionPenales = true;
+            b._partido.PartidoGanadorLocalId = partidoGanadorLocalId;
+            b._partido.PartidoGanadorVisitanteId = partidoGanadorVisitanteId;
+            b._partido.Estado = 'P';
+            return b;
+        }
 
         public PartidoBuilder ConFicha(
             DateTime fechaPartido, int torneoId, int grupoId, int equipoLocalId,
@@ -71,7 +95,7 @@ namespace Quinela.Application.Features.Master.Partidos
     {
         public static void Aplicar(Partido p, DefinicionEliminatoria d)
         {
-            p.AplicaDefinicionPenales = true;
+            p.AplicaDefinicionPenales = d.AplicaDefinicionPenales;
             p.PartidoSeDefiniraEnPenales = d.SeDefiniraEnPenales;
             p.PenalesAnotadosLocal = d.PenalesAnotadosLocal;
             p.PenalesAnotadosVisitante = d.PenalesAnotadosVisitante;

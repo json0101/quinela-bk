@@ -21,9 +21,9 @@ public class RankingHandlersTests
     };
 
     [Fact]
-    public async Task GetAll_OrdersByPtsThenExactoThenAtinado_AndSkipsInactive()
+    public async Task GetAll_OrdersByPtsThenExacto_AndSkipsInactive()
     {
-        using var ctx = TestHelpers.NewContext(nameof(GetAll_OrdersByPtsThenExactoThenAtinado_AndSkipsInactive));
+        using var ctx = TestHelpers.NewContext(nameof(GetAll_OrdersByPtsThenExacto_AndSkipsInactive));
         ctx.Rankings.AddRange(
             Seed("ana", pts: 10, exacto: 2, atinado: 4, active: true),
             Seed("beto", pts: 20, exacto: 1, atinado: 3, active: true),
@@ -81,6 +81,28 @@ public class RankingHandlersTests
             Assert.Equal(2, x.Posicion);
         });
         Assert.DoesNotContain(result.Value, x => x.Posicion == 3);
+    }
+
+    [Fact]
+    public async Task GetAll_MismoPtsYExacto_DistintoAtinado_Empatan()
+    {
+        using var ctx = TestHelpers.NewContext(nameof(GetAll_MismoPtsYExacto_DistintoAtinado_Empatan));
+        // ana y beto tienen los mismos Pts y exactos pero distintos atinados:
+        // los atinados NO desempatan, así que comparten la posición 1.
+        ctx.Rankings.AddRange(
+            Seed("ana", pts: 10, exacto: 3, atinado: 5, active: true),
+            Seed("beto", pts: 10, exacto: 3, atinado: 0, active: true),
+            Seed("cita", pts: 8, exacto: 2, atinado: 9, active: true));
+        ctx.SaveChanges();
+
+        var handler = new GetAllRankingHandler(new Repository<RankingEntity>(ctx));
+        var result = await handler.Handle(new GetAllRankingQuery(Qid), CancellationToken.None);
+
+        Assert.True(result.IsSuccess);
+        Assert.Equal(1, result.Value.Single(x => x.Usuario == "ana").Posicion);
+        Assert.Equal(1, result.Value.Single(x => x.Usuario == "beto").Posicion);
+        Assert.Equal(3, result.Value.Single(x => x.Usuario == "cita").Posicion);
+        Assert.DoesNotContain(result.Value, x => x.Posicion == 2);
     }
 
     [Fact]

@@ -40,7 +40,7 @@ public class UpdatePartidoManualTests
 
     private static UpdatePartidoCommand Cmd(Partido p, char estado, int? rl, int? rv) =>
         new(p.Id, p.FechaPartido, p.TorneoId, p.GrupoId, p.FaseId, p.EquipoLocalId, p.EquipoVisitanteId, p.TipoPartidoId, estado, rl, rv, p.PartidoIdApi, p.Active,
-            null, null, null, null, null, null);
+            null, null, null, null, null, null, false, false);
 
     [Fact]
     public async Task Terminado_FijaGolesYPuntosDeVictoria_YRecalcula()

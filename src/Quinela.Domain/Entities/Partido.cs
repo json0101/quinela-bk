@@ -14,18 +14,20 @@ namespace Quinela.Domain.Entities
         public int TorneoId { get; set; }
         public Torneo Torneo { get; set; } = null!;
 
-        public int GrupoId { get; set; }
-        public Grupo Grupo { get; set; } = null!;
+        // Grupo: solo aplica a partidos de fase de grupos (null en eliminatoria).
+        public int? GrupoId { get; set; }
+        public Grupo? Grupo { get; set; }
 
         // Fase del partido (Grupos por defecto, o Eliminatoria). Obligatorio.
         public int FaseId { get; set; }
         public Fase Fase { get; set; } = null!;
 
-        public int EquipoLocalId { get; set; }
-        public Equipo EquipoLocal { get; set; } = null!;
+        // Equipos: pueden ser null en eliminatoria mientras el partido está "por definirse".
+        public int? EquipoLocalId { get; set; }
+        public Equipo? EquipoLocal { get; set; }
 
-        public int EquipoVisitanteId { get; set; }
-        public Equipo EquipoVisitante { get; set; } = null!;
+        public int? EquipoVisitanteId { get; set; }
+        public Equipo? EquipoVisitante { get; set; }
 
         // Equipo que ganó el partido (definición de eliminatoria). Null en grupos
         // o mientras no se defina.
@@ -49,6 +51,10 @@ namespace Quinela.Domain.Entities
         public string? PartidoIdApi { get; set; }
 
         // --- Definición de eliminatoria (todo null/false en fase de grupos) ---
+
+        // Partido cuyos participantes aún no se conocen: salen del árbol de eliminatoria
+        // (ganadores de PartidoGanadorLocalId / PartidoGanadorVisitanteId). Lo marca el builder.
+        public bool PorDefinirse { get; set; }
 
         // ¿El partido aplica definición por penales? false en grupos; true en eliminatoria.
         public bool AplicaDefinicionPenales { get; set; }

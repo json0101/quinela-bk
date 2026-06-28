@@ -29,7 +29,8 @@ namespace Quinela.Api.Controllers.Master
                 dto.FechaPartido, dto.TorneoId, dto.GrupoId, dto.FaseId, dto.EquipoLocalId, dto.EquipoVisitanteId, dto.TipoPartidoId,
                 dto.Estado, dto.ResultadoLocal, dto.ResultadoVisitante, dto.PartidoIdApi, dto.Active,
                 dto.PartidoSeDefiniraEnPenales, dto.PenalesAnotadosLocal, dto.PenalesAnotadosVisitante,
-                dto.EquipoGanadorId, dto.PartidoGanadorLocalId, dto.PartidoGanadorVisitanteId), ct)).ToActionResult();
+                dto.EquipoGanadorId, dto.PartidoGanadorLocalId, dto.PartidoGanadorVisitanteId, dto.PorDefinirse,
+                dto.AplicaDefinicionPenales), ct)).ToActionResult();
 
         [HttpPut("{id:int}")]
         public async Task<IActionResult> Update(int id, [FromBody] PartidoUpdateDto dto, CancellationToken ct)
@@ -37,7 +38,8 @@ namespace Quinela.Api.Controllers.Master
                 id, dto.FechaPartido, dto.TorneoId, dto.GrupoId, dto.FaseId, dto.EquipoLocalId, dto.EquipoVisitanteId, dto.TipoPartidoId,
                 dto.Estado, dto.ResultadoLocal, dto.ResultadoVisitante, dto.PartidoIdApi, dto.Active,
                 dto.PartidoSeDefiniraEnPenales, dto.PenalesAnotadosLocal, dto.PenalesAnotadosVisitante,
-                dto.EquipoGanadorId, dto.PartidoGanadorLocalId, dto.PartidoGanadorVisitanteId), ct)).ToActionResult();
+                dto.EquipoGanadorId, dto.PartidoGanadorLocalId, dto.PartidoGanadorVisitanteId, dto.PorDefinirse,
+                dto.AplicaDefinicionPenales), ct)).ToActionResult();
 
         [HttpDelete("{id:int}")]
         public async Task<IActionResult> Delete(int id, CancellationToken ct)

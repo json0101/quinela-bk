@@ -36,9 +36,10 @@ namespace Quinela.Application.Features.AutomationMatch
 
             // Partidos en 'Previa' activos cuya fecha/hora (UTC en BD) ya llegó (o llega en 30s).
             var porArrancar = await _partidos.GetDbSet().AsNoTracking()
-                .Where(p => p.Active && p.Estado == 'P' && p.FechaPartido <= ahoraUtc)
+                // Solo partidos de grupo: la eliminatoria se arma con el servicio de distribución.
+                .Where(p => p.Active && p.Estado == 'P' && p.FechaPartido <= ahoraUtc && p.FaseId == Fase.GruposId)
                 .Select(p => new PartidoCmd(
-                    p.Id, p.FechaPartido, p.TorneoId, p.GrupoId, p.FaseId, p.EquipoLocalId, p.EquipoVisitanteId,
+                    p.Id, p.FechaPartido, p.TorneoId, p.GrupoId!.Value, p.FaseId, p.EquipoLocalId!.Value, p.EquipoVisitanteId!.Value,
                     p.TipoPartidoId, p.PartidoIdApi, p.Active,
                     p.PartidoSeDefiniraEnPenales, p.PenalesAnotadosLocal, p.PenalesAnotadosVisitante,
                     p.EquipoGanadorId, p.PartidoGanadorLocalId, p.PartidoGanadorVisitanteId))
@@ -51,7 +52,7 @@ namespace Quinela.Application.Features.AutomationMatch
                     p.Id, p.FechaPartido, p.TorneoId, p.GrupoId, p.FaseId, p.EquipoLocalId, p.EquipoVisitanteId,
                     p.TipoPartidoId, 'E', 0, 0, p.PartidoIdApi, p.Active,
                     p.PartidoSeDefiniraEnPenales, p.PenalesAnotadosLocal, p.PenalesAnotadosVisitante,
-                    p.EquipoGanadorId, p.PartidoGanadorLocalId, p.PartidoGanadorVisitanteId), ct);
+                    p.EquipoGanadorId, p.PartidoGanadorLocalId, p.PartidoGanadorVisitanteId, false, false), ct);
 
                 if (res.IsFailure)
                     _logger.LogWarning("No se pudo arrancar el partido {Id}: {Error}", p.Id, res.Error.Message);

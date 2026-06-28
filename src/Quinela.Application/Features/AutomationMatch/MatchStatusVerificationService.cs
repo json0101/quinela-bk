@@ -37,9 +37,9 @@ namespace Quinela.Application.Features.AutomationMatch
         {
             // Partidos en curso con id del API (los 'T' ya no se consultan).
             var enCurso = await _partidos.GetDbSet().AsNoTracking()
-                .Where(p => p.Active && p.Estado == 'E' && p.PartidoIdApi != null)
+                .Where(p => p.Active && p.Estado == 'E' && p.PartidoIdApi != null && p.FaseId == Fase.GruposId)
                 .Select(p => new PartidoCmd(
-                    p.Id, p.FechaPartido, p.TorneoId, p.GrupoId, p.FaseId, p.EquipoLocalId, p.EquipoVisitanteId,
+                    p.Id, p.FechaPartido, p.TorneoId, p.GrupoId!.Value, p.FaseId, p.EquipoLocalId!.Value, p.EquipoVisitanteId!.Value,
                     p.TipoPartidoId, p.PartidoIdApi!, p.ResultadoLocalId, p.ResultadoVisitanteId, p.Active,
                     p.PartidoSeDefiniraEnPenales, p.PenalesAnotadosLocal, p.PenalesAnotadosVisitante,
                     p.EquipoGanadorId, p.PartidoGanadorLocalId, p.PartidoGanadorVisitanteId))
@@ -73,7 +73,7 @@ namespace Quinela.Application.Features.AutomationMatch
                     p.Id, p.FechaPartido, p.TorneoId, p.GrupoId, p.FaseId, p.EquipoLocalId, p.EquipoVisitanteId,
                     p.TipoPartidoId, nuevoEstado, game.HomeScore, game.AwayScore, p.PartidoIdApi, p.Active,
                     p.PartidoSeDefiniraEnPenales, p.PenalesAnotadosLocal, p.PenalesAnotadosVisitante,
-                    p.EquipoGanadorId, p.PartidoGanadorLocalId, p.PartidoGanadorVisitanteId), ct);
+                    p.EquipoGanadorId, p.PartidoGanadorLocalId, p.PartidoGanadorVisitanteId, false, false), ct);
 
                 if (res.IsFailure)
                     _logger.LogWarning("No se pudo actualizar el partido {Id}: {Error}", p.Id, res.Error.Message);

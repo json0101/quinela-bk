@@ -22,7 +22,6 @@ namespace Quinela.Application.Features.Ranking
                 .Where(x => x.Active && x.QuinielaId == request.QuinielaId)
                 .OrderByDescending(x => x.Pts)
                 .ThenByDescending(x => x.ResultadoExacto)
-                .ThenByDescending(x => x.ResultadoAtinado)
                 .Select(x => new RankingDto
                 {
                     Id = x.Id,
@@ -43,8 +42,8 @@ namespace Quinela.Application.Features.Ranking
         }
 
         // Asigna la posición usando ranking de competición estándar (1,1,3...):
-        // dos filas empatan (misma posición) solo si coinciden en Pts, exactos y
-        // atinados; cuando hay empate, la siguiente posición se salta.
+        // dos filas empatan (misma posición) si coinciden en Pts y exactos (los atinados
+        // NO desempatan); cuando hay empate, la siguiente posición se salta.
         // La lista debe venir ya ordenada por el criterio de desempate.
         internal static void AsignarPosiciones(List<RankingDto> rows)
         {
@@ -55,8 +54,7 @@ namespace Quinela.Application.Features.Ranking
 
                 bool empata = anterior != null
                     && anterior.Pts == actual.Pts
-                    && anterior.ResultadoExacto == actual.ResultadoExacto
-                    && anterior.ResultadoAtinado == actual.ResultadoAtinado;
+                    && anterior.ResultadoExacto == actual.ResultadoExacto;
 
                 // Si empata con el anterior, comparte su posición; si no, ocupa su
                 // índice (1-based), lo que "salta" las posiciones consumidas por empates.

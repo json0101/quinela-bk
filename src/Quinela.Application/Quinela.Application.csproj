@@ -5,6 +5,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <!-- Estructura del cuadro de eliminatoria FIFA 2026 (se lee como recurso embebido). -->
+    <EmbeddedResource Include="Features\Eliminatoria\BracketMundial2026.json" />
+  </ItemGroup>
+
+  <ItemGroup>
     <!-- Permite que el proyecto de pruebas use los handlers internos. -->
     <InternalsVisibleTo Include="Quinela.Application.Tests" />
   </ItemGroup>
