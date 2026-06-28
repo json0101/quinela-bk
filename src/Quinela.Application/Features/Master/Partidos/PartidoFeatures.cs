@@ -163,6 +163,7 @@ namespace Quinela.Application.Features.Master.Partidos
                     .Build();
                 entity.TipoPartidoId = cmd.TipoPartidoId;
                 entity.AplicaDefinicionPenales = cmd.AplicaDefinicionPenales;
+                entity.PartidoIdApi = cmd.PartidoIdApi; // se permite ingresar el id del API siempre
             }
             else
             {
@@ -262,7 +263,7 @@ namespace Quinela.Application.Features.Master.Partidos
                 entity.GrupoId = null;
                 entity.EquipoLocalId = null;
                 entity.EquipoVisitanteId = null;
-                entity.PartidoIdApi = null;
+                entity.PartidoIdApi = cmd.PartidoIdApi; // el id del API se puede ingresar siempre
                 PartidoEstadoHelper.Aplicar(entity, 'P', null, null, tipo); // estado P, limpia marcador
                 entity.AplicaDefinicionPenales = cmd.AplicaDefinicionPenales;
                 entity.PartidoSeDefiniraEnPenales = null;
