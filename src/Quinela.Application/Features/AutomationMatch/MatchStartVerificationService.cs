@@ -37,7 +37,7 @@ namespace Quinela.Application.Features.AutomationMatch
             // Partidos en 'Previa' activos cuya fecha/hora (UTC en BD) ya llegó (o llega en 30s).
             var porArrancar = await _partidos.GetDbSet().AsNoTracking()
                 // Solo partidos de grupo: la eliminatoria se arma con el servicio de distribución.
-                .Where(p => p.Active && p.Estado == 'P' && p.FechaPartido <= ahoraUtc && p.FaseId == Fase.GruposId)
+                .Where(p => p.Active && p.Estado == 'P' && p.FechaPartido <= ahoraUtc)
                 .Select(p => new PartidoCmd(
                     p.Id, p.FechaPartido, p.TorneoId, p.GrupoId!.Value, p.FaseId, p.EquipoLocalId!.Value, p.EquipoVisitanteId!.Value,
                     p.TipoPartidoId, p.PartidoIdApi, p.Active,

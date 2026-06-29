@@ -37,7 +37,7 @@ namespace Quinela.Application.Features.AutomationMatch
         {
             // Partidos en curso con id del API (los 'T' ya no se consultan).
             var enCurso = await _partidos.GetDbSet().AsNoTracking()
-                .Where(p => p.Active && p.Estado == 'E' && p.PartidoIdApi != null && p.FaseId == Fase.GruposId)
+                .Where(p => p.Active && p.Estado == 'E' && p.PartidoIdApi != null)
                 .Select(p => new PartidoCmd(
                     p.Id, p.FechaPartido, p.TorneoId, p.GrupoId!.Value, p.FaseId, p.EquipoLocalId!.Value, p.EquipoVisitanteId!.Value,
                     p.TipoPartidoId, p.PartidoIdApi!, p.ResultadoLocalId, p.ResultadoVisitanteId, p.Active,
