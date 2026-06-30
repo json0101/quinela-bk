@@ -39,7 +39,7 @@ namespace Quinela.Application.Features.AutomationMatch
                 // Solo partidos de grupo: la eliminatoria se arma con el servicio de distribución.
                 .Where(p => p.Active && p.Estado == 'P' && p.FechaPartido <= ahoraUtc)
                 .Select(p => new PartidoCmd(
-                    p.Id, p.FechaPartido, p.TorneoId, p.GrupoId!.Value, p.FaseId, p.EquipoLocalId!.Value, p.EquipoVisitanteId!.Value,
+                    p.Id, p.FechaPartido, p.TorneoId, p.GrupoId, p.FaseId, p.EquipoLocalId!.Value, p.EquipoVisitanteId!.Value,
                     p.TipoPartidoId, p.PartidoIdApi, p.Active,
                     p.PartidoSeDefiniraEnPenales, p.PenalesAnotadosLocal, p.PenalesAnotadosVisitante,
                     p.EquipoGanadorId, p.PartidoGanadorLocalId, p.PartidoGanadorVisitanteId))
@@ -61,8 +61,8 @@ namespace Quinela.Application.Features.AutomationMatch
             }
         }
 
-        private sealed record PartidoCmd(int Id, DateTime FechaPartido, int TorneoId, int GrupoId, int FaseId,
-            int EquipoLocalId, int EquipoVisitanteId, int TipoPartidoId, string? PartidoIdApi, bool Active,
+        private sealed record PartidoCmd(int Id, DateTime FechaPartido, int TorneoId, int? GrupoId, int FaseId,
+            int? EquipoLocalId, int? EquipoVisitanteId, int TipoPartidoId, string? PartidoIdApi, bool Active,
             bool? PartidoSeDefiniraEnPenales, int? PenalesAnotadosLocal, int? PenalesAnotadosVisitante,
             int? EquipoGanadorId, int? PartidoGanadorLocalId, int? PartidoGanadorVisitanteId);
     }

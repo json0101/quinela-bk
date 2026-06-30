@@ -39,7 +39,7 @@ namespace Quinela.Application.Features.AutomationMatch
             var enCurso = await _partidos.GetDbSet().AsNoTracking()
                 .Where(p => p.Active && p.Estado == 'E' && p.PartidoIdApi != null)
                 .Select(p => new PartidoCmd(
-                    p.Id, p.FechaPartido, p.TorneoId, p.GrupoId!.Value, p.FaseId, p.EquipoLocalId!.Value, p.EquipoVisitanteId!.Value,
+                    p.Id, p.FechaPartido, p.TorneoId, p.GrupoId, p.FaseId, p.EquipoLocalId, p.EquipoVisitanteId,
                     p.TipoPartidoId, p.PartidoIdApi!, p.ResultadoLocalId, p.ResultadoVisitanteId, p.Active,
                     p.PartidoSeDefiniraEnPenales, p.PenalesAnotadosLocal, p.PenalesAnotadosVisitante,
                     p.EquipoGanadorId, p.PartidoGanadorLocalId, p.PartidoGanadorVisitanteId))
@@ -82,8 +82,8 @@ namespace Quinela.Application.Features.AutomationMatch
             }
         }
 
-        private sealed record PartidoCmd(int Id, DateTime FechaPartido, int TorneoId, int GrupoId, int FaseId,
-            int EquipoLocalId, int EquipoVisitanteId, int TipoPartidoId, string PartidoIdApi,
+        private sealed record PartidoCmd(int Id, DateTime FechaPartido, int TorneoId, int? GrupoId, int FaseId,
+            int? EquipoLocalId, int? EquipoVisitanteId, int TipoPartidoId, string? PartidoIdApi,
             int? ResultadoLocal, int? ResultadoVisitante, bool Active,
             bool? PartidoSeDefiniraEnPenales, int? PenalesAnotadosLocal, int? PenalesAnotadosVisitante,
             int? EquipoGanadorId, int? PartidoGanadorLocalId, int? PartidoGanadorVisitanteId);
