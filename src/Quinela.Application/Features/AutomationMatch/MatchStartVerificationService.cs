@@ -32,6 +32,7 @@ namespace Quinela.Application.Features.AutomationMatch
         {
             // Arranca 30s antes de la hora oficial: así el partido ya está en curso si hay
             // un gol temprano y se evita que los usuarios cambien su predicción por el delay.
+            Console.WriteLine("Verificando partidos por arrancar...");
             var ahoraUtc = DateTime.UtcNow.AddSeconds(30);
 
             // Partidos en 'Previa' activos cuya fecha/hora (UTC en BD) ya llegó (o llega en 30s).
